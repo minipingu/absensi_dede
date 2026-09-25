@@ -13,7 +13,7 @@ part of 'api_services.dart';
 
 class _ApiServices implements ApiServices {
   _ApiServices(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/';
+    baseUrl ??= 'https://absensib1.mobileprojp.com';
   }
 
   final Dio _dio;
@@ -33,7 +33,7 @@ class _ApiServices implements ApiServices {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/tasks',
+            '/api/register',
             queryParameters: queryParameters,
             data: _data,
           )
