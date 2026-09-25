@@ -1,6 +1,9 @@
-import 'package:absensi_dede/theme/theme.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
+
+import 'theme/theme.dart';
 
 void main() {
   runApp(const Application());
@@ -11,6 +14,7 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
+    routerConfig: GoRouter(routes: $appRoutes),
     // TODO: replace with your application's supported locales.
     supportedLocales: FLocalizations.supportedLocales,
     // TODO: add your application's localizations delegates.

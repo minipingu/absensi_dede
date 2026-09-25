@@ -44,6 +44,7 @@ dependencies:
   flutter_form_builder: ^11.0.0
   forui: ^0.27.1
   nav_bar: ^0.1.1
+  # instal dulu go router deh baru buildernya
   go_router: ^18.0.1
 
 dev_dependencies:
