@@ -6,16 +6,16 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$registerRoute, $loginRoute];
+List<RouteBase> get $appRoutes => [$splashRoute, $registerRoute];
 
-RouteBase get $registerRoute => GoRouteData.$route(
+RouteBase get $splashRoute => GoRouteData.$route(
   path: '/',
   hasOverriddenOnExit: false,
-  factory: $RegisterRoute._fromState,
+  factory: $SplashRoute._fromState,
 );
 
-mixin $RegisterRoute on GoRouteData {
-  static RegisterRoute _fromState(GoRouterState state) => RegisterRoute();
+mixin $SplashRoute on GoRouteData {
+  static SplashRoute _fromState(GoRouterState state) => SplashRoute();
 
   @override
   String get location => GoRouteData.$location('/');
@@ -34,17 +34,17 @@ mixin $RegisterRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $loginRoute => GoRouteData.$route(
-  path: '/login',
+RouteBase get $registerRoute => GoRouteData.$route(
+  path: '/register',
   hasOverriddenOnExit: false,
-  factory: $LoginRoute._fromState,
+  factory: $RegisterRoute._fromState,
 );
 
-mixin $LoginRoute on GoRouteData {
-  static LoginRoute _fromState(GoRouterState state) => LoginRoute();
+mixin $RegisterRoute on GoRouteData {
+  static RegisterRoute _fromState(GoRouterState state) => RegisterRoute();
 
   @override
-  String get location => GoRouteData.$location('/login');
+  String get location => GoRouteData.$location('/register');
 
   @override
   void go(BuildContext context) => context.go(location);

@@ -5,19 +5,19 @@ import 'package:go_router/go_router.dart';
 
 part 'routes.g.dart';
 
-@TypedGoRoute<RegisterRoute>(path: '/')
-class RegisterRoute extends GoRouteData with $RegisterRoute {
-  RegisterRoute();
+@TypedGoRoute<SplashRoute>(path: '/')
+class SplashRoute extends GoRouteData with $SplashRoute {
+  SplashRoute();
 
   @override
-  SplashScreen build(BuildContext context, GoRouterState state) {
+  Widget build(BuildContext context, GoRouterState state) {
     return SplashScreen();
   }
 }
 
-@TypedGoRoute<LoginRoute>(path: '/login')
-class LoginRoute extends GoRouteData with $LoginRoute {
-  LoginRoute();
+@TypedGoRoute<RegisterRoute>(path: '/register')
+class RegisterRoute extends GoRouteData with $RegisterRoute {
+  RegisterRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
