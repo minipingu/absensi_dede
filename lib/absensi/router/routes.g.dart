@@ -15,16 +15,10 @@ RouteBase get $registerRoute => GoRouteData.$route(
 );
 
 mixin $RegisterRoute on GoRouteData {
-  static RegisterRoute _fromState(GoRouterState state) =>
-      RegisterRoute(from: state.uri.queryParameters['from']);
-
-  RegisterRoute get _self => this as RegisterRoute;
+  static RegisterRoute _fromState(GoRouterState state) => RegisterRoute();
 
   @override
-  String get location => GoRouteData.$location(
-    '/',
-    queryParams: {if (_self.from != null) 'from': _self.from},
-  );
+  String get location => GoRouteData.$location('/');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -47,16 +41,10 @@ RouteBase get $loginRoute => GoRouteData.$route(
 );
 
 mixin $LoginRoute on GoRouteData {
-  static LoginRoute _fromState(GoRouterState state) =>
-      LoginRoute(from: state.uri.queryParameters['from']);
-
-  LoginRoute get _self => this as LoginRoute;
+  static LoginRoute _fromState(GoRouterState state) => LoginRoute();
 
   @override
-  String get location => GoRouteData.$location(
-    '/login',
-    queryParams: {if (_self.from != null) 'from': _self.from},
-  );
+  String get location => GoRouteData.$location('/login');
 
   @override
   void go(BuildContext context) => context.go(location);
