@@ -1,26 +1,36 @@
+import 'package:absensi_dede/absensi/widgets/form_auth.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginRegister extends StatefulWidget {
-  @override
-  State<LoginRegister> createState() => _LoginRegisterState();
-}
-
-class _LoginRegisterState extends State<LoginRegister> {
-  final _key = GlobalKey<FormState>();
+class LoginRegister extends HookWidget {
+  const LoginRegister({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Stack(
-      children: [
-        Positioned.fill(
-          child: Image.asset('assets/images/login_kopdes.jpeg', fit: .cover),
-        ),
-        SafeArea(
-          child: ListView(
+  Widget build(BuildContext context) {
+    final typography = context.theme.typography;
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              isDark
+                  ? 'assets/images/kopdes_malam.jpeg'
+                  : 'assets/images/login_kopdes.jpeg',
+              fit: .cover,
+            ),
+          ),
+          ListView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            padding: EdgeInsets.only(top: 200, left: 20, right: 20),
+            padding: EdgeInsets.only(
+              top: 120,
+              bottom: 120,
+              left: 20,
+              right: 20,
+            ),
             children: [
               Column(
                 spacing: 20,
@@ -33,60 +43,34 @@ class _LoginRegisterState extends State<LoginRegister> {
                           spacing: 20,
                           mainAxisAlignment: .center,
                           children: [
-                            ThemeToggleButton(),
                             Text(
                               'Absensi Manager Kopdes',
-                              style: TextStyle(color: Colors.white),
+                              style: typography.body.lg,
                             ),
-                            ClipRRect(
-                              borderRadius: BorderRadiusGeometry.circular(20),
-                              child: Image.asset(
-                                'assets/images/pegawai_kopdes.png',
-                              ),
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadiusGeometry.circular(
+                                    20,
+                                  ),
+                                  child: Image.asset(
+                                    !isDark
+                                        ? 'assets/images/pegawai_malam.jpeg'
+                                        : 'assets/images/pegawai_kopdes.jpeg',
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: ThemeToggleButton(),
+                                ),
+                              ],
                             ),
-                            Form(
-                              key: _key,
-                              child: Column(
-                                children: [
-                                  FTextFormField.email(
-                                    hint: 'misal : manager@kopdes.com',
-                                    autovalidateMode: .onUserInteraction,
-                                    validator: (value) =>
-                                        (value?.contains('@') ?? false)
-                                        ? null
-                                        : 'Please enter a valid email.',
-                                  ),
-                                  const SizedBox(height: 10),
-                                  FTextFormField.password(
-                                    hint: 'misal : isi password',
-                                    autovalidateMode: .onUserInteraction,
-                                    validator: (value) =>
-                                        8 <= (value?.length ?? 0) ? null : 'Password must be at least 8 characters long.',
-                                  ),
-                                  SizedBox(height: 20),
-                                  SizedBox(
-                                    width: .infinity,
-                                    child: FButton(
-                                      size: .sm,
-                                      mainAxisSize: .min,
-                                      child: const Text('Login'),
-                                      onPress: () {
-                                        if (_key.currentState!.validate()) {
-                                          // Form is valid, do something.
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            FormAuth(),
                             Row(
                               mainAxisAlignment: .center,
                               children: [
-                                Text(
-                                  'Belum Punya akun?',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                                Text('Belum Punya akun?'),
                                 FButton(
                                   size: .xs,
                                   variant: .ghost,
@@ -105,8 +89,8 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

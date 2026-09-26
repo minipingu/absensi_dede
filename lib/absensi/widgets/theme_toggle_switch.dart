@@ -1,39 +1,23 @@
-import 'package:absensi_dede/absensi/services/theme_preferences.dart';
+import 'package:absensi_dede/absensi/services/preferences_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class ThemeToggleSwitch extends StatelessWidget {
-  const ThemeToggleSwitch({super.key});
+typedef ThemeCallback = void Function(bool isDark);
 
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: ThemePreferences.isDarkMode,
-      builder: (context, isDark, _) {
-        return FSwitch(
-          value: isDark,
-          onChange: (value) async {
-            await ThemePreferences.toggleTheme(value);
-          },
-        );
-      },
-    );
-  }
-}
-
+// theme toggle
 class ThemeToggleButton extends StatelessWidget {
   const ThemeToggleButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: ThemePreferences.isDarkMode,
+      valueListenable: ThemePreferences().isDarkMode,
       builder: (context, isDark, _) {
-        return FButton(
+        return FButton.icon(
           onPress: () async {
-            await ThemePreferences.toggleTheme(!isDark);
+            await ThemePreferences.setTheme(!isDark);
           },
-          child: Text(isDark ? 'Light Mode' : 'Dark Mode'),
+          child: isDark ? Icon(FLucideIcons.sun) : Icon(FLucideIcons.moon),
         );
       },
     );
