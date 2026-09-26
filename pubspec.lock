@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.4.0"
+  analyzer_buffer:
+    dependency: transitive
+    description:
+      name: analyzer_buffer
+      sha256: f890a2e708e38fbf4238ad2f9fd3d506538acdddb0cd8eb2c3e8c7bd17784b57
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.4"
   animated_text_kit:
     dependency: "direct main"
     description:
@@ -283,6 +291,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.35"
+  flutter_riverpod:
+    dependency: "direct main"
+    description:
+      name: flutter_riverpod
+      sha256: "2b7f9d2a3c730ac1a98221b420cef966b990fca7ab546ede324642ca57a533e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -293,6 +309,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_builder_validators:
+    dependency: "direct main"
+    description:
+      name: form_builder_validators
+      sha256: cd9a06b35abaed8bf050467c1239e3ee1c8795f42d4cb6568c08dbb8a4d6bd36
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
   forui:
     dependency: "direct main"
     description:
@@ -317,6 +341,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      sha256: "7294967ff0a6d98638e7acb774aac3af2550777accd8149c90af5b014e6d44d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   glob:
     dependency: transitive
     description:
@@ -413,6 +445,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  hooks_riverpod:
+    dependency: "direct main"
+    description:
+      name: hooks_riverpod
+      sha256: d58e1e14aa112ca9c56d54effb7d0d717b2d3f96dad3cdd1fce16f8740450700
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.3"
   html:
     dependency: transitive
     description:
@@ -597,6 +637,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  mockito:
+    dependency: transitive
+    description:
+      name: mockito
+      sha256: "6c1970612452260366064d4df80fdb3eece1ec5e52610ae34a0e51f2f3d8e64f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.8.1"
   nav_bar:
     dependency: "direct main"
     description:
@@ -750,13 +798,37 @@ packages:
     source: hosted
     version: "10.2.11"
   riverpod:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: riverpod
       sha256: "484dfc873ea4c4f4240e5635444fa066f87b07862b7279ebd004a2b71fba4b7a"
       url: "https://pub.dev"
     source: hosted
     version: "3.4.3"
+  riverpod_analyzer_utils:
+    dependency: transitive
+    description:
+      name: riverpod_analyzer_utils
+      sha256: bb13cb3985815840cc103eda1027158358c5fdc00f308fc6f76574d0594107af
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0-dev.12"
+  riverpod_annotation:
+    dependency: "direct main"
+    description:
+      name: riverpod_annotation
+      sha256: "322e56ad198928ef26ba240f85421bfff2493bd65665c887b1299e6386b6206d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.7"
+  riverpod_generator:
+    dependency: "direct dev"
+    description:
+      name: riverpod_generator
+      sha256: c94dcb8b60ff4805d2bb8cacca969c48237bcb563e2ab0b5afb50204470c7636
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.9"
   sanitize_html:
     dependency: transitive
     description:

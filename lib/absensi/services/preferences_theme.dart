@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemePreferences {
-  static const _key = 'is_dark_mode';
+  static final SharedPreferencesAsync _asyncPref = SharedPreferencesAsync();
 
-  static Future<bool> getTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_key) ?? false;
+  static const String _darkModeKey = 'isDark';
+
+  static Future<void> setTheme(bool isLogin) async {
+    await _asyncPref.setBool(_darkModeKey, isLogin);
   }
 
-  static Future<void> setTheme(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_key, value);
+  static Future<bool> get isDark async {
+    return await _asyncPref.getBool(_darkModeKey) ?? false;
   }
 }
