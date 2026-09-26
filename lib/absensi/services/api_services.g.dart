@@ -23,7 +23,7 @@ class _ApiServices implements ApiServices {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RegisterModel> createTask(User task) async {
+  Future<RegisterModel> registerUser(RegisterRequest task) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

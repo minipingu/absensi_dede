@@ -1,27 +1,25 @@
+import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/register_model.dart';
-import '../services/api_service.dart';
-
-part 'auth_provider.g.dart';
+part 'register_user.g.dart';
 
 @riverpod
-class Auth extends _$Auth {
+class RegisterUser extends _$RegisterUser {
   late final ApiServices _apiServices;
 
   @override
   FutureOr<void> build() {
-    _apiServices = ApiServices(baseUrl: );
+    _apiServices = ApiServices(Dio());
   }
 
-  Future<void> register(RegisterModel requestBody) async {
+  Future<void> register(RegisterRequest requestBody) async {
     state = const AsyncLoading();
 
     try {
-      final response = await _apiServices.register(requestBody);
+      final response = await _apiServices.registerUser(requestBody);
 
       state = AsyncData(response);
     } on DioException catch (e, st) {

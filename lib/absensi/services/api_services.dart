@@ -1,4 +1,5 @@
 import 'package:absensi_dede/absensi/models/register_model.dart';
+import 'package:absensi_dede/controller/register_user.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -9,5 +10,5 @@ abstract class ApiServices {
   factory ApiServices(Dio dio, {String? baseUrl}) = _ApiServices;
 
   @POST('/api/register')
-  Future<RegisterModel> createTask(@Body() User task);
+  Future<RegisterModel> registerUser(@Body() RegisterRequest task);
 }

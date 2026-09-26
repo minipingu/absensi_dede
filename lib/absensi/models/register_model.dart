@@ -14,6 +14,29 @@ RegisterModel registerModelFromJson(String str) =>
 String registerModelToJson(RegisterModel data) => json.encode(data.toJson());
 
 @JsonSerializable()
+class RegisterRequest {
+  @JsonKey(name: "name")
+  final String name;
+
+  @JsonKey(name: "email")
+  final String email;
+
+  @JsonKey(name: "password")
+  final String password;
+
+  RegisterRequest({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
+}
+
+@JsonSerializable()
 class RegisterModel {
   @JsonKey(name: "message")
   final String? message;

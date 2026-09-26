@@ -1,19 +1,22 @@
+import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
+import 'package:absensi_dede/controller/register_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:forui/forui.dart';
 
-class FormAuth extends StatefulWidget {
+class FormAuth extends ConsumerStatefulWidget {
   final bool isRegister;
   const FormAuth({super.key, this.isRegister = false});
 
   @override
-  State<FormAuth> createState() => _FormAuthState();
+  ConsumerState<FormAuth> createState() => _FormAuthState();
 }
 
-class _FormAuthState extends State<FormAuth> {
+class _FormAuthState extends ConsumerState<FormAuth> {
   final _key = GlobalKey<FormBuilderState>();
 
   String? _name;
@@ -31,6 +34,33 @@ class _FormAuthState extends State<FormAuth> {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Tangani efek samping (Success / Error) dengan ref.listen
+    ref.listen<AsyncValue<void>>(registerUserProvider, (previous, next) {
+      next.whenOrNull(
+        data: (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Registrasi berhasil! Silakan masuk.'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          // Navigasi ke halaman login / beranda di sini jika diperlukan
+        },
+        error: (error, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.toString()),
+              backgroundColor: Colors.red,
+            ),
+          );
+        },
+      );
+    });
+
+    // 2. Pantau status loading untuk menonaktifkan tombol atau menampilkan indikator
+    final registerState = ref.watch(registerUserProvider);
+    final isLoading = registerState.isLoading;
+
     return FormBuilder(
       key: _key,
       child: Column(
@@ -153,11 +183,25 @@ class _FormAuthState extends State<FormAuth> {
               size: .sm,
               mainAxisSize: .min,
               child: Text(widget.isRegister ? 'Daftar' : 'Masuk'),
-              onPress: () {
-                if (_key.currentState!.validate()) {
-                  // Form is valid, do something.
-                }
-              },
+              onPress: isLoading
+                  ? null
+                  : () {
+                      if (_key.currentState?.saveAndValidate() ?? false) {
+                        if (widget.isRegister) {
+                          final requestUser = RegisterRequest(
+                            name: _name!,
+                            email: _email!,
+                            password: _password!,
+                          );
+
+                          ref
+                              .read(registerUserProvider.notifier)
+                              .register(requestUser);
+                        } else {
+                          // Logika login
+                        }
+                      }
+                    },
             ),
           ),
         ],
