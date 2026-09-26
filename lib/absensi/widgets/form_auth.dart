@@ -1,3 +1,5 @@
+import 'package:absensi_dede/absensi/services/api_services.dart';
+import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -5,7 +7,7 @@ import 'package:forui/forui.dart';
 
 class FormAuth extends StatefulWidget {
   final bool isRegister;
-  new({super.key, this.isRegister = false});
+  const FormAuth({super.key, this.isRegister = false});
 
   @override
   State<FormAuth> createState() => _FormAuthState();
@@ -14,8 +16,18 @@ class FormAuth extends StatefulWidget {
 class _FormAuthState extends State<FormAuth> {
   final _key = GlobalKey<FormBuilderState>();
 
-  final emailController = TextEditingController();
-  final passController = TextEditingController();
+  String? _name;
+  String? _email;
+  String? _password;
+
+  late final ApiServices _apiServices;
+
+  @override
+  void initState() {
+    super.initState();
+    final dio = createDioClient();
+    _apiServices = ApiServices(dio);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,50 +38,109 @@ class _FormAuthState extends State<FormAuth> {
           Column(
             spacing: 10,
             children: [
-              FormBuilderField(
+              if (widget.isRegister)
+                FormBuilderField<String>(
+                  onChanged: (value) => setState(() {
+                    _name = value;
+                  }),
+                  name: 'nama',
+                  valueTransformer: (text) =>
+                      text?.trim().replaceAll(RegExp(r'\s+'), ' '),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                      errorText: 'Nama wajib diisi',
+                    ),
+                    FormBuilderValidators.minLength(
+                      3,
+                      errorText: 'Minimal 3 karakter',
+                    ),
+                    FormBuilderValidators.alphabetical(
+                      regex: RegExp(r'^[a-zA-Z ]+$'),
+                      errorText: 'Hanya boleh huruf alfabet',
+                    ),
+                  ]),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  builder: (FormFieldState<String> field) {
+                    return FTextFormField(
+                      label: const Text('Nama'),
+                      hint: 'misal : Gibrun',
+                      control: FTextFieldControl.managed(
+                        initial: TextEditingValue(text: field.value ?? ''),
+                        onChange: (value) => field.didChange(value.text),
+                      ),
+                      forceErrorText: field.errorText,
+                    );
+                  },
+                ),
+              FormBuilderField<String>(
+                onChanged: (value) => setState(() {
+                  _email = value;
+                }),
                 name: 'nama',
-                builder: (FormFieldState<dynamic> field) {
-                  return FTextFormField(
-                    label: Text('Nama'),
-                    control: .managed(initial: .empty, onChange: (value) {}),
-                    hint: 'misal : Gibrun',
-                    autovalidateMode: .onUserInteraction,
-                    validator: (value) => (value?.contains('@') ?? false)
-                        ? null
-                        : 'Please enter a valid email.',
-                  );
-                },
-              ),
-              FormBuilderField(
-                name: 'email',
+                valueTransformer: (text) =>
+                    text?.trim().replaceAll(RegExp(r'\s+'), ' '),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(
-                    errorText: "Isi donk emailnya 😡",
+                    errorText: 'Email wajib diisi',
                   ),
                   FormBuilderValidators.email(
-                    errorText: 'yang donk bener ngisi emailnya 😤🤬',
+                    errorText: 'Yang bener donk ngisi emailnya 🤬',
                   ),
                 ]),
-                builder: (FormFieldState<dynamic> field) {
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                builder: (FormFieldState<String> field) {
                   return FTextFormField.email(
-                    control: .managed(initial: .empty, onChange: (value) {}),
-                    hint: 'misal : manager@kopdes.com',
-                    autovalidateMode: .onUserInteraction,
-                    validator: (value) => (value?.contains('@') ?? false)
-                        ? null
-                        : 'Please enter a valid email.',
+                    label: const Text('Email'),
+                    hint: 'misal : manager@kopdes.go.id',
+                    control: FTextFieldControl.managed(
+                      initial: TextEditingValue(text: field.value ?? ''),
+                      onChange: (value) => field.didChange(value.text),
+                    ),
+                    forceErrorText: field.errorText,
                   );
                 },
               ),
-              FormBuilderField(
+
+              FormBuilderField<String>(
+                onChanged: (value) => setState(() {
+                  _password = value;
+                }),
                 name: 'password',
-                builder: (FormFieldState<dynamic> field) {
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                    errorText: "Isi donk passwordnya 😡",
+                  ),
+                  FormBuilderValidators.minLength(
+                    8,
+                    errorText: 'minimal 8 karakter 😤',
+                  ),
+                  FormBuilderValidators.hasLowercaseChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 huruf kecil 😤',
+                  ),
+                  FormBuilderValidators.hasNumericChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 angka 😤',
+                  ),
+                  FormBuilderValidators.hasSpecialChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 simbol 😤',
+                  ),
+                  FormBuilderValidators.hasUppercaseChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 huruf besar 😤',
+                  ),
+                ]),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                builder: (FormFieldState<String> field) {
                   return FTextFormField.password(
+                    label: const Text('Password'),
                     hint: 'isi password',
-                    autovalidateMode: .onUserInteraction,
-                    validator: (value) => 8 <= (value?.length ?? 0)
-                        ? null
-                        : 'Password must be at least 8 characters long.',
+                    control: FTextFieldControl.managed(
+                      initial: TextEditingValue(text: field.value ?? ''),
+                      onChange: (value) => field.didChange(value.text),
+                    ),
+                    forceErrorText: field.errorText,
                   );
                 },
               ),

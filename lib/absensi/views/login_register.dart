@@ -28,80 +28,91 @@ class LoginRegister extends HookConsumerWidget {
               fit: .cover,
             ),
           ),
-          ListView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            padding: EdgeInsets.only(
-              top: 120,
-              bottom: 120,
-              left: 20,
-              right: 20,
-            ),
-            children: [
-              Column(
-                spacing: 20,
-                children: [
-                  SizedBox(
-                    child: FCard(
-                      child: Padding(
-                        padding: EdgeInsetsGeometry.all(20),
-                        child: Column(
-                          spacing: 20,
-                          mainAxisAlignment: .center,
-                          children: [
-                            Text(
-                              'Absensi Manager Kopdes',
-                              style: typography.body.lg,
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Center(
+                    child: Column(
+                      spacing: 20,
+                      children: [
+                        SizedBox(
+                          child: FCard(
+                            style: .delta(
+                              decoration: .boxDelta(
+                                color: context.theme.colors.background
+                                    .withValues(alpha: 0.4),
+                              ),
                             ),
-                            Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadiusGeometry.circular(
-                                    20,
+                            child: Padding(
+                              padding: EdgeInsetsGeometry.all(20),
+                              child: Column(
+                                spacing: 20,
+                                mainAxisAlignment: .center,
+                                children: [
+                                  Text(
+                                    'Absensi Manager Kopdes 🫡',
+                                    style: typography.body.lg.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red,
+                                    ),
                                   ),
-                                  child: Image.asset(
-                                    themeState
-                                        ? 'assets/images/pegawai_malam.jpeg'
-                                        : 'assets/images/pegawai_kopdes.jpeg',
+                                  Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadiusGeometry.circular(20),
+                                        child: Image.asset(
+                                          themeState
+                                              ? 'assets/images/pegawai_malam.png'
+                                              : 'assets/images/pegawai_kopdes.jpeg',
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 10,
+                                        right: 10,
+                                        child: ThemeToggleButton(),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: ThemeToggleButton(),
-                                ),
-                              ],
+                                  FormAuth(isRegister: isRegister.value),
+                                  Row(
+                                    mainAxisAlignment: .center,
+                                    children: [
+                                      Text(
+                                        isRegister.value
+                                            ? 'Sudah punya akun?'
+                                            : 'Belum punya akun?',
+                                        style: typography.body.xs,
+                                      ),
+                                      FButton(
+                                        size: .xs,
+                                        variant: .ghost,
+                                        mainAxisSize: .min,
+                                        onPress: () {
+                                          isRegister.value = !isRegister.value;
+                                        },
+                                        child: Text(
+                                          isRegister.value ? 'Masuk' : 'Daftar',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            FormAuth(isRegister: isRegister.value),
-                            Row(
-                              mainAxisAlignment: .center,
-                              children: [
-                                Text(
-                                  isRegister.value
-                                      ? 'Sudah punya akun?'
-                                      : 'Belum punya akun?',
-                                  style: typography.body.xs,
-                                ),
-                                FButton(
-                                  size: .xs,
-                                  variant: .ghost,
-                                  mainAxisSize: .min,
-                                  onPress: () {
-                                    isRegister.value = !isRegister.value;
-                                  },
-                                  child: Text(
-                                    isRegister.value ? 'Masuk' : 'Daftar',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ],
+            ),
           ),
         ],
       ),
