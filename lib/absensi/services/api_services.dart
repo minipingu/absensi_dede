@@ -10,5 +10,5 @@ abstract class ApiServices {
   factory ApiServices(Dio dio, {String? baseUrl}) = _ApiServices;
 
   @POST('/api/register')
-  Future<RegisterModel> registerUser(@Body() RegisterRequest task);
+  Future<RegisterModel> registerUser(@Body() RegisterRequest user);
 }

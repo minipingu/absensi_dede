@@ -33,7 +33,7 @@ final class RegisterUserProvider
   RegisterUser create() => RegisterUser();
 }
 
-String _$registerUserHash() => r'69d00459a96c55be6eee0a8b502fe71665632262';
+String _$registerUserHash() => r'8459e8816e7d909a8dfdd10da5844073e4e0b773';
 
 abstract class _$RegisterUser extends $AsyncNotifier<void> {
   FutureOr<void> build();

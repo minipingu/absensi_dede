@@ -38,20 +38,20 @@ class _FormAuthState extends ConsumerState<FormAuth> {
     ref.listen<AsyncValue<void>>(registerUserProvider, (previous, next) {
       next.whenOrNull(
         data: (_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Registrasi berhasil! Silakan masuk.'),
-              backgroundColor: Colors.green,
-            ),
+          showFToast(
+            context: context,
+            title: const Text('Registrasi Berhasil!'),
+            description: const Text('Akun berhasil dibuat, silakan masuk.'),
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
-          // Navigasi ke halaman login / beranda di sini jika diperlukan
+          // Navigasi ke halaman login / beranda jika diperlukan
         },
         error: (error, _) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(error.toString()),
-              backgroundColor: Colors.red,
-            ),
+          showFToast(
+            context: context,
+            title: const Text('Registrasi Gagal'),
+            description: Text(error.toString()),
+            icon: const Icon(Icons.error_outline, color: Colors.red),
           );
         },
       );

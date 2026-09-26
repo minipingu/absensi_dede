@@ -1,5 +1,6 @@
 import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
+import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,7 +13,8 @@ class RegisterUser extends _$RegisterUser {
 
   @override
   FutureOr<void> build() {
-    _apiServices = ApiServices(Dio());
+    final dio = createDioClient(); //  Gunakan konfigurasi Dio yang sudah benar
+    _apiServices = ApiServices(dio);
   }
 
   Future<void> register(RegisterRequest requestBody) async {
@@ -20,6 +22,7 @@ class RegisterUser extends _$RegisterUser {
 
     try {
       final response = await _apiServices.registerUser(requestBody);
+      print(response);
 
       state = AsyncData(response);
     } on DioException catch (e, st) {

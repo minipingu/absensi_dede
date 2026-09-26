@@ -23,12 +23,12 @@ class _ApiServices implements ApiServices {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RegisterModel> registerUser(RegisterRequest task) async {
+  Future<RegisterModel> registerUser(RegisterRequest user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(task.toJson());
+    _data.addAll(user.toJson());
     final _options = _setStreamType<RegisterModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
