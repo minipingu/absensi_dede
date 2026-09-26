@@ -46,6 +46,8 @@ dependencies:
   nav_bar: ^0.1.1
   # instal dulu go router deh baru buildernya
   go_router: ^18.0.1
+  animated_text_kit: ^4.3.0
+  google_fonts: ^8.2.1
 
 dev_dependencies:
   retrofit_generator: ^10.0.1
