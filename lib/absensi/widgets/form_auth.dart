@@ -1,6 +1,8 @@
+import 'package:absensi_dede/absensi/models/login_request.dart';
 import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
+import 'package:absensi_dede/controller/login_user.dart';
 import 'package:absensi_dede/controller/register_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -34,7 +36,6 @@ class _FormAuthState extends ConsumerState<FormAuth> {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Tangani efek samping (Success / Error) dengan ref.listen
     ref.listen<AsyncValue<void>>(registerUserProvider, (previous, next) {
       next.whenOrNull(
         data: (_) {
@@ -44,12 +45,32 @@ class _FormAuthState extends ConsumerState<FormAuth> {
             description: const Text('Akun berhasil dibuat, silakan masuk.'),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
-          // Navigasi ke halaman login / beranda jika diperlukan
         },
         error: (error, _) {
           showFToast(
             context: context,
             title: const Text('Registrasi Gagal'),
+            description: Text(error.toString()),
+            icon: const Icon(Icons.error_outline, color: Colors.red),
+          );
+        },
+      );
+    });
+
+    ref.listen<AsyncValue<void>>(loginUserProvider, (previous, next) {
+      next.whenOrNull(
+        data: (_) {
+          showFToast(
+            context: context,
+            title: const Text('Login Berhasil!'),
+            description: const Text('Langsung terbang ke home'),
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+          );
+        },
+        error: (error, _) {
+          showFToast(
+            context: context,
+            title: const Text('Login Gagal'),
             description: Text(error.toString()),
             icon: const Icon(Icons.error_outline, color: Colors.red),
           );
@@ -198,7 +219,14 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                               .read(registerUserProvider.notifier)
                               .register(requestUser);
                         } else {
-                          // Logika login
+                          final requestUser = LoginRequest(
+                            email: _email!,
+                            password: _password!,
+                          );
+
+                          ref
+                              .read(loginUserProvider.notifier)
+                              .login(requestUser);
                         }
                       }
                     },
