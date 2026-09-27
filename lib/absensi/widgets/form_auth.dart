@@ -35,6 +35,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
           if (response == null) return;
           showFToast(
             context: context,
+            duration: const Duration(seconds: 4),
             title: const Text('Registrasi Berhasil!'),
             description: Text(
               response.message ?? 'Akun berhasil dibuat, silakan masuk.',
@@ -45,6 +46,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
         error: (error, _) {
           showFToast(
             context: context,
+            duration: const Duration(seconds: 4),
             title: const Text('Registrasi Gagal'),
             description: Text(error.toString()),
             icon: const Icon(Icons.error_outline, color: Colors.red),
@@ -59,6 +61,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
           if (response == null) return;
           showFToast(
             context: context,
+            duration: const Duration(seconds: 4),
             title: const Text('Login Berhasil!'),
             description: Text(response.message ?? 'Langsung terbang ke home'),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
@@ -73,6 +76,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
         error: (error, _) {
           showFToast(
             context: context,
+            duration: const Duration(seconds: 4),
             title: const Text('Login Gagal'),
             description: Text(error.toString()),
             icon: const Icon(Icons.error_outline, color: Colors.red),
