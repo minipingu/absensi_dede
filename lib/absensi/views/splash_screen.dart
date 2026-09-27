@@ -15,9 +15,10 @@ class SplashScreen extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       Timer(Duration(seconds: 3), () async {
-        await PreferencesLogin.isLogin
-            ? HomeRoute().go(context)
-            : LoginRegisterRoute().go(context);
+        // await PreferencesLogin.isLogin
+        //     ?
+        HomeRoute().go(context);
+        // : LoginRegisterRoute().go(context);
       });
       return null;
     }, []);

@@ -13,7 +13,7 @@ class RegisterUser extends _$RegisterUser {
 
   @override
   FutureOr<void> build() {
-    final dio = createDioClient(); //  Gunakan konfigurasi Dio yang sudah benar
+    final dio = createDioClient();
     _apiServices = ApiServices(dio);
   }
 
