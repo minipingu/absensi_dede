@@ -1,9 +1,11 @@
+import 'dart:developer' as developer;
+
 import 'package:absensi_dede/absensi/models/login_request.dart';
-import 'package:absensi_dede/absensi/models/register_model.dart';
+import 'package:absensi_dede/absensi/models/login_response.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
+import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_user.g.dart';
@@ -13,19 +15,28 @@ class LoginUser extends _$LoginUser {
   late final ApiServices _apiServices;
 
   @override
-  FutureOr<void> build() {
-    final dio = createDioClient(); //  Gunakan konfigurasi Dio yang sudah benar
+  FutureOr<LoginResponse?> build() {
+    final dio = createDioClient();
     _apiServices = ApiServices(dio);
+    return null;
   }
 
-  Future<void> login(LoginRequest requestBody) async {
+  Future<LoginResponse?> login(LoginRequest requestBody) async {
     state = const AsyncLoading();
 
     try {
       final response = await _apiServices.loginUser(requestBody);
-      print(response);
+      developer.log('Login response: ${response.toJson()}');
 
-      state = AsyncData(response);
+      if (response.data != null) {
+        await LoginPreferences.saveLoginResponse(response);
+        state = AsyncData(response);
+        return response;
+      } else {
+        final errorMsg = response.message ?? 'Email atau password salah';
+        state = AsyncError(errorMsg, StackTrace.current);
+        return null;
+      }
     } on DioException catch (e, st) {
       String errorMessage = 'Terjadi kesalahan saat login';
 
@@ -49,9 +60,14 @@ class LoginUser extends _$LoginUser {
         errorMessage = e.message!;
       }
 
+      developer.log('DioException during login: $errorMessage');
       state = AsyncError(errorMessage, st);
+      return null;
     } catch (e, st) {
-      state = AsyncError('Error: $e', st);
+      final errorMessage = 'Error: $e';
+      developer.log('Error during login: $errorMessage');
+      state = AsyncError(errorMessage, st);
+      return null;
     }
   }
 }

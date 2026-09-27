@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:absensi_dede/absensi/router/routes.dart';
-import 'package:absensi_dede/absensi/services/preferences_login.dart';
+import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,11 +13,15 @@ class SplashScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      Timer(Duration(seconds: 3), () async {
-        // await PreferencesLogin.isLogin
-        // ?
-        HomeRoute().go(context);
-        // : LoginRegisterRoute().go(context);
+      Timer(const Duration(seconds: 3), () async {
+        final isLogin = await LoginPreferences.isLogin;
+        if (context.mounted) {
+          if (isLogin) {
+            HomeRoute().go(context);
+          } else {
+            LoginRegisterRoute().go(context);
+          }
+        }
       });
       return null;
     }, []);
@@ -27,7 +30,10 @@ class SplashScreen extends HookWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('assets/images/splash_screen.jpg', fit: .cover),
+            child: Image.asset(
+              'assets/images/splash_screen.jpg',
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned(
             bottom: 500,
@@ -36,11 +42,11 @@ class SplashScreen extends HookWidget {
               animatedTexts: [
                 ColorizeAnimatedText(
                   'now loading...',
-                  speed: Duration(milliseconds: 100),
+                  speed: const Duration(milliseconds: 100),
                   textStyle: GoogleFonts.orbitron(
                     fontSize: 30,
-                    fontWeight: .w800,
-                    fontStyle: .italic,
+                    fontWeight: FontWeight.w800,
+                    fontStyle: FontStyle.italic,
                   ),
                   colors: [
                     const Color.fromARGB(255, 255, 0, 0),
@@ -49,9 +55,6 @@ class SplashScreen extends HookWidget {
                 ),
               ],
               isRepeatingAnimation: true,
-              // onTap: () {
-              //   print("Tap Event");
-              // },
             ),
           ),
         ],

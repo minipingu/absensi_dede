@@ -2,9 +2,8 @@ import 'dart:developer' as developer;
 
 import 'package:absensi_dede/absensi/models/login_request.dart';
 import 'package:absensi_dede/absensi/models/register_model.dart';
-import 'package:absensi_dede/absensi/services/api_services.dart';
-import 'package:absensi_dede/absensi/services/dio_client.dart';
-import 'package:absensi_dede/absensi/services/preferences_login.dart';
+import 'package:absensi_dede/absensi/router/routes.dart';
+import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:absensi_dede/controllers/login_user.dart';
 import 'package:absensi_dede/controllers/register_user.dart';
 import 'package:flutter/material.dart';
@@ -28,24 +27,18 @@ class _FormAuthState extends ConsumerState<FormAuth> {
   String? _email;
   String? _password;
 
-  late final ApiServices _apiServices;
-
-  @override
-  void initState() {
-    super.initState();
-    final dio = createDioClient();
-    _apiServices = ApiServices(dio);
-  }
-
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<void>>(registerUserProvider, (previous, next) {
+    ref.listen(registerUserProvider, (previous, next) {
       next.whenOrNull(
-        data: (_) {
+        data: (response) {
+          if (response == null) return;
           showFToast(
             context: context,
             title: const Text('Registrasi Berhasil!'),
-            description: const Text('Akun berhasil dibuat, silakan masuk.'),
+            description: Text(
+              response.message ?? 'Akun berhasil dibuat, silakan masuk.',
+            ),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
         },
@@ -60,16 +53,22 @@ class _FormAuthState extends ConsumerState<FormAuth> {
       );
     });
 
-    ref.listen<AsyncValue<void>>(loginUserProvider, (previous, next) {
+    ref.listen(loginUserProvider, (previous, next) {
       next.whenOrNull(
-        data: (_) async {
+        data: (response) async {
+          if (response == null) return;
           showFToast(
             context: context,
             title: const Text('Login Berhasil!'),
-            description: const Text('Langsung terbang ke home'),
+            description: Text(response.message ?? 'Langsung terbang ke home'),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
-          await PreferencesLogin.setLogin(true);
+
+          await LoginPreferences.saveLoginResponse(response);
+
+          if (context.mounted) {
+            HomeRoute().go(context);
+          }
         },
         error: (error, _) {
           showFToast(
@@ -82,9 +81,11 @@ class _FormAuthState extends ConsumerState<FormAuth> {
       );
     });
 
-    // 2. Pantau status loading untuk menonaktifkan tombol atau menampilkan indikator
     final registerState = ref.watch(registerUserProvider);
-    final isLoading = registerState.isLoading;
+    final loginState = ref.watch(loginUserProvider);
+    final isLoading = widget.isRegister
+        ? registerState.isLoading
+        : loginState.isLoading;
 
     return FormBuilder(
       key: _key,
@@ -95,10 +96,10 @@ class _FormAuthState extends ConsumerState<FormAuth> {
             children: [
               if (widget.isRegister)
                 FormBuilderField<String>(
+                  name: 'nama',
                   onChanged: (value) => setState(() {
                     _name = value;
                   }),
-                  name: 'nama',
                   valueTransformer: (text) =>
                       text?.trim().replaceAll(RegExp(r'\s+'), ' '),
                   validator: FormBuilderValidators.compose([
@@ -128,10 +129,10 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   },
                 ),
               FormBuilderField<String>(
+                name: 'email',
                 onChanged: (value) => setState(() {
                   _email = value;
                 }),
-                name: 'nama',
                 valueTransformer: (text) =>
                     text?.trim().replaceAll(RegExp(r'\s+'), ' '),
                 validator: FormBuilderValidators.compose([
@@ -155,37 +156,42 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   );
                 },
               ),
-
               FormBuilderField<String>(
+                name: 'password',
                 onChanged: (value) => setState(() {
                   _password = value;
                 }),
-                name: 'password',
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                    errorText: "Isi donk passwordnya 😡",
-                  ),
-                  FormBuilderValidators.minLength(
-                    8,
-                    errorText: 'minimal 8 karakter 😤',
-                  ),
-                  FormBuilderValidators.hasLowercaseChars(
-                    atLeast: 1,
-                    errorText: 'minimal ada 1 huruf kecil 😤',
-                  ),
-                  FormBuilderValidators.hasNumericChars(
-                    atLeast: 1,
-                    errorText: 'minimal ada 1 angka 😤',
-                  ),
-                  FormBuilderValidators.hasSpecialChars(
-                    atLeast: 1,
-                    errorText: 'minimal ada 1 simbol 😤',
-                  ),
-                  FormBuilderValidators.hasUppercaseChars(
-                    atLeast: 1,
-                    errorText: 'minimal ada 1 huruf besar 😤',
-                  ),
-                ]),
+                validator: widget.isRegister
+                    ? FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: "Isi donk passwordnya 😡",
+                        ),
+                        FormBuilderValidators.minLength(
+                          8,
+                          errorText: 'minimal 8 karakter 😤',
+                        ),
+                        FormBuilderValidators.hasLowercaseChars(
+                          atLeast: 1,
+                          errorText: 'minimal ada 1 huruf kecil 😤',
+                        ),
+                        FormBuilderValidators.hasNumericChars(
+                          atLeast: 1,
+                          errorText: 'minimal ada 1 angka 😤',
+                        ),
+                        FormBuilderValidators.hasSpecialChars(
+                          atLeast: 1,
+                          errorText: 'minimal ada 1 simbol 😤',
+                        ),
+                        FormBuilderValidators.hasUppercaseChars(
+                          atLeast: 1,
+                          errorText: 'minimal ada 1 huruf besar 😤',
+                        ),
+                      ])
+                    : FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          errorText: "Isi donk passwordnya 😡",
+                        ),
+                      ]),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 builder: (FormFieldState<String> field) {
                   return FTextFormField.password(
@@ -201,22 +207,34 @@ class _FormAuthState extends ConsumerState<FormAuth> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           SizedBox(
-            width: .infinity,
+            width: double.infinity,
             child: FButton(
               size: .sm,
               mainAxisSize: .min,
-              child: Text(widget.isRegister ? 'Daftar' : 'Masuk'),
               onPress: isLoading
                   ? null
                   : () {
                       if (_key.currentState?.saveAndValidate() ?? false) {
+                        final values = _key.currentState!.value;
+                        final email =
+                            (values['email'] ?? _email)?.toString().trim() ??
+                            '';
+                        final password =
+                            (values['password'] ?? _password)
+                                ?.toString()
+                                .trim() ??
+                            '';
+
                         if (widget.isRegister) {
+                          final name =
+                              (values['nama'] ?? _name)?.toString().trim() ??
+                              '';
                           final signUpRequest = RegisterRequest(
-                            name: _name!,
-                            email: _email!,
-                            password: _password!,
+                            name: name,
+                            email: email,
+                            password: password,
                           );
 
                           ref
@@ -224,11 +242,13 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                               .register(signUpRequest);
                         } else {
                           final loginRequest = LoginRequest(
-                            email: _email!,
-                            password: _password!,
+                            email: email,
+                            password: password,
                           );
 
-                          developer.log('$loginRequest');
+                          developer.log(
+                            'Submitting login: ${loginRequest.email}',
+                          );
 
                           ref
                               .read(loginUserProvider.notifier)
@@ -236,6 +256,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                         }
                       }
                     },
+              child: Text(widget.isRegister ? 'Daftar' : 'Masuk'),
             ),
           ),
         ],

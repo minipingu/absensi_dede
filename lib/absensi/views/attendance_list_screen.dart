@@ -7,7 +7,11 @@ class AttendanceListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Absensi')),
+      body: Center(
+        child: Text(
+          'list absensi, ada tanggal dan jam, dibuka nanti ada detail lokasi, lalu bisa delete',
+        ),
+      ),
       bottomNavigationBar: BottomNavBar(),
     );
   }

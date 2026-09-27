@@ -2,6 +2,7 @@ import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:forui/forui.dart';
 import 'package:nav_bar/nav_bar.dart';
 
 class BottomNavBar extends ConsumerWidget {
@@ -13,10 +14,10 @@ class BottomNavBar extends ConsumerWidget {
 
     return FuturisticNavBar(
       items: [
-        NavBarItem(icon: Icons.home, label: 'HOME'),
-        NavBarItem(icon: Icons.map, label: 'MAPS'),
-        NavBarItem(icon: Icons.check_box, label: 'ABSENSI'),
-        NavBarItem(icon: Icons.person, label: 'PROFIL'),
+        NavBarItem(icon: FLucideIcons.home, label: 'BERANDA'),
+        NavBarItem(icon: FLucideIcons.map, label: 'PETA'),
+        NavBarItem(icon: FLucideIcons.clockCheck, label: 'PRESENSI'),
+        NavBarItem(icon: FLucideIcons.user2, label: 'PROFIL'),
       ],
       selectedIndex: currentIndex,
       onItemSelected: (index) {

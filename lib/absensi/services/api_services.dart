@@ -1,7 +1,6 @@
-import 'package:absensi_dede/absensi/models/login_data.dart';
 import 'package:absensi_dede/absensi/models/login_request.dart';
+import 'package:absensi_dede/absensi/models/login_response.dart';
 import 'package:absensi_dede/absensi/models/register_model.dart';
-import 'package:absensi_dede/controllers/register_user.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -15,5 +14,5 @@ abstract class ApiServices {
   Future<RegisterModel> registerUser(@Body() RegisterRequest user);
 
   @POST('/api/login')
-  Future<LoginData> loginUser(@Body() LoginRequest user);
+  Future<LoginResponse> loginUser(@Body() LoginRequest user);
 }

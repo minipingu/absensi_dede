@@ -7,7 +7,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Home')),
+      body: Center(
+        child: Text('halo, presensi terakhir, waktu, absen sekarang'),
+      ),
       bottomNavigationBar: BottomNavBar(),
     );
   }

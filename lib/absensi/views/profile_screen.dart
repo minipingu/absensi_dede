@@ -7,7 +7,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Profile')),
+      body: Center(
+        child: Text(
+          'data profile, dibuat dan diupdate, edit profil, logout, theme app',
+        ),
+      ),
       bottomNavigationBar: BottomNavBar(),
     );
   }

@@ -1,0 +1,61 @@
+{
+  "$instruction": "⚠️ DO NOT EDIT DIRECTLY. Use the TODO MCP tools (todo_get_tasks, todo_add_tasks, todo_update_tasks, todo_delete_tasks, todo_clear_category) to ensure live VS Code UI synchronization.",
+  "tasks": [
+    {
+      "id": "1790517068915juqr1e",
+      "title": "Create and update Login models (login_response.dart, login_data.dart, login_user.dart, login_request.dart)",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790517068917rk7ahv",
+      "title": "Implement LoginPreferences service in lib/absensi/services/login_preferences.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "179051706891730b4ss",
+      "title": "Update ApiServices to handle login response properly",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790517068917rvgj5f",
+      "title": "Update LoginUser controller in lib/controllers/login_user.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "179051706891733fi9s",
+      "title": "Fix form_auth.dart form fields, validation, and preference storage on login",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790517068917k1bp2",
+      "title": "Run build_runner and verify with flutter analyze",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790517634206kt4hrs",
+      "title": "Review blocked/reverted work in test/auth_login_test.dart",
+      "category": "Blocked",
+      "dueDate": null,
+      "completed": false
+    },
+    {
+      "id": "1790517634746up9soep",
+      "title": "Review blocked/reverted work in lib/absensi/models/login_response.dart",
+      "category": "Blocked",
+      "dueDate": null,
+      "completed": false
+    }
+  ]
+}

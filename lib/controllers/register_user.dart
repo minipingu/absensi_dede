@@ -1,8 +1,9 @@
+import 'dart:developer' as developer;
+
 import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'register_user.g.dart';
@@ -12,19 +13,21 @@ class RegisterUser extends _$RegisterUser {
   late final ApiServices _apiServices;
 
   @override
-  FutureOr<void> build() {
+  FutureOr<RegisterModel?> build() {
     final dio = createDioClient();
     _apiServices = ApiServices(dio);
+    return null;
   }
 
-  Future<void> register(RegisterRequest requestBody) async {
+  Future<RegisterModel?> register(RegisterRequest requestBody) async {
     state = const AsyncLoading();
 
     try {
       final response = await _apiServices.registerUser(requestBody);
-      print(response);
+      developer.log('Register response: ${response.toJson()}');
 
       state = AsyncData(response);
+      return response;
     } on DioException catch (e, st) {
       String errorMessage = 'Terjadi kesalahan saat registrasi';
 
@@ -48,9 +51,14 @@ class RegisterUser extends _$RegisterUser {
         errorMessage = e.message!;
       }
 
+      developer.log('DioException during register: $errorMessage');
       state = AsyncError(errorMessage, st);
+      return null;
     } catch (e, st) {
-      state = AsyncError('Error: $e', st);
+      final errorMessage = 'Error: $e';
+      developer.log('Error during register: $errorMessage');
+      state = AsyncError(errorMessage, st);
+      return null;
     }
   }
 }
