@@ -1,7 +1,10 @@
+import 'dart:developer' as developer;
+
 import 'package:absensi_dede/absensi/models/login_request.dart';
 import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
+import 'package:absensi_dede/absensi/services/preferences_login.dart';
 import 'package:absensi_dede/controllers/login_user.dart';
 import 'package:absensi_dede/controllers/register_user.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +62,14 @@ class _FormAuthState extends ConsumerState<FormAuth> {
 
     ref.listen<AsyncValue<void>>(loginUserProvider, (previous, next) {
       next.whenOrNull(
-        data: (_) {
+        data: (_) async {
           showFToast(
             context: context,
             title: const Text('Login Berhasil!'),
             description: const Text('Langsung terbang ke home'),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
+          await PreferencesLogin.setLogin(true);
         },
         error: (error, _) {
           showFToast(
@@ -209,7 +213,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   : () {
                       if (_key.currentState?.saveAndValidate() ?? false) {
                         if (widget.isRegister) {
-                          final requestUser = RegisterRequest(
+                          final signUpRequest = RegisterRequest(
                             name: _name!,
                             email: _email!,
                             password: _password!,
@@ -217,16 +221,18 @@ class _FormAuthState extends ConsumerState<FormAuth> {
 
                           ref
                               .read(registerUserProvider.notifier)
-                              .register(requestUser);
+                              .register(signUpRequest);
                         } else {
-                          final requestUser = LoginRequest(
+                          final loginRequest = LoginRequest(
                             email: _email!,
                             password: _password!,
                           );
 
+                          developer.log('$loginRequest');
+
                           ref
                               .read(loginUserProvider.notifier)
-                              .login(requestUser);
+                              .login(loginRequest);
                         }
                       }
                     },
