@@ -70,6 +70,13 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "179052322466730cmgm",
+      "title": "Keep only login_preferences.dart, delete preferences_login.dart, and update all references",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }
