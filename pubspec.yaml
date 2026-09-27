@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   logger: ^2.6.0  # for logging purpose
-  json_annotation: ^4.9.0
+  json_annotation: ^4.10.0
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8

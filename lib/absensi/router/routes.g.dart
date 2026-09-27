@@ -10,6 +10,9 @@ List<RouteBase> get $appRoutes => [
   $splashRoute,
   $loginRegisterRoute,
   $homeRoute,
+  $mapsRoute,
+  $profileRoute,
+  $attendanceListRoute,
 ];
 
 RouteBase get $splashRoute => GoRouteData.$route(
@@ -39,7 +42,7 @@ mixin $SplashRoute on GoRouteData {
 }
 
 RouteBase get $loginRegisterRoute => GoRouteData.$route(
-  path: '/register',
+  path: '/login-register',
   hasOverriddenOnExit: false,
   factory: $LoginRegisterRoute._fromState,
 );
@@ -49,7 +52,7 @@ mixin $LoginRegisterRoute on GoRouteData {
       LoginRegisterRoute();
 
   @override
-  String get location => GoRouteData.$location('/register');
+  String get location => GoRouteData.$location('/login-register');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -76,6 +79,85 @@ mixin $HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/home');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $mapsRoute => GoRouteData.$route(
+  path: '/maps',
+  hasOverriddenOnExit: false,
+  factory: $MapsRoute._fromState,
+);
+
+mixin $MapsRoute on GoRouteData {
+  static MapsRoute _fromState(GoRouterState state) => MapsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/maps');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $profileRoute => GoRouteData.$route(
+  path: '/profile',
+  hasOverriddenOnExit: false,
+  factory: $ProfileRoute._fromState,
+);
+
+mixin $ProfileRoute on GoRouteData {
+  static ProfileRoute _fromState(GoRouterState state) => ProfileRoute();
+
+  @override
+  String get location => GoRouteData.$location('/profile');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $attendanceListRoute => GoRouteData.$route(
+  path: '/attendance-list',
+  hasOverriddenOnExit: false,
+  factory: $AttendanceListRoute._fromState,
+);
+
+mixin $AttendanceListRoute on GoRouteData {
+  static AttendanceListRoute _fromState(GoRouterState state) =>
+      AttendanceListRoute();
+
+  @override
+  String get location => GoRouteData.$location('/attendance-list');
 
   @override
   void go(BuildContext context) => context.go(location);
