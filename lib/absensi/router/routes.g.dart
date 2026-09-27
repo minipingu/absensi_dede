@@ -7,6 +7,7 @@ part of 'routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
+  $mainShellRouteData,
   $splashRoute,
   $loginRegisterRoute,
   $homeRoute,
@@ -14,6 +15,134 @@ List<RouteBase> get $appRoutes => [
   $profileRoute,
   $attendanceListRoute,
 ];
+
+RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
+  factory: $MainShellRouteDataExtension._fromState,
+  branches: [
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/home',
+          hasOverriddenOnExit: false,
+          factory: $HomeRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/maps',
+          hasOverriddenOnExit: false,
+          factory: $MapsRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/attendance-list',
+          hasOverriddenOnExit: false,
+          factory: $AttendanceListRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/profile',
+          hasOverriddenOnExit: false,
+          factory: $ProfileRoute._fromState,
+        ),
+      ],
+    ),
+  ],
+);
+
+extension $MainShellRouteDataExtension on MainShellRouteData {
+  static MainShellRouteData _fromState(GoRouterState state) =>
+      const MainShellRouteData();
+}
+
+mixin $HomeRoute on GoRouteData {
+  static HomeRoute _fromState(GoRouterState state) => HomeRoute();
+
+  @override
+  String get location => GoRouteData.$location('/home');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $MapsRoute on GoRouteData {
+  static MapsRoute _fromState(GoRouterState state) => MapsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/maps');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $AttendanceListRoute on GoRouteData {
+  static AttendanceListRoute _fromState(GoRouterState state) =>
+      AttendanceListRoute();
+
+  @override
+  String get location => GoRouteData.$location('/attendance-list');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ProfileRoute on GoRouteData {
+  static ProfileRoute _fromState(GoRouterState state) => ProfileRoute();
+
+  @override
+  String get location => GoRouteData.$location('/profile');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
 
 RouteBase get $splashRoute => GoRouteData.$route(
   path: '/',
@@ -74,51 +203,11 @@ RouteBase get $homeRoute => GoRouteData.$route(
   factory: $HomeRoute._fromState,
 );
 
-mixin $HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => HomeRoute();
-
-  @override
-  String get location => GoRouteData.$location('/home');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
 RouteBase get $mapsRoute => GoRouteData.$route(
   path: '/maps',
   hasOverriddenOnExit: false,
   factory: $MapsRoute._fromState,
 );
-
-mixin $MapsRoute on GoRouteData {
-  static MapsRoute _fromState(GoRouterState state) => MapsRoute();
-
-  @override
-  String get location => GoRouteData.$location('/maps');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
 
 RouteBase get $profileRoute => GoRouteData.$route(
   path: '/profile',
@@ -126,49 +215,8 @@ RouteBase get $profileRoute => GoRouteData.$route(
   factory: $ProfileRoute._fromState,
 );
 
-mixin $ProfileRoute on GoRouteData {
-  static ProfileRoute _fromState(GoRouterState state) => ProfileRoute();
-
-  @override
-  String get location => GoRouteData.$location('/profile');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
 RouteBase get $attendanceListRoute => GoRouteData.$route(
   path: '/attendance-list',
   hasOverriddenOnExit: false,
   factory: $AttendanceListRoute._fromState,
 );
-
-mixin $AttendanceListRoute on GoRouteData {
-  static AttendanceListRoute _fromState(GoRouterState state) =>
-      AttendanceListRoute();
-
-  @override
-  String get location => GoRouteData.$location('/attendance-list');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}

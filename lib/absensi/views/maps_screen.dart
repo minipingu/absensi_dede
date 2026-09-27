@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -228,12 +229,12 @@ class _MapsScreenState extends State<MapsScreen> {
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: _checkPermissionsAndGetLocation,
         child: const Icon(Icons.my_location),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

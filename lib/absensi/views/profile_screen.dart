@@ -1,3 +1,4 @@
+import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -5,6 +6,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      body: Center(child: Text('Profile')),
+      bottomNavigationBar: BottomNavBar(),
+    );
   }
 }
