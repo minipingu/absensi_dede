@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:absensi_dede/absensi/models/login_response.dart';
+import 'package:absensi_dede/absensi/models/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPreferences {

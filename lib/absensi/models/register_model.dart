@@ -1,17 +1,19 @@
-// To parse this JSON data, do
-//
-//     final registerModel = registerModelFromJson(jsonString);
+import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-
-import 'dart:convert';
 
 part 'register_model.g.dart';
 
 RegisterModel registerModelFromJson(String str) =>
-    RegisterModel.fromJson(json.decode(str));
+    RegisterModel.fromJson(json.decode(str) as Map<String, dynamic>);
 
 String registerModelToJson(RegisterModel data) => json.encode(data.toJson());
+
+ErrorRegisterModel errorRegisterModelFromJson(String str) =>
+    ErrorRegisterModel.fromJson(json.decode(str) as Map<String, dynamic>);
+
+String errorRegisterModelToJson(ErrorRegisterModel data) =>
+    json.encode(data.toJson());
 
 @JsonSerializable()
 class RegisterRequest {
@@ -83,4 +85,35 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+}
+
+@JsonSerializable()
+class ErrorRegisterModel {
+  @JsonKey(name: "message")
+  final String? message;
+  @JsonKey(name: "errors")
+  final Errors? errors;
+
+  ErrorRegisterModel({this.message, this.errors});
+
+  factory ErrorRegisterModel.fromJson(Map<String, dynamic> json) =>
+      _$ErrorRegisterModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ErrorRegisterModelToJson(this);
+}
+
+@JsonSerializable()
+class Errors {
+  @JsonKey(name: "name")
+  final List<String>? name;
+  @JsonKey(name: "email")
+  final List<String>? email;
+  @JsonKey(name: "password")
+  final List<String>? password;
+
+  Errors({this.name, this.email, this.password});
+
+  factory Errors.fromJson(Map<String, dynamic> json) => _$ErrorsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ErrorsToJson(this);
 }

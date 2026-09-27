@@ -2,8 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:absensi_dede/absensi/models/login_request.dart';
-import 'package:absensi_dede/absensi/models/login_response.dart';
+import 'package:absensi_dede/absensi/models/login_model.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';

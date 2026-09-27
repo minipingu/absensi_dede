@@ -44,18 +44,32 @@
       "completed": true
     },
     {
-      "id": "1790517634206kt4hrs",
-      "title": "Review blocked/reverted work in test/auth_login_test.dart",
-      "category": "Blocked",
+      "id": "1790521878272fbnk4b",
+      "title": "Merge all login models into a single file (login_model.dart)",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
     },
     {
-      "id": "1790517634746up9soep",
-      "title": "Review blocked/reverted work in lib/absensi/models/login_response.dart",
-      "category": "Blocked",
+      "id": "17905218782729bzzkd",
+      "title": "Merge register models with error models into register_model.dart",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
+    },
+    {
+      "id": "1790521878272tru798",
+      "title": "Update references, run build_runner, and verify with tests and flutter analyze",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "17905227968949zmhip",
+      "title": "Delete obsolete model files (login_request, login_response, login_user, login_data, error_register_model) and verify codebase",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

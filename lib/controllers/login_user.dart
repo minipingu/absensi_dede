@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/models/login_request.dart';
-import 'package:absensi_dede/absensi/models/login_response.dart';
+import 'package:absensi_dede/absensi/models/login_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';

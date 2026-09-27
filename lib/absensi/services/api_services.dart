@@ -1,5 +1,4 @@
-import 'package:absensi_dede/absensi/models/login_request.dart';
-import 'package:absensi_dede/absensi/models/login_response.dart';
+import 'package:absensi_dede/absensi/models/login_model.dart';
 import 'package:absensi_dede/absensi/models/register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
