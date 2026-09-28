@@ -77,6 +77,13 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "1790590544185jyhlwm",
+      "title": "Switch to login mode after successful registration with prefilled email and password",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

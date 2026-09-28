@@ -14,7 +14,9 @@ import 'package:forui/forui.dart';
 
 class FormAuth extends ConsumerStatefulWidget {
   final bool isRegister;
-  const FormAuth({super.key, this.isRegister = false});
+  final VoidCallback? onSwitchToLogin;
+
+  const FormAuth({super.key, this.isRegister = false, this.onSwitchToLogin});
 
   @override
   ConsumerState<FormAuth> createState() => _FormAuthState();
@@ -23,9 +25,39 @@ class FormAuth extends ConsumerStatefulWidget {
 class _FormAuthState extends ConsumerState<FormAuth> {
   final _key = GlobalKey<FormBuilderState>();
 
-  String? _name;
-  String? _email;
-  String? _password;
+  late final TextEditingController _nameController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant FormAuth oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isRegister != widget.isRegister) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _key.currentState?.patchValue({
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +74,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
             ),
             icon: const Icon(Icons.check_circle_outline, color: Colors.green),
           );
+
+          // Otomatis beralih ke form login dan pertahankan nilai email serta password
+          widget.onSwitchToLogin?.call();
         },
         error: (error, _) {
           showFToast(
@@ -100,10 +135,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
             children: [
               if (widget.isRegister)
                 FormBuilderField<String>(
+                  key: const ValueKey('field_nama'),
                   name: 'nama',
-                  onChanged: (value) => setState(() {
-                    _name = value;
-                  }),
+                  initialValue: _nameController.text,
                   valueTransformer: (text) =>
                       text?.trim().replaceAll(RegExp(r'\s+'), ' '),
                   validator: FormBuilderValidators.compose([
@@ -125,7 +159,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                       label: const Text('Nama'),
                       hint: 'misal : Gibrun',
                       control: FTextFieldControl.managed(
-                        initial: TextEditingValue(text: field.value ?? ''),
+                        controller: _nameController,
                         onChange: (value) => field.didChange(value.text),
                       ),
                       forceErrorText: field.errorText,
@@ -133,10 +167,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   },
                 ),
               FormBuilderField<String>(
+                key: const ValueKey('field_email'),
                 name: 'email',
-                onChanged: (value) => setState(() {
-                  _email = value;
-                }),
+                initialValue: _emailController.text,
                 valueTransformer: (text) =>
                     text?.trim().replaceAll(RegExp(r'\s+'), ' '),
                 validator: FormBuilderValidators.compose([
@@ -153,7 +186,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                     label: const Text('Email'),
                     hint: 'misal : manager@kopdes.go.id',
                     control: FTextFieldControl.managed(
-                      initial: TextEditingValue(text: field.value ?? ''),
+                      controller: _emailController,
                       onChange: (value) => field.didChange(value.text),
                     ),
                     forceErrorText: field.errorText,
@@ -161,10 +194,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                 },
               ),
               FormBuilderField<String>(
+                key: const ValueKey('field_password'),
                 name: 'password',
-                onChanged: (value) => setState(() {
-                  _password = value;
-                }),
+                initialValue: _passwordController.text,
                 validator: widget.isRegister
                     ? FormBuilderValidators.compose([
                         FormBuilderValidators.required(
@@ -202,7 +234,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                     label: const Text('Password'),
                     hint: 'isi password',
                     control: FTextFieldControl.managed(
-                      initial: TextEditingValue(text: field.value ?? ''),
+                      controller: _passwordController,
                       onChange: (value) => field.didChange(value.text),
                     ),
                     forceErrorText: field.errorText,
@@ -221,20 +253,11 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   ? null
                   : () {
                       if (_key.currentState?.saveAndValidate() ?? false) {
-                        final values = _key.currentState!.value;
-                        final email =
-                            (values['email'] ?? _email)?.toString().trim() ??
-                            '';
-                        final password =
-                            (values['password'] ?? _password)
-                                ?.toString()
-                                .trim() ??
-                            '';
+                        final email = _emailController.text.trim();
+                        final password = _passwordController.text.trim();
 
                         if (widget.isRegister) {
-                          final name =
-                              (values['nama'] ?? _name)?.toString().trim() ??
-                              '';
+                          final name = _nameController.text.trim();
                           final signUpRequest = RegisterRequestModel(
                             name: name,
                             email: email,

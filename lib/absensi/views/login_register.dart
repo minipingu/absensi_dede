@@ -3,7 +3,6 @@ import 'package:absensi_dede/absensi/widgets/form_auth.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -25,7 +24,7 @@ class LoginRegister extends HookConsumerWidget {
               themeState
                   ? 'assets/images/kopdes_malam.jpeg'
                   : 'assets/images/login_kopdes.jpeg',
-              fit: .cover,
+              fit: BoxFit.cover,
             ),
           ),
           Positioned.fill(
@@ -33,7 +32,7 @@ class LoginRegister extends HookConsumerWidget {
               builder: (context, constraints) => SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: Center(
@@ -49,10 +48,10 @@ class LoginRegister extends HookConsumerWidget {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsGeometry.all(20),
+                              padding: const EdgeInsets.all(20),
                               child: Column(
                                 spacing: 20,
-                                mainAxisAlignment: .center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'Absensi Manager Kopdes 🫡',
@@ -64,8 +63,7 @@ class LoginRegister extends HookConsumerWidget {
                                   Stack(
                                     children: [
                                       ClipRRect(
-                                        borderRadius:
-                                            BorderRadiusGeometry.circular(20),
+                                        borderRadius: BorderRadius.circular(20),
                                         child: Image.asset(
                                           themeState
                                               ? 'assets/images/pegawai_malam.png'
@@ -75,13 +73,18 @@ class LoginRegister extends HookConsumerWidget {
                                       Positioned(
                                         top: 10,
                                         right: 10,
-                                        child: ThemeToggleButton(),
+                                        child: const ThemeToggleButton(),
                                       ),
                                     ],
                                   ),
-                                  FormAuth(isRegister: isRegister.value),
+                                  FormAuth(
+                                    isRegister: isRegister.value,
+                                    onSwitchToLogin: () {
+                                      isRegister.value = false;
+                                    },
+                                  ),
                                   Row(
-                                    mainAxisAlignment: .center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         isRegister.value
@@ -92,7 +95,7 @@ class LoginRegister extends HookConsumerWidget {
                                       FButton(
                                         size: .xs,
                                         variant: .ghost,
-                                        mainAxisSize: .min,
+                                        mainAxisSize: MainAxisSize.min,
                                         onPress: () {
                                           isRegister.value = !isRegister.value;
                                         },
