@@ -2,7 +2,7 @@ import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
-import 'package:absensi_dede/controllers/history_absen.dart';
+import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/extension.dart';
 import 'package:absensi_dede/helper/greetings.dart';
 import 'package:flutter/material.dart';
