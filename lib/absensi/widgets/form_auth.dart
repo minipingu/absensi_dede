@@ -197,37 +197,31 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                 key: const ValueKey('field_password'),
                 name: 'password',
                 initialValue: _passwordController.text,
-                validator: widget.isRegister
-                    ? FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          errorText: "Isi donk passwordnya 😡",
-                        ),
-                        FormBuilderValidators.minLength(
-                          8,
-                          errorText: 'minimal 8 karakter 😤',
-                        ),
-                        FormBuilderValidators.hasLowercaseChars(
-                          atLeast: 1,
-                          errorText: 'minimal ada 1 huruf kecil 😤',
-                        ),
-                        FormBuilderValidators.hasNumericChars(
-                          atLeast: 1,
-                          errorText: 'minimal ada 1 angka 😤',
-                        ),
-                        FormBuilderValidators.hasSpecialChars(
-                          atLeast: 1,
-                          errorText: 'minimal ada 1 simbol 😤',
-                        ),
-                        FormBuilderValidators.hasUppercaseChars(
-                          atLeast: 1,
-                          errorText: 'minimal ada 1 huruf besar 😤',
-                        ),
-                      ])
-                    : FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          errorText: "Isi donk passwordnya 😡",
-                        ),
-                      ]),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                    errorText: "Isi donk passwordnya 😡",
+                  ),
+                  FormBuilderValidators.minLength(
+                    8,
+                    errorText: 'minimal 8 karakter 😤',
+                  ),
+                  FormBuilderValidators.hasLowercaseChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 huruf kecil 😤',
+                  ),
+                  FormBuilderValidators.hasNumericChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 angka 😤',
+                  ),
+                  FormBuilderValidators.hasSpecialChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 simbol 😤',
+                  ),
+                  FormBuilderValidators.hasUppercaseChars(
+                    atLeast: 1,
+                    errorText: 'minimal ada 1 huruf besar 😤',
+                  ),
+                ]),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 builder: (FormFieldState<String> field) {
                   return FTextFormField.password(
