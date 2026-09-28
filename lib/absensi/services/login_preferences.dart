@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:absensi_dede/absensi/models/login_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPreferences {
@@ -29,7 +29,7 @@ class LoginPreferences {
     return await _asyncPref.getString(_keyToken);
   }
 
-  static Future<void> saveUser(LoginUser user) async {
+  static Future<void> saveUser(User user) async {
     if (user.id != null) {
       await _asyncPref.setInt(_keyUserId, user.id!);
     }
@@ -42,11 +42,11 @@ class LoginPreferences {
     await _asyncPref.setString(_keyUserData, jsonEncode(user.toJson()));
   }
 
-  static Future<LoginUser?> get user async {
+  static Future<User?> get user async {
     final userJson = await _asyncPref.getString(_keyUserData);
     if (userJson != null && userJson.isNotEmpty) {
       try {
-        return LoginUser.fromJson(jsonDecode(userJson) as Map<String, dynamic>);
+        return User.fromJson(jsonDecode(userJson) as Map<String, dynamic>);
       } catch (_) {
         return null;
       }
@@ -62,7 +62,7 @@ class LoginPreferences {
   static Future<String?> get userEmail async =>
       await _asyncPref.getString(_keyUserEmail);
 
-  static Future<void> saveLoginResponse(LoginResponse response) async {
+  static Future<void> saveLoginResponse(LoginResponseModel response) async {
     await setLogin(true);
     if (response.data?.token != null) {
       await setToken(response.data!.token!);
@@ -72,7 +72,7 @@ class LoginPreferences {
     }
   }
 
-  static Future<void> saveLoginData(LoginData data) async {
+  static Future<void> saveLoginData(Data data) async {
     await setLogin(true);
     if (data.token != null) {
       await setToken(data.token!);

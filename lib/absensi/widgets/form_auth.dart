@@ -1,7 +1,7 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/models/login_model.dart';
-import 'package:absensi_dede/absensi/models/register_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
+import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:absensi_dede/controllers/login_user.dart';
@@ -235,7 +235,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                           final name =
                               (values['nama'] ?? _name)?.toString().trim() ??
                               '';
-                          final signUpRequest = RegisterRequest(
+                          final signUpRequest = RegisterRequestModel(
                             name: name,
                             email: email,
                             password: password,
@@ -245,7 +245,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                               .read(registerUserProvider.notifier)
                               .register(signUpRequest);
                         } else {
-                          final loginRequest = LoginRequest(
+                          final loginRequest = LoginRequestModel(
                             email: email,
                             password: password,
                           );

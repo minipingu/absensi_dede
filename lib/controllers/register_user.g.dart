@@ -13,7 +13,7 @@ part of 'register_user.dart';
 final registerUserProvider = RegisterUserProvider._();
 
 final class RegisterUserProvider
-    extends $AsyncNotifierProvider<RegisterUser, RegisterModel?> {
+    extends $AsyncNotifierProvider<RegisterUser, RegisterResponseModel?> {
   RegisterUserProvider._()
     : super(
         from: null,
@@ -33,19 +33,24 @@ final class RegisterUserProvider
   RegisterUser create() => RegisterUser();
 }
 
-String _$registerUserHash() => r'7cd4ccaeeee352f208bae13c304c1804828063a9';
+String _$registerUserHash() => r'3fda5a0ca1c75f22a9360bc8a15f1f3e075dd0f9';
 
-abstract class _$RegisterUser extends $AsyncNotifier<RegisterModel?> {
-  FutureOr<RegisterModel?> build();
+abstract class _$RegisterUser extends $AsyncNotifier<RegisterResponseModel?> {
+  FutureOr<RegisterResponseModel?> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<RegisterModel?>, RegisterModel?>;
+    final ref =
+        this.ref
+            as $Ref<AsyncValue<RegisterResponseModel?>, RegisterResponseModel?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<RegisterModel?>, RegisterModel?>,
-              AsyncValue<RegisterModel?>,
+              AnyNotifier<
+                AsyncValue<RegisterResponseModel?>,
+                RegisterResponseModel?
+              >,
+              AsyncValue<RegisterResponseModel?>,
               Object?,
               Object?
             >;

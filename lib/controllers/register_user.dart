@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/models/register_model.dart';
+import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
+import 'package:absensi_dede/absensi/models/register/register_response_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:dio/dio.dart';
@@ -13,13 +14,15 @@ class RegisterUser extends _$RegisterUser {
   late final ApiServices _apiServices;
 
   @override
-  FutureOr<RegisterModel?> build() {
+  FutureOr<RegisterResponseModel?> build() {
     final dio = createDioClient();
     _apiServices = ApiServices(dio);
     return null;
   }
 
-  Future<RegisterModel?> register(RegisterRequest requestBody) async {
+  Future<RegisterResponseModel?> register(
+    RegisterRequestModel requestBody,
+  ) async {
     state = const AsyncLoading();
 
     try {

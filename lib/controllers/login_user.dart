@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/models/login_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
@@ -14,13 +15,13 @@ class LoginUser extends _$LoginUser {
   late final ApiServices _apiServices;
 
   @override
-  FutureOr<LoginResponse?> build() {
+  FutureOr<LoginResponseModel?> build() {
     final dio = createDioClient();
     _apiServices = ApiServices(dio);
     return null;
   }
 
-  Future<LoginResponse?> login(LoginRequest requestBody) async {
+  Future<LoginResponseModel?> login(LoginRequestModel requestBody) async {
     state = const AsyncLoading();
 
     try {

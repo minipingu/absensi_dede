@@ -23,13 +23,13 @@ class _ApiServices implements ApiServices {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RegisterModel> registerUser(RegisterRequest user) async {
+  Future<RegisterResponseModel> registerUser(RegisterRequestModel user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _options = _setStreamType<RegisterModel>(
+    final _options = _setStreamType<RegisterResponseModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -40,9 +40,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late RegisterModel _value;
+    late RegisterResponseModel _value;
     try {
-      _value = RegisterModel.fromJson(_result.data!);
+      _value = RegisterResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -51,13 +51,13 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<LoginResponse> loginUser(LoginRequest user) async {
+  Future<LoginResponseModel> loginUser(LoginRequestModel user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _options = _setStreamType<LoginResponse>(
+    final _options = _setStreamType<LoginResponseModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -68,9 +68,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late LoginResponse _value;
+    late LoginResponseModel _value;
     try {
-      _value = LoginResponse.fromJson(_result.data!);
+      _value = LoginResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

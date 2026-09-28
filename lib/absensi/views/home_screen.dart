@@ -6,6 +6,7 @@ import 'package:absensi_dede/helper/greetings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:one_clock/one_clock.dart';
 
 class HomeScreen extends ConsumerWidget {
   const new({super.key});
@@ -30,11 +31,11 @@ class HomeScreen extends ConsumerWidget {
               fit: .cover,
             ),
           ),
-          ListView(
-            children: [
-              Padding(
-                padding: EdgeInsetsGeometry.all(20),
-                child: FCard(
+          Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: ListView(
+              children: [
+                FCard(
                   child: Column(
                     children: [
                       Stack(
@@ -50,7 +51,6 @@ class HomeScreen extends ConsumerWidget {
                           Padding(
                             padding: EdgeInsetsGeometry.all(20),
                             child: Column(
-                              spacing: 0,
                               crossAxisAlignment: .start,
                               children: [
                                 Text(
@@ -61,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 Transform.translate(
-                                  offset: const Offset(0, -6),
+                                  offset: const Offset(0, -10),
                                   child: userName.when(
                                     loading: () => const SizedBox(
                                       width: 14,
@@ -90,6 +90,23 @@ class HomeScreen extends ConsumerWidget {
                                     ),
                                   ),
                                 ),
+                                Transform.translate(
+                                  offset: const Offset(30, 100),
+                                  child: DigitalClock(
+                                    format: "HH:mm:ss",
+                                    textStyle: const TextStyle(
+                                      color: Colors
+                                          .white, // <-- Ubah warna font di sini
+                                      fontSize:
+                                          36, // Sesuaikan ukuran jika perlu
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    showSeconds: false,
+                                    isLive: true,
+
+                                    datetime: DateTime.now(),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -103,10 +120,23 @@ class HomeScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                FCard(
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(20),
+                    child: Text(
+                      'Absensi Terakhir',
+                      style: typography.body.lg.copyWith(
+                        fontWeight: .w600,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Center(child: Text('halo, presensi terakhir, waktu, absen sekarang')),
+          Center(child: Text('presensi terakhir, waktu, absen sekarang')),
         ],
       ),
       bottomNavigationBar: BottomNavBar(),

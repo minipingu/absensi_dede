@@ -1,47 +1,39 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_model.dart';
+part of 'login_response_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginRequest _$LoginRequestFromJson(Map<String, dynamic> json) => LoginRequest(
-  email: json['email'] as String,
-  password: json['password'] as String,
-);
-
-Map<String, dynamic> _$LoginRequestToJson(LoginRequest instance) =>
-    <String, dynamic>{'email': instance.email, 'password': instance.password};
-
-LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
-    LoginResponse(
+LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
+    LoginResponseModel(
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : LoginData.fromJson(json['data'] as Map<String, dynamic>),
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
+Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
     <String, dynamic>{'message': instance.message, 'data': instance.data};
 
-LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
+Data _$DataFromJson(Map<String, dynamic> json) => Data(
   token: json['token'] as String?,
   user: json['user'] == null
       ? null
-      : LoginUser.fromJson(json['user'] as Map<String, dynamic>),
+      : User.fromJson(json['user'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
+Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
   'token': instance.token,
   'user': instance.user,
 };
 
-LoginUser _$LoginUserFromJson(Map<String, dynamic> json) => LoginUser(
+User _$UserFromJson(Map<String, dynamic> json) => User(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String?,
   email: json['email'] as String?,
-  emailVerifiedAt: json['email_verified_at'] as String?,
+  emailVerifiedAt: json['email_verified_at'],
   createdAt: json['created_at'] == null
       ? null
       : DateTime.parse(json['created_at'] as String),
@@ -50,7 +42,7 @@ LoginUser _$LoginUserFromJson(Map<String, dynamic> json) => LoginUser(
       : DateTime.parse(json['updated_at'] as String),
 );
 
-Map<String, dynamic> _$LoginUserToJson(LoginUser instance) => <String, dynamic>{
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
   'email': instance.email,

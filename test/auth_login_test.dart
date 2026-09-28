@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 
-import 'package:absensi_dede/absensi/models/login_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
+import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
@@ -15,7 +16,7 @@ void main() {
     test(
       'LoginRequest payload serialization matches server expected structure',
       () {
-        final request = LoginRequest(
+        final request = LoginRequestModel(
           email: 'budi@example.com',
           password: 'passwords',
         );
@@ -44,7 +45,7 @@ void main() {
       }
       ''') as Map<String, dynamic>;
 
-      final response = LoginResponse.fromJson(successJson);
+      final response = LoginResponseModel.fromJson(successJson);
       expect(response.message, equals('Login berhasil'));
       expect(response.data, isNotNull);
       expect(
@@ -67,7 +68,7 @@ void main() {
       }
       ''') as Map<String, dynamic>;
 
-      final response = LoginResponse.fromJson(failJson);
+      final response = LoginResponseModel.fromJson(failJson);
       expect(response.message, equals('Email atau password salah'));
       expect(response.data, isNull);
     });
@@ -97,7 +98,7 @@ void main() {
       }
       ''') as Map<String, dynamic>;
 
-      final response = LoginResponse.fromJson(successJson);
+      final response = LoginResponseModel.fromJson(successJson);
 
       expect(await LoginPreferences.isLogin, isFalse);
 
