@@ -13,27 +13,22 @@ class LoginPreferences {
   static const String _keyUserName = 'userName';
   static const String _keyUserEmail = 'userEmail';
 
-  /// Menyimpan status login
   static Future<void> setLogin(bool isLogin) async {
     await _asyncPref.setBool(_keyIsLogin, isLogin);
   }
 
-  /// Mengecek apakah user sudah login
   static Future<bool> get isLogin async {
     return await _asyncPref.getBool(_keyIsLogin) ?? false;
   }
 
-  /// Menyimpan token autentikasi
   static Future<void> setToken(String token) async {
     await _asyncPref.setString(_keyToken, token);
   }
 
-  /// Mendapatkan token autentikasi
   static Future<String?> get token async {
     return await _asyncPref.getString(_keyToken);
   }
 
-  /// Menyimpan data user
   static Future<void> saveUser(LoginUser user) async {
     if (user.id != null) {
       await _asyncPref.setInt(_keyUserId, user.id!);
@@ -47,7 +42,6 @@ class LoginPreferences {
     await _asyncPref.setString(_keyUserData, jsonEncode(user.toJson()));
   }
 
-  /// Mendapatkan data user lengkap
   static Future<LoginUser?> get user async {
     final userJson = await _asyncPref.getString(_keyUserData);
     if (userJson != null && userJson.isNotEmpty) {
@@ -60,18 +54,14 @@ class LoginPreferences {
     return null;
   }
 
-  /// Mendapatkan ID user
   static Future<int?> get userId async => await _asyncPref.getInt(_keyUserId);
 
-  /// Mendapatkan Nama user
   static Future<String?> get userName async =>
       await _asyncPref.getString(_keyUserName);
 
-  /// Mendapatkan Email user
   static Future<String?> get userEmail async =>
       await _asyncPref.getString(_keyUserEmail);
 
-  /// Menyimpan seluruh data setelah login berhasil
   static Future<void> saveLoginResponse(LoginResponse response) async {
     await setLogin(true);
     if (response.data?.token != null) {
@@ -82,7 +72,6 @@ class LoginPreferences {
     }
   }
 
-  /// Menyimpan data dari LoginData
   static Future<void> saveLoginData(LoginData data) async {
     await setLogin(true);
     if (data.token != null) {
@@ -93,7 +82,6 @@ class LoginPreferences {
     }
   }
 
-  /// Logout dan hapus semua data session login
   static Future<void> logOut() async {
     await _asyncPref.remove(_keyIsLogin);
     await _asyncPref.remove(_keyToken);
