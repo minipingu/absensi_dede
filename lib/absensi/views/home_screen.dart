@@ -147,6 +147,13 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 SizedBox(height: 20),
                 FCard(
+                  style: .delta(
+                    decoration: .boxDelta(
+                      color: context.theme.colors.background.withValues(
+                        alpha: 0.6,
+                      ),
+                    ),
+                  ),
                   child: Padding(
                     padding: EdgeInsetsGeometry.all(20),
                     child: Column(
@@ -154,8 +161,8 @@ class HomeScreen extends ConsumerWidget {
                         Text(
                           'Absensi Terakhir',
                           style: typography.body.lg.copyWith(
-                            fontWeight: .w600,
-                            fontSize: 20,
+                            fontWeight: .w700,
+                            fontSize: 24,
                           ),
                         ),
                         historyState.when(
