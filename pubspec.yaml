@@ -38,6 +38,7 @@ dependencies:
   one_clock: ^2.0.3
   intl: ^0.20.3
   string_capitalize: ^0.0.10
+  video_player: ^2.14.0
   
 
 dev_dependencies:
@@ -46,7 +47,6 @@ dev_dependencies:
   json_serializable: ^6.10.0
   go_router_builder: ^4.5.0
   riverpod_generator: ^4.0.9
-
 
   flutter_test:
     sdk: flutter
@@ -65,6 +65,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/video/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

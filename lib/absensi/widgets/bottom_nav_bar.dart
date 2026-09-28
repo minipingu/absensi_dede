@@ -23,8 +23,6 @@ class BottomNavBar extends ConsumerWidget {
       onItemSelected: (index) {
         ref.read(bottomNavProvider.notifier).setIndex(index);
 
-        print(currentIndex);
-
         index == 0
             ? HomeRoute().go(context)
             : index == 1

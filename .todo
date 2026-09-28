@@ -84,6 +84,13 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "179060113454192h9",
+      "title": "Debug and fix video playback loading issue in profile_screen.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }
