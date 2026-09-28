@@ -1,6 +1,7 @@
+import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
 
-Dio createDioClient() {
+Dio createDioClient({String? token}) {
   final dio = Dio(
     BaseOptions(
       baseUrl: 'https://absensib1.mobileprojp.com',
@@ -13,6 +14,23 @@ Dio createDioClient() {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+      },
+    ),
+  );
+
+  // Otomatis menambahkan token dari LoginPreferences jika belum ada Authorization di header
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        if (!options.headers.containsKey('Authorization') ||
+            options.headers['Authorization'] == null) {
+          final savedToken = await LoginPreferences.token;
+          if (savedToken != null && savedToken.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $savedToken';
+          }
+        }
+        return handler.next(options);
       },
     ),
   );

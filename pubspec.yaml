@@ -13,6 +13,8 @@ dependencies:
   json_annotation: ^4.10.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.5
   dio: ^5.11.1
@@ -21,6 +23,7 @@ dependencies:
   google_maps_flutter: ^2.18.2
   flutter_form_builder: ^11.0.0
   forui: ^0.27.1
+  material_ui: ^1.4.0
   nav_bar: ^0.1.1
   # instal dulu go router deh baru buildernya
   go_router: ^18.0.1
@@ -33,6 +36,8 @@ dependencies:
   geolocator: ^14.1.0
   geocoding: ^5.0.0
   one_clock: ^2.0.3
+  intl: ^0.20.3
+  string_capitalize: ^0.0.10
   
 
 dev_dependencies:

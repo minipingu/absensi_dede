@@ -1,158 +1,121 @@
-import 'dart:developer';
-
+import 'package:absensi_dede/absensi/services/maps_service.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// import 'package:url_launcher/url_launcher.dart';
-
 class MapsScreen extends StatefulWidget {
-  const MapsScreen({super.key});
+  final MapsService? mapsService;
+
+  const MapsScreen({super.key, this.mapsService});
 
   @override
   State<MapsScreen> createState() => _MapsScreenState();
 }
 
 class _MapsScreenState extends State<MapsScreen> {
-  final Geocoding geocoding = Geocoding();
+  late final MapsService _mapsService;
 
   GoogleMapController? _mapController;
   Position? _currentPosition;
   String _currentAddress = "Mencari Lokasi...";
+  bool _isLoading = false;
 
   final Set<Marker> _markers = {};
-  final LatLng _defaultLocation = LatLng(-6.2000, 108.8166666);
+  final LatLng _defaultLocation = const LatLng(-6.2000, 108.8166666);
 
   @override
   void initState() {
     super.initState();
-    _checkPermissionsAndGetLocation();
+    _mapsService = widget.mapsService ?? MapsService();
+    _fetchLocationAndAddress();
   }
 
-  Future<void> _checkPermissionsAndGetLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  Future<void> _fetchLocationAndAddress() async {
+    setState(() {
+      _isLoading = true;
+      _currentAddress = "Mencari Lokasi...";
+    });
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      setState(() {
-        _currentAddress = "Layanan lokasi dinonaktifkan.";
-      });
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        setState(() {
-          _currentAddress = "Izin lokasi ditolak.";
-        });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      setState(() {
-        _currentAddress = "Izin lokasi ditolak permanen.";
-      });
-      return;
-    }
-
-    await _getCurrentLocation();
-  }
-
-  Future<void> _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      final position = await _mapsService.getCurrentLocation();
+      final latLng = LatLng(position.latitude, position.longitude);
 
+      if (!mounted) return;
       setState(() {
         _currentPosition = position;
       });
 
-      log(_currentPosition.toString());
+      _updateMarkerAndCamera(latLng);
 
-      _updateMarkerAndCamera(position);
+      final address = await _mapsService.getAddressFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
 
-      await _getAddressFromLatLng(position);
+      if (!mounted) return;
+      setState(() {
+        _currentAddress = address;
+      });
+    } on LocationServiceDisabledException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _currentAddress = e.message;
+      });
+    } on LocationPermissionDeniedException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _currentAddress = e.message;
+      });
+    } on LocationPermissionPermanentlyDeniedException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _currentAddress = e.message;
+      });
     } catch (e) {
-      print("Error getting location: $e");
+      if (!mounted) return;
+      setState(() {
+        _currentAddress = "Gagal mendapatkan lokasi: $e";
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
-  void _updateMarkerAndCamera(Position position) {
-    LatLng currentLatLng = LatLng(position.latitude, position.longitude);
-
+  void _updateMarkerAndCamera(LatLng latLng) {
     setState(() {
       _markers.clear();
       _markers.add(
         Marker(
           markerId: const MarkerId("currentLocation"),
-          position: currentLatLng,
-
+          position: latLng,
           infoWindow: const InfoWindow(title: "Lokasi Anda"),
         ),
       );
     });
 
     _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: currentLatLng, zoom: 15),
-      ),
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 15)),
     );
   }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    try {
-      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        log(place.toString());
-        log(placemarks.toString());
-
-        setState(() {
-          _currentAddress =
-              "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
-        });
-      }
-    } catch (e) {
-      print("Error getting address: $e");
-    }
-  }
-
-  Future<void> _openInGoogleMaps() async {
+  void _openInGoogleMaps() {
     if (_currentPosition == null) return;
 
-    final double lat = _currentPosition!.latitude;
-    final double lng = _currentPosition!.longitude;
-
-    final Uri googleMapsUrl = Uri.parse(
-      "https://www.google.com/maps/search/?api=1&query=$lat,$lng",
+    final url = _mapsService.getGoogleMapsUrl(
+      _currentPosition!.latitude,
+      _currentPosition!.longitude,
     );
 
-    // Kode alternatif jika mengaktifkan package url_launcher:
-    // try {
-    //   if (await canLaunchUrl(googleMapsUrl)) {
-    //     await launchUrl(
-    //       googleMapsUrl,
-    //       mode: LaunchMode.externalApplication,
-    //     );
-    //   } else {
-    //     throw 'Tidak dapat membuka Google Maps URL';
-    //   }
-    // } catch (e) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text("Gagal membuka peta eksternal: $e")),
-    //   );
-    // }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Tautan Maps: $url"),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -177,11 +140,17 @@ class _MapsScreenState extends State<MapsScreen> {
             onMapCreated: (GoogleMapController controller) {
               _mapController = controller;
               if (_currentPosition != null) {
-                _updateMarkerAndCamera(_currentPosition!);
+                _updateMarkerAndCamera(
+                  LatLng(
+                    _currentPosition!.latitude,
+                    _currentPosition!.longitude,
+                  ),
+                );
               }
             },
           ),
 
+          // Card Informasi Alamat
           Positioned(
             bottom: 20,
             left: 20,
@@ -204,11 +173,21 @@ class _MapsScreenState extends State<MapsScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      _currentAddress,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14),
-                    ),
+                    if (_isLoading)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      )
+                    else
+                      Text(
+                        _currentAddress,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     const SizedBox(height: 12),
                     ElevatedButton.icon(
                       onPressed: _openInGoogleMaps,
@@ -230,11 +209,20 @@ class _MapsScreenState extends State<MapsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _checkPermissionsAndGetLocation,
-        child: const Icon(Icons.my_location),
+        onPressed: _isLoading ? null : _fetchLocationAndAddress,
+        child: _isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Icon(Icons.my_location),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

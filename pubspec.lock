@@ -295,7 +295,7 @@ packages:
     source: hosted
     version: "6.0.0"
   flutter_localizations:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -606,7 +606,7 @@ packages:
     source: hosted
     version: "4.1.2"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867"
@@ -734,7 +734,7 @@ packages:
     source: hosted
     version: "0.13.0"
   material_ui:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: material_ui
       sha256: "134ab2f0843545c4e661e4ba2753fe1bcf0753cb690d5a9ee4870638a40411e9"
@@ -1122,6 +1122,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  string_capitalize:
+    dependency: "direct main"
+    description:
+      name: string_capitalize
+      sha256: f98952f8bebd5ef15ef414d29ddd30d9157ad318b54ce9695248a52b0926a64b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.10"
   string_scanner:
     dependency: transitive
     description:

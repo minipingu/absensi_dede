@@ -25,7 +25,10 @@ class Application extends ConsumerWidget {
       routerConfig: _router,
       themeMode: themeState ? ThemeMode.dark : ThemeMode.light,
       supportedLocales: FLocalizations.supportedLocales,
-      localizationsDelegates: const [...FLocalizations.localizationsDelegates],
+      localizationsDelegates: const [
+        ...FLocalizations.localizationsDelegates,
+        ...GlobalMaterialLocalizations.delegates,
+      ],
       theme: lightTheme.toApproximateMaterialTheme(),
       darkTheme: darkTheme.toApproximateMaterialTheme(),
       builder: (context, child) => FTheme(
