@@ -2,6 +2,8 @@ import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
+import 'package:absensi_dede/absensi/widgets/check_out_button.dart';
+import 'package:absensi_dede/absensi/widgets/sheet_attend.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/extension.dart';
@@ -161,7 +163,7 @@ class HomeScreen extends ConsumerWidget {
                       spacing: 10,
                       children: [
                         Text(
-                          'Kehadiran Terakhir',
+                          'Kehadiran ${userName.value}',
                           style: typography.body.lg.copyWith(
                             fontWeight: .w700,
                             fontSize: 24,
@@ -182,29 +184,33 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                               );
                             }
-
                             return ListView.separated(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(top: 20),
                               itemCount: items.length,
                               separatorBuilder: (_, _) =>
                                   const SizedBox(height: 12),
                               itemBuilder: (context, index) {
                                 final item = items[index];
-                                return FCard(
-                                  child: ListTile(
-                                    title: Text(item.status ?? '-'),
-                                    subtitle: Text(
-                                      'Jam: ${item.checkIn ?? '-'}',
-                                    ),
-                                    trailing: Text(
-                                      item.status ?? '-',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                return FTile(
+                                  onPress: () {
+                                    showFSheet(
+                                      context: context,
+                                      side: .btt,
+                                      builder: (context) =>
+                                          SheetAttend(side: .btt),
+                                    );
+                                  },
+                                  title: Text(
+                                    '${item.status?.capitalize()} ${item.checkIn?.split(' ')[0]}',
+                                  ),
+                                  subtitle: Text(
+                                    'Jam: ${item.checkIn?.split(' ')[1] ?? '-'}',
+                                    style: typography.body.lg.copyWith(
+                                      fontWeight: .w500,
+                                      fontSize: 16,
                                     ),
                                   ),
+                                  suffix: Icon(FLucideIcons.chevronRight),
                                 );
                               },
                             );

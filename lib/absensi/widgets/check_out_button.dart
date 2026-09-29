@@ -14,7 +14,7 @@ class CheckOutButton extends StatelessWidget {
       child: FButton(
         variant: .secondary,
         onPress: _checkOut,
-        child: Text('Check In Sekarang'),
+        child: Text('Check Out Sekarang'),
       ),
     );
   }
