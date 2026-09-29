@@ -191,6 +191,15 @@ class HomeScreen extends ConsumerWidget {
                                   const SizedBox(height: 12),
                               itemBuilder: (context, index) {
                                 final item = items[index];
+
+                                final date = DateTime.parse(
+                                  item.checkIn?.split(' ')[0] ?? "",
+                                );
+                                final formatted = DateFormat(
+                                  'dd MMMM yyyy',
+                                  'id_ID',
+                                ).format(date);
+
                                 return FTile(
                                   onPress: () {
                                     showFSheet(
@@ -201,7 +210,7 @@ class HomeScreen extends ConsumerWidget {
                                     );
                                   },
                                   title: Text(
-                                    '${item.status?.capitalize()} ${item.checkIn?.split(' ')[0]}',
+                                    '${item.status?.capitalize()} $formatted',
                                   ),
                                   subtitle: Text(
                                     'Jam: ${item.checkIn?.split(' ')[1] ?? '-'}',
