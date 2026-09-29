@@ -11,7 +11,7 @@ HistoryAbsenResponseModel _$HistoryAbsenResponseModelFromJson(
 ) => HistoryAbsenResponseModel(
   message: json['message'] as String?,
   data: (json['data'] as List<dynamic>?)
-      ?.map((e) => Datum.fromJson(e as Map<String, dynamic>))
+      ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
@@ -19,7 +19,7 @@ Map<String, dynamic> _$HistoryAbsenResponseModelToJson(
   HistoryAbsenResponseModel instance,
 ) => <String, dynamic>{'message': instance.message, 'data': instance.data};
 
-Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
+Data _$DataFromJson(Map<String, dynamic> json) => Data(
   id: (json['id'] as num?)?.toInt(),
   userId: (json['user_id'] as num?)?.toInt(),
   checkIn: json['check_in'] as String?,
@@ -42,7 +42,7 @@ Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
   checkOutLng: json['check_out_lng'],
 );
 
-Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
+Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
   'id': instance.id,
   'user_id': instance.userId,
   'check_in': instance.checkIn,

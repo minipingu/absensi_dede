@@ -1,8 +1,8 @@
+import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
-import 'package:absensi_dede/absensi/widgets/check_out_button.dart';
 import 'package:absensi_dede/absensi/widgets/sheet_attend.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
@@ -205,15 +205,15 @@ class HomeScreen extends ConsumerWidget {
                                     showFSheet(
                                       context: context,
                                       side: .btt,
-                                      builder: (context) =>
-                                          SheetAttend(side: .btt),
+                                      builder: (context) => SheetAttend(
+                                        side: .btt,
+                                        history: item,
+                                      ),
                                     );
                                   },
-                                  title: Text(
-                                    '${item.status?.capitalize()} $formatted',
-                                  ),
+                                  title: Text(formatted),
                                   subtitle: Text(
-                                    'Jam: ${item.checkIn?.split(' ')[1] ?? '-'}',
+                                    '${item.status?.capitalize()} Jam: ${item.checkIn?.split(' ')[1] ?? '-'}',
                                     style: typography.body.lg.copyWith(
                                       fontWeight: .w500,
                                       fontSize: 16,

@@ -19,7 +19,7 @@ class HistoryAbsenResponseModel {
   @JsonKey(name: "message")
   final String? message;
   @JsonKey(name: "data")
-  final List<Datum>? data;
+  final List<Data>? data;
 
   HistoryAbsenResponseModel({this.message, this.data});
 
@@ -30,7 +30,7 @@ class HistoryAbsenResponseModel {
 }
 
 @JsonSerializable()
-class Datum {
+class Data {
   @JsonKey(name: "id")
   final int? id;
   @JsonKey(name: "user_id")
@@ -64,7 +64,7 @@ class Datum {
   @JsonKey(name: "check_out_lng")
   final dynamic checkOutLng;
 
-  Datum({
+  Data({
     this.id,
     this.userId,
     this.checkIn,
@@ -83,7 +83,7 @@ class Datum {
     this.checkOutLng,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DatumToJson(this);
+  Map<String, dynamic> toJson() => _$DataToJson(this);
 }
