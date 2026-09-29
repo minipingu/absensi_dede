@@ -4,8 +4,10 @@ import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
+import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/absensi/controllers/login_user.dart';
 import 'package:absensi_dede/absensi/controllers/register_user.dart';
+import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,6 +67,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
       next.whenOrNull(
         data: (response) {
           if (response == null) return;
+
           showFToast(
             context: context,
             duration: const Duration(seconds: 4),
@@ -103,6 +106,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
           );
 
           await LoginPreferences.saveLoginResponse(response);
+
+          ref.invalidate(userNameRiverpod);
+          ref.invalidate(historyAbsenProvider);
 
           if (context.mounted) {
             HomeRoute().go(context);

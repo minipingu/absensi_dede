@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
+import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
@@ -30,6 +31,7 @@ class LoginUser extends _$LoginUser {
 
       if (response.data != null) {
         await LoginPreferences.saveLoginResponse(response);
+        ref.invalidate(userNameRiverpod);
         state = AsyncData(response);
         return response;
       } else {
