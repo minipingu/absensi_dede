@@ -7,6 +7,8 @@ import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
 import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
 import 'package:absensi_dede/absensi/models/register/register_response_model.dart';
+import 'package:absensi_dede/absensi/models/user/name_user_edit_request_model.dart';
+import 'package:absensi_dede/absensi/models/user/profil_user_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -39,10 +41,21 @@ abstract class ApiServices {
     @Body() CheckOutRequestModel checkOut,
   );
 
-  //Delete
-  @POST('/api/absen/9')
+  //Delete Absen
+  @DELETE('/api/absen/9')
   Future<AbsenResponseModel> deletePresensi(
     @Header('Authorization') String? token,
     @Body() DeleteAbsenRequestModel delete,
+  );
+
+  @POST('/api/profile')
+  Future<ProfilUserResponseModel> getProfile({
+    @Header('Authorization') String? token,
+  });
+
+  @PUT('/api/profile')
+  Future<ProfilUserResponseModel> editProfile(
+    @Header('Authorization') String? token,
+    @Body() NameUserEditRequestModel userName,
   );
 }
