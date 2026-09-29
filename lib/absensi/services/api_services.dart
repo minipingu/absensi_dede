@@ -1,3 +1,5 @@
+import 'package:absensi_dede/absensi/models/absen/absen_response_model.dart';
+import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
@@ -18,8 +20,13 @@ abstract class ApiServices {
   @POST('/api/login')
   Future<LoginResponseModel> loginUser(@Body() LoginRequestModel user);
 
+  //HISTORY ABSEN
   @GET('/api/absen/history')
   Future<HistoryAbsenResponseModel> getAbsenHistory({
     @Header('Authorization') String? token,
   });
+
+  //CHECK-IN
+  @POST('/api/absen/check-in')
+  Future<AbsenResponseModel> checkInUser(@Body() CheckInRequestModel user);
 }

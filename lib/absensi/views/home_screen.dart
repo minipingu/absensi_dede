@@ -1,6 +1,7 @@
 import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
+import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/extension.dart';
@@ -157,9 +158,10 @@ class HomeScreen extends ConsumerWidget {
                   child: Padding(
                     padding: EdgeInsetsGeometry.all(20),
                     child: Column(
+                      spacing: 10,
                       children: [
                         Text(
-                          'Absensi Terakhir',
+                          'Kehadiran Terakhir',
                           style: typography.body.lg.copyWith(
                             fontWeight: .w700,
                             fontSize: 24,
@@ -169,8 +171,15 @@ class HomeScreen extends ConsumerWidget {
                           data: (history) {
                             final items = history?.data;
                             if (items == null || items.isEmpty) {
-                              return const Center(
-                                child: Text('Belum ada riwayat absensi.'),
+                              return Center(
+                                child: Text(
+                                  'Belum ada riwayat kehadiran!',
+                                  style: typography.body.lg.copyWith(
+                                    fontWeight: .w500,
+                                    fontSize: 16,
+                                    fontStyle: .italic,
+                                  ),
+                                ),
                               );
                             }
 
@@ -221,6 +230,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        CheckInButton(),
                       ],
                     ),
                   ),
