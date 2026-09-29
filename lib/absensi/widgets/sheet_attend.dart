@@ -57,7 +57,7 @@ class SheetAttend extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: DeletePresensiButton(),
+                child: DeletePresensiButton(id: history.id),
               ),
             ],
           ),
@@ -90,6 +90,5 @@ class SheetAttend extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }
