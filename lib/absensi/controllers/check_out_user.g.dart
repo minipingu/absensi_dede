@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'check_in_user.dart';
+part of 'check_out_user.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,33 +9,33 @@ part of 'check_in_user.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(CheckInUser)
-final checkInUserProvider = CheckInUserProvider._();
+@ProviderFor(CheckOutUser)
+final checkOutUserProvider = CheckOutUserProvider._();
 
-final class CheckInUserProvider
-    extends $AsyncNotifierProvider<CheckInUser, AbsenResponseModel?> {
-  CheckInUserProvider._()
+final class CheckOutUserProvider
+    extends $AsyncNotifierProvider<CheckOutUser, AbsenResponseModel?> {
+  CheckOutUserProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'checkInUserProvider',
+        name: r'checkOutUserProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$checkInUserHash();
+  String debugGetCreateSourceHash() => _$checkOutUserHash();
 
   @$internal
   @override
-  CheckInUser create() => CheckInUser();
+  CheckOutUser create() => CheckOutUser();
 }
 
-String _$checkInUserHash() => r'8e4c7419f21a354d13588540ea4cce8fb743a0ef';
+String _$checkOutUserHash() => r'3c4067695d5d28e59cae26710481b6e3cbd6a6b4';
 
-abstract class _$CheckInUser extends $AsyncNotifier<AbsenResponseModel?> {
+abstract class _$CheckOutUser extends $AsyncNotifier<AbsenResponseModel?> {
   FutureOr<AbsenResponseModel?> build();
   @$mustCallSuper
   @override

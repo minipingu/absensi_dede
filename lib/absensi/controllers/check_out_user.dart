@@ -1,17 +1,17 @@
 import 'dart:developer' as developer;
 
 import 'package:absensi_dede/absensi/models/absen/absen_response_model.dart';
-import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
+import 'package:absensi_dede/absensi/models/absen/check_out_request_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'check_in_user.g.dart';
+part 'check_out_user.g.dart';
 
 @riverpod
-class CheckInUser extends _$CheckInUser {
+class CheckOutUser extends _$CheckOutUser {
   late final ApiServices _apiServices;
 
   @override
@@ -21,8 +21,8 @@ class CheckInUser extends _$CheckInUser {
     return null;
   }
 
-  Future<AbsenResponseModel?> checkIn(
-    CheckInRequestModel requestBody, {
+  Future<AbsenResponseModel?> checkOut(
+    CheckOutRequestModel requestBody, {
     String? token,
   }) async {
     state = const AsyncLoading();
@@ -39,11 +39,11 @@ class CheckInUser extends _$CheckInUser {
           ? activeToken
           : 'Bearer $activeToken';
 
-      final response = await _apiServices.checkInUser(
+      final response = await _apiServices.checkOutUser(
         authHeader,
         requestBody,
       );
-      developer.log('Check in response: ${response.toJson()}');
+      developer.log('Check out response: ${response.toJson()}');
 
       if (response.data != null) {
         state = AsyncData(response);
@@ -51,12 +51,12 @@ class CheckInUser extends _$CheckInUser {
       } else {
         final errorMsg =
             response.message ??
-            'Terjadi Error saat check in, tidak ada pesan dari server';
+            'Terjadi Error saat check out, tidak ada pesan dari server';
         state = AsyncError(errorMsg, StackTrace.current);
         return null;
       }
     } on DioException catch (e, st) {
-      String errorMessage = 'Terjadi kesalahan saat check in';
+      String errorMessage = 'Terjadi kesalahan saat check out';
 
       if (e.response?.data is Map<String, dynamic>) {
         final data = e.response!.data as Map<String, dynamic>;
@@ -78,22 +78,22 @@ class CheckInUser extends _$CheckInUser {
         errorMessage = e.message!;
       }
 
-      developer.log('DioException during Check In: $errorMessage');
+      developer.log('DioException during Check Out: $errorMessage');
       state = AsyncError(errorMessage, st);
       return null;
     } catch (e, st) {
       final errorMessage = 'Error: $e';
-      developer.log('Error during Check In: $errorMessage');
+      developer.log('Error during Check Out: $errorMessage');
       state = AsyncError(errorMessage, st);
       return null;
     }
   }
 
-  /// Alias method checkInUser
-  Future<AbsenResponseModel?> checkInUser(
-    CheckInRequestModel requestBody, {
+  /// Alias method checkOutUser
+  Future<AbsenResponseModel?> checkOutUser(
+    CheckOutRequestModel requestBody, {
     String? token,
   }) {
-    return checkIn(requestBody, token: token);
+    return checkOut(requestBody, token: token);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:absensi_dede/absensi/models/absen/absen_response_model.dart';
 import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
+import 'package:absensi_dede/absensi/models/absen/check_out_request_model.dart';
+import 'package:absensi_dede/absensi/models/absen/delete_absen_request_model.dart';
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
@@ -20,13 +22,27 @@ abstract class ApiServices {
   @POST('/api/login')
   Future<LoginResponseModel> loginUser(@Body() LoginRequestModel user);
 
-  //HISTORY ABSEN
   @GET('/api/absen/history')
   Future<HistoryAbsenResponseModel> getAbsenHistory({
     @Header('Authorization') String? token,
   });
 
-  //CHECK-IN
   @POST('/api/absen/check-in')
-  Future<AbsenResponseModel> checkInUser(@Body() CheckInRequestModel user);
+  Future<AbsenResponseModel> checkInUser(
+    @Header('Authorization') String? token,
+    @Body() CheckInRequestModel checkIn,
+  );
+
+  @POST('/api/absen/check-out')
+  Future<AbsenResponseModel> checkOutUser(
+    @Header('Authorization') String? token,
+    @Body() CheckOutRequestModel checkOut,
+  );
+
+  //Delete
+  @POST('/api/absen/9')
+  Future<AbsenResponseModel> deletePresensi(
+    @Header('Authorization') String? token,
+    @Body() DeleteAbsenRequestModel delete,
+  );
 }

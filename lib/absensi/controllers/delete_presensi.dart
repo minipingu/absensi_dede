@@ -1,17 +1,17 @@
 import 'dart:developer' as developer;
 
 import 'package:absensi_dede/absensi/models/absen/absen_response_model.dart';
-import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
+import 'package:absensi_dede/absensi/models/absen/delete_absen_request_model.dart';
 import 'package:absensi_dede/absensi/services/api_services.dart';
 import 'package:absensi_dede/absensi/services/dio_client.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'check_in_user.g.dart';
+part 'delete_presensi.g.dart';
 
 @riverpod
-class CheckInUser extends _$CheckInUser {
+class DeletePresensi extends _$DeletePresensi {
   late final ApiServices _apiServices;
 
   @override
@@ -21,8 +21,8 @@ class CheckInUser extends _$CheckInUser {
     return null;
   }
 
-  Future<AbsenResponseModel?> checkIn(
-    CheckInRequestModel requestBody, {
+  Future<AbsenResponseModel?> delete({
+    DeleteAbsenRequestModel? requestBody,
     String? token,
   }) async {
     state = const AsyncLoading();
@@ -39,24 +39,18 @@ class CheckInUser extends _$CheckInUser {
           ? activeToken
           : 'Bearer $activeToken';
 
-      final response = await _apiServices.checkInUser(
-        authHeader,
-        requestBody,
-      );
-      developer.log('Check in response: ${response.toJson()}');
+      final body = requestBody ?? DeleteAbsenRequestModel();
 
-      if (response.data != null) {
-        state = AsyncData(response);
-        return response;
-      } else {
-        final errorMsg =
-            response.message ??
-            'Terjadi Error saat check in, tidak ada pesan dari server';
-        state = AsyncError(errorMsg, StackTrace.current);
-        return null;
-      }
+      final response = await _apiServices.deletePresensi(
+        authHeader,
+        body,
+      );
+      developer.log('Delete presensi response: ${response.toJson()}');
+
+      state = AsyncData(response);
+      return response;
     } on DioException catch (e, st) {
-      String errorMessage = 'Terjadi kesalahan saat check in';
+      String errorMessage = 'Terjadi kesalahan saat menghapus presensi';
 
       if (e.response?.data is Map<String, dynamic>) {
         final data = e.response!.data as Map<String, dynamic>;
@@ -78,22 +72,22 @@ class CheckInUser extends _$CheckInUser {
         errorMessage = e.message!;
       }
 
-      developer.log('DioException during Check In: $errorMessage');
+      developer.log('DioException during Delete Presensi: $errorMessage');
       state = AsyncError(errorMessage, st);
       return null;
     } catch (e, st) {
       final errorMessage = 'Error: $e';
-      developer.log('Error during Check In: $errorMessage');
+      developer.log('Error during Delete Presensi: $errorMessage');
       state = AsyncError(errorMessage, st);
       return null;
     }
   }
 
-  /// Alias method checkInUser
-  Future<AbsenResponseModel?> checkInUser(
-    CheckInRequestModel requestBody, {
+  /// Alias method deletePresensi
+  Future<AbsenResponseModel?> deletePresensi([
+    DeleteAbsenRequestModel? requestBody,
     String? token,
-  }) {
-    return checkIn(requestBody, token: token);
+  ]) {
+    return delete(requestBody: requestBody, token: token);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/services/maps_service.dart';
 import 'package:absensi_dede/absensi/widgets/check_out_button.dart';
+import 'package:absensi_dede/absensi/widgets/delete_presensi_button.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:intl/intl.dart';
@@ -56,12 +57,7 @@ class SheetAttend extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: FButton(
-                  variant: .destructive,
-                  onPress: () {},
-                  size: .sm,
-                  child: Icon(FLucideIcons.trash, size: 20),
-                ),
+                child: DeletePresensiButton(),
               ),
             ],
           ),
@@ -85,7 +81,7 @@ class SheetAttend extends StatelessWidget {
                         history.checkOutAddress ?? 'Anda Belum Checkout',
                       ),
                     ),
-                    if (history.checkOutAddress != null) CheckOutButton(),
+                    if (history.checkOutAddress == null) CheckOutButton(),
                   ],
                 ),
               ],
