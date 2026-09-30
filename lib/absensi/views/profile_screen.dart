@@ -144,68 +144,90 @@ class ProfileScreen extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FTile(
-                              title: const Text('Nama'),
-                              subtitle: Text(
-                                user?.name ?? '-',
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.all(20),
+                          child: Column(
+                            spacing: 20,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Profil Manager Kopdes',
                                 style: typography.body.md.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              suffix: FButton.icon(
-                                size: .sm,
-                                variant: .ghost,
-                                onPress: () => _showEditNameDialog(
-                                  context,
-                                  ref,
-                                  user?.name ?? '',
+                              FTile(
+                                title: const Text('Nama'),
+                                subtitle: Text(
+                                  user?.name ?? '-',
+                                  style: typography.body.md.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                child: const Icon(
-                                  FLucideIcons.pencil,
-                                  size: 18,
+                                suffix: FButton.icon(
+                                  size: .sm,
+                                  variant: .ghost,
+                                  onPress: () => _showEditNameDialog(
+                                    context,
+                                    ref,
+                                    user?.name ?? '',
+                                  ),
+                                  child: const Icon(
+                                    FLucideIcons.pencil,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const FDivider(),
-                            FTile(
-                              title: const Text('Email'),
-                              subtitle: Text(user?.email ?? '-'),
-                            ),
-                            if (user?.id != null) ...[
-                              const FDivider(),
                               FTile(
-                                title: const Text('ID Pengguna'),
-                                subtitle: Text('${user!.id}'),
+                                title: const Text('Email'),
+                                subtitle: Text(
+                                  user?.email ?? '-',
+                                  style: typography.body.md.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              if (user?.id != null) ...[
+                                FTile(
+                                  title: const Text('ID Pengguna'),
+                                  subtitle: Text(
+                                    '${user!.id}',
+                                    style: typography.body.md.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              FTile(
+                                title: const Text('Dibuat Pada'),
+                                subtitle: Text(
+                                  user?.createdAt != null
+                                      ? DateFormat(
+                                          'dd MMMM yyyy, HH:mm',
+                                          'id_ID',
+                                        ).format(user!.createdAt!.toLocal())
+                                      : '-',
+                                  style: typography.body.md.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              FTile(
+                                title: const Text('Terakhir Diperbarui'),
+                                subtitle: Text(
+                                  user?.updatedAt != null
+                                      ? DateFormat(
+                                          'dd MMMM yyyy, HH:mm',
+                                          'id_ID',
+                                        ).format(user!.updatedAt!.toLocal())
+                                      : '-',
+                                  style: typography.body.md.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ],
-                            const FDivider(),
-                            FTile(
-                              title: const Text('Dibuat Pada'),
-                              subtitle: Text(
-                                user?.createdAt != null
-                                    ? DateFormat(
-                                        'dd MMMM yyyy, HH:mm',
-                                        'id_ID',
-                                      ).format(user!.createdAt!.toLocal())
-                                    : '-',
-                              ),
-                            ),
-                            const FDivider(),
-                            FTile(
-                              title: const Text('Terakhir Diperbarui'),
-                              subtitle: Text(
-                                user?.updatedAt != null
-                                    ? DateFormat(
-                                        'dd MMMM yyyy, HH:mm',
-                                        'id_ID',
-                                      ).format(user!.updatedAt!.toLocal())
-                                    : '-',
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       );
                     },
@@ -283,40 +305,54 @@ class _EditNameDialogState extends ConsumerState<_EditNameDialog> {
   Future<void> _handleSave() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       setState(() => _isLoading = true);
-      final newName = _nameController.text.trim();
-      final request = NameUserEditRequestModel(name: newName);
+      try {
+        final newName = _nameController.text.trim();
+        final request = NameUserEditRequestModel(name: newName);
 
-      final response = await ref
-          .read(editProfileProvider.notifier)
-          .editProfile(request);
+        final response = await ref
+            .read(editProfileProvider.notifier)
+            .editProfile(request);
 
-      if (!mounted) return;
-      setState(() => _isLoading = false);
+        if (!mounted) return;
 
-      if (response != null) {
-        Navigator.of(context).pop();
-        showFToast(
-          context: context,
-          duration: const Duration(seconds: 4),
-          title: const Text('Berhasil Menyimpan!'),
-          description: Text(
-            response.message ?? 'Nama profil berhasil diperbarui.',
-          ),
-          icon: const Icon(Icons.check_circle_outline, color: Colors.green),
-        );
-      } else {
-        final editState = ref.read(editProfileProvider);
-        final errorMsg = editState.hasError
-            ? editState.error.toString()
-            : 'Gagal memperbarui profil';
+        if (response != null) {
+          showFToast(
+            context: context,
+            duration: const Duration(seconds: 4),
+            title: const Text('Berhasil Menyimpan!'),
+            description: Text(
+              response.message ?? 'Nama profil berhasil diperbarui.',
+            ),
+            icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+          );
+          Navigator.of(context).pop();
+        } else {
+          final editState = ref.read(editProfileProvider);
+          final errorMsg = editState.hasError
+              ? editState.error.toString()
+              : 'Gagal memperbarui profil';
 
+          showFToast(
+            context: context,
+            duration: const Duration(seconds: 4),
+            title: const Text('Gagal Menyimpan'),
+            description: Text(errorMsg),
+            icon: const Icon(Icons.error_outline, color: Colors.red),
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
         showFToast(
           context: context,
           duration: const Duration(seconds: 4),
           title: const Text('Gagal Menyimpan'),
-          description: Text(errorMsg),
+          description: Text('Terjadi kesalahan: $e'),
           icon: const Icon(Icons.error_outline, color: Colors.red),
         );
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
       }
     }
   }

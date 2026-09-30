@@ -12,9 +12,10 @@ class LogoutButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      child: const Text('Keluar'),
-      onPressed: () async {
+    return FButton(
+      variant: .outline,
+      child: const Text('Keluar dari aplikasi'),
+      onPress: () async {
         await LoginPreferences.logOut();
 
         // Invalidate state akun lama di Riverpod agar data bersih

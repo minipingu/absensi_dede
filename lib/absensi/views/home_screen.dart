@@ -4,7 +4,8 @@ import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
 import 'package:absensi_dede/absensi/widgets/home_map_widget.dart';
-import 'package:absensi_dede/absensi/widgets/sheet_attend.dart';
+import 'package:absensi_dede/absensi/riverpod/selected_attendance.dart';
+import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/extension.dart';
@@ -224,14 +225,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                                 return FTile(
                                   onPress: () {
-                                    showFSheet(
-                                      context: context,
-                                      side: .btt,
-                                      builder: (context) => SheetAttend(
-                                        side: .btt,
-                                        history: item,
-                                      ),
-                                    );
+                                    ref
+                                        .read(
+                                          selectedAttendanceIdProvider.notifier,
+                                        )
+                                        .select(item.id);
+                                    ref
+                                        .read(bottomNavProvider.notifier)
+                                        .setIndex(2);
+                                    AttendanceListRoute().go(context);
                                   },
                                   title: Text(formattedDate),
                                   subtitle: Text(

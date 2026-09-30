@@ -20,7 +20,7 @@ final class EditProfileProvider
         argument: null,
         retry: null,
         name: r'editProfileProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -33,7 +33,7 @@ final class EditProfileProvider
   EditProfile create() => EditProfile();
 }
 
-String _$editProfileHash() => r'e555f7b4ff17540a9727a7d0e83bf8426045d0d4';
+String _$editProfileHash() => r'334612aea3dd55589f56ceb1f7b77edb0f43229e';
 
 abstract class _$EditProfile extends $AsyncNotifier<ProfilUserResponseModel?> {
   FutureOr<ProfilUserResponseModel?> build();

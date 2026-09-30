@@ -14,7 +14,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'edit_profile.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EditProfile extends _$EditProfile {
   late ApiServices _apiServices;
 
