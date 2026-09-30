@@ -11,9 +11,9 @@ List<RouteBase> get $appRoutes => [
   $splashRoute,
   $loginRegisterRoute,
   $homeRoute,
-  $mapsRoute,
   $profileRoute,
   $attendanceListRoute,
+  $alarmRoute,
 ];
 
 RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
@@ -25,15 +25,6 @@ RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
           path: '/home',
           hasOverriddenOnExit: false,
           factory: $HomeRoute._fromState,
-        ),
-      ],
-    ),
-    StatefulShellBranchData.$branch(
-      routes: [
-        GoRouteData.$route(
-          path: '/maps',
-          hasOverriddenOnExit: false,
-          factory: $MapsRoute._fromState,
         ),
       ],
     ),
@@ -68,26 +59,6 @@ mixin $HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/home');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-mixin $MapsRoute on GoRouteData {
-  static MapsRoute _fromState(GoRouterState state) => MapsRoute();
-
-  @override
-  String get location => GoRouteData.$location('/maps');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -203,12 +174,6 @@ RouteBase get $homeRoute => GoRouteData.$route(
   factory: $HomeRoute._fromState,
 );
 
-RouteBase get $mapsRoute => GoRouteData.$route(
-  path: '/maps',
-  hasOverriddenOnExit: false,
-  factory: $MapsRoute._fromState,
-);
-
 RouteBase get $profileRoute => GoRouteData.$route(
   path: '/profile',
   hasOverriddenOnExit: false,
@@ -220,3 +185,29 @@ RouteBase get $attendanceListRoute => GoRouteData.$route(
   hasOverriddenOnExit: false,
   factory: $AttendanceListRoute._fromState,
 );
+
+RouteBase get $alarmRoute => GoRouteData.$route(
+  path: '/alarm',
+  hasOverriddenOnExit: false,
+  factory: $AlarmRoute._fromState,
+);
+
+mixin $AlarmRoute on GoRouteData {
+  static AlarmRoute _fromState(GoRouterState state) => const AlarmRoute();
+
+  @override
+  String get location => GoRouteData.$location('/alarm');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}

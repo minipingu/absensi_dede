@@ -4,6 +4,7 @@ import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
+import 'package:absensi_dede/absensi/widgets/checkout_alarm_widget.dart';
 import 'package:absensi_dede/absensi/widgets/home_map_widget.dart';
 import 'package:absensi_dede/absensi/widgets/izin_button.dart';
 import 'package:absensi_dede/absensi/riverpod/selected_attendance.dart';
@@ -342,6 +343,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
+                const CheckoutAlarmWidget(),
                 const SizedBox(height: 20),
                 const HomeMapWidget(),
                 const SizedBox(height: 100),

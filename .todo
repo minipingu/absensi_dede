@@ -140,6 +140,34 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "1790808978580p38q2d",
+      "title": "Implement Pengingat Check Out alarm widget with alarm package, FTimePicker, and shared preferences",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790809410861xe7u94",
+      "title": "Create alarm_screen to display time and stop alarm button when alarm is ringing",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790810332759dq9kyi",
+      "title": "Update alarm_screen stop button to .primary and ensure it closes screen on tap",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790811476500ywqqyb",
+      "title": "Fix alarm_screen display when app is closed by adding Android full-screen permissions, showWhenLocked flags, and GoRouter redirect",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

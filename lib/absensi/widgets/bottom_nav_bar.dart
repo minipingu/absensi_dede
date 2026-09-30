@@ -17,7 +17,6 @@ class BottomNavBar extends ConsumerWidget {
     return FuturisticNavBar(
       items: [
         NavBarItem(icon: FLucideIcons.home, label: 'BERANDA'),
-        NavBarItem(icon: FLucideIcons.map, label: 'PETA'),
         NavBarItem(icon: FLucideIcons.clockCheck, label: 'PRESENSI'),
         NavBarItem(icon: FLucideIcons.user2, label: 'PROFIL'),
       ],
@@ -30,8 +29,6 @@ class BottomNavBar extends ConsumerWidget {
           ref.invalidate(historyAbsenProvider);
           HomeRoute().go(context);
         } else if (index == 1) {
-          MapsRoute().go(context);
-        } else if (index == 2) {
           AttendanceListRoute().go(context);
         } else {
           ProfileRoute().go(context);

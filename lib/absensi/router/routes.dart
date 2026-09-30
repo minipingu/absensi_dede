@@ -1,6 +1,6 @@
+import 'package:absensi_dede/absensi/views/alarm_screen.dart';
 import 'package:absensi_dede/absensi/views/attendance_list_screen.dart';
 import 'package:absensi_dede/absensi/views/home_screen.dart';
-import 'package:absensi_dede/absensi/views/maps_screen.dart';
 import 'package:absensi_dede/absensi/views/login_register.dart';
 import 'package:absensi_dede/absensi/views/profile_screen.dart';
 import 'package:absensi_dede/absensi/views/splash_screen.dart';
@@ -13,9 +13,6 @@ part 'routes.g.dart';
   branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
     TypedStatefulShellBranch<HomeBranchData>(
       routes: <TypedRoute<RouteData>>[TypedGoRoute<HomeRoute>(path: '/home')],
-    ),
-    TypedStatefulShellBranch<MapsBranchData>(
-      routes: <TypedRoute<RouteData>>[TypedGoRoute<MapsRoute>(path: '/maps')],
     ),
     TypedStatefulShellBranch<AttendanceListBranchData>(
       routes: <TypedRoute<RouteData>>[
@@ -45,10 +42,6 @@ class MainShellRouteData extends StatefulShellRouteData {
 //Branch
 class HomeBranchData extends StatefulShellBranchData {
   const HomeBranchData();
-}
-
-class MapsBranchData extends StatefulShellBranchData {
-  const MapsBranchData();
 }
 
 class AttendanceListBranchData extends StatefulShellBranchData {
@@ -87,15 +80,6 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   }
 }
 
-@TypedGoRoute<MapsRoute>(path: '/maps')
-class MapsRoute extends GoRouteData with $MapsRoute {
-  MapsRoute();
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return MapsScreen();
-  }
-}
-
 @TypedGoRoute<ProfileRoute>(path: '/profile')
 class ProfileRoute extends GoRouteData with $ProfileRoute {
   ProfileRoute();
@@ -111,5 +95,14 @@ class AttendanceListRoute extends GoRouteData with $AttendanceListRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return AttendanceListScreen();
+  }
+}
+
+@TypedGoRoute<AlarmRoute>(path: '/alarm')
+class AlarmRoute extends GoRouteData with $AlarmRoute {
+  const AlarmRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AlarmScreen();
   }
 }
