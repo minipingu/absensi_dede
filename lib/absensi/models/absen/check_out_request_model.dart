@@ -16,12 +16,21 @@ String checkOutRequestModelToJson(CheckOutRequestModel data) =>
 
 @JsonSerializable()
 class CheckOutRequestModel {
+  @JsonKey(name: "check_out_lat")
+  final String? checkOutLat;
+  @JsonKey(name: "check_out_lng")
+  final String? checkOutLng;
   @JsonKey(name: "check_out_location")
   final String? checkOutLocation;
   @JsonKey(name: "check_out_address")
   final String? checkOutAddress;
 
-  CheckOutRequestModel({this.checkOutLocation, this.checkOutAddress});
+  CheckOutRequestModel({
+    this.checkOutLat,
+    this.checkOutLng,
+    this.checkOutLocation,
+    this.checkOutAddress,
+  });
 
   factory CheckOutRequestModel.fromJson(Map<String, dynamic> json) =>
       _$CheckOutRequestModelFromJson(json);

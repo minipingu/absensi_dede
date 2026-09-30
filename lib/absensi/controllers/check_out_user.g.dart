@@ -33,7 +33,7 @@ final class CheckOutUserProvider
   CheckOutUser create() => CheckOutUser();
 }
 
-String _$checkOutUserHash() => r'3c4067695d5d28e59cae26710481b6e3cbd6a6b4';
+String _$checkOutUserHash() => r'8ba28e187f0740e42e6bbc60d7ee77a1d801718b';
 
 abstract class _$CheckOutUser extends $AsyncNotifier<AbsenResponseModel?> {
   FutureOr<AbsenResponseModel?> build();

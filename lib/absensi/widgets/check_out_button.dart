@@ -57,8 +57,10 @@ class CheckOutButton extends HookConsumerWidget {
         );
 
         final checkOutRequest = CheckOutRequestModel(
-          checkOutLocation: '${coordinate.latitude},${coordinate.longitude}',
+          checkOutLocation: '${coordinate.latitude}, ${coordinate.longitude}',
           checkOutAddress: address,
+          checkOutLat: '${coordinate.latitude}',
+          checkOutLng: '${coordinate.longitude}',
         );
 
         await ref.read(checkOutUserProvider.notifier).checkOut(checkOutRequest);

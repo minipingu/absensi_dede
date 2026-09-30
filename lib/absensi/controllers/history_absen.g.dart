@@ -33,7 +33,7 @@ final class HistoryAbsenProvider
   HistoryAbsen create() => HistoryAbsen();
 }
 
-String _$historyAbsenHash() => r'098213c3cbed1eeb92ee2304ca5dabff20efdaee';
+String _$historyAbsenHash() => r'157349ab8f3ca1c837d76ec854610cd7e32d3570';
 
 abstract class _$HistoryAbsen
     extends $AsyncNotifier<HistoryAbsenResponseModel?> {

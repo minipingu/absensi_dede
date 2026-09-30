@@ -33,7 +33,7 @@ final class LoginUserProvider
   LoginUser create() => LoginUser();
 }
 
-String _$loginUserHash() => r'e9310546ac2c4262e5201884a82d143065b195c4';
+String _$loginUserHash() => r'b0410515df573d054790f7a9df828c0bc714984c';
 
 abstract class _$LoginUser extends $AsyncNotifier<LoginResponseModel?> {
   FutureOr<LoginResponseModel?> build();

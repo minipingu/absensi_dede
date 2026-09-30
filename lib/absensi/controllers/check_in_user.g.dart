@@ -33,7 +33,7 @@ final class CheckInUserProvider
   CheckInUser create() => CheckInUser();
 }
 
-String _$checkInUserHash() => r'8e4c7419f21a354d13588540ea4cce8fb743a0ef';
+String _$checkInUserHash() => r'58898d013d67d54ca6baf5a81681f80293490229';
 
 abstract class _$CheckInUser extends $AsyncNotifier<AbsenResponseModel?> {
   FutureOr<AbsenResponseModel?> build();
