@@ -36,6 +36,9 @@ class ProfileScreen extends HookConsumerWidget {
     final typography = context.theme.typography;
     final themeState = ref.watch(themeProvider).value ?? false;
     final profileAsync = ref.watch(profileUserProvider);
+    final isEditing = ref.watch(editProfileProvider).isLoading;
+    final isUpdating =
+        isEditing || (profileAsync.isLoading && profileAsync.hasValue);
 
     // 1. Inisialisasi controller video menggunakan useMemoized agar tidak terbuat ulang terus
     final controller = useMemoized(
@@ -136,99 +139,149 @@ class ProfileScreen extends HookConsumerWidget {
                   profileAsync.when(
                     data: (response) {
                       final user = response?.data;
-                      return FCard(
-                        style: .delta(
-                          decoration: .boxDelta(
-                            color: context.theme.colors.background.withValues(
-                              alpha: 0.85,
+                      return Stack(
+                        children: [
+                          FCard(
+                            style: .delta(
+                              decoration: .boxDelta(
+                                color: context.theme.colors.background
+                                    .withValues(alpha: 0.85),
+                              ),
                             ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.all(20),
-                          child: Column(
-                            spacing: 20,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Profil Manager Kopdes',
-                                style: typography.body.md.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              FTile(
-                                title: const Text('Nama'),
-                                subtitle: Text(
-                                  user?.name ?? '-',
-                                  style: typography.body.md.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                suffix: FButton.icon(
-                                  size: .sm,
-                                  variant: .ghost,
-                                  onPress: () => _showEditNameDialog(
-                                    context,
-                                    ref,
-                                    user?.name ?? '',
-                                  ),
-                                  child: const Icon(
-                                    FLucideIcons.pencil,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                              FTile(
-                                title: const Text('Email'),
-                                subtitle: Text(
-                                  user?.email ?? '-',
-                                  style: typography.body.md.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              if (user?.id != null) ...[
-                                FTile(
-                                  title: const Text('ID Pengguna'),
-                                  subtitle: Text(
-                                    '${user!.id}',
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                spacing: 20,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Profil Manager Kopdes',
                                     style: typography.body.md.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                ),
-                              ],
-                              FTile(
-                                title: const Text('Dibuat Pada'),
-                                subtitle: Text(
-                                  user?.createdAt != null
-                                      ? DateFormat(
-                                          'dd MMMM yyyy, HH:mm',
-                                          'id_ID',
-                                        ).format(user!.createdAt!.toLocal())
-                                      : '-',
-                                  style: typography.body.md.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                  FTile(
+                                    title: const Text('Nama'),
+                                    subtitle: Text(
+                                      user?.name ?? '-',
+                                      style: typography.body.md.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    suffix: FButton.icon(
+                                      size: .sm,
+                                      variant: .ghost,
+                                      onPress: isUpdating
+                                          ? null
+                                          : () => _showEditNameDialog(
+                                              context,
+                                              ref,
+                                              user?.name ?? '',
+                                            ),
+                                      child: const Icon(
+                                        FLucideIcons.pencil,
+                                        size: 18,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              FTile(
-                                title: const Text('Terakhir Diperbarui'),
-                                subtitle: Text(
-                                  user?.updatedAt != null
-                                      ? DateFormat(
-                                          'dd MMMM yyyy, HH:mm',
-                                          'id_ID',
-                                        ).format(user!.updatedAt!.toLocal())
-                                      : '-',
-                                  style: typography.body.md.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                  FTile(
+                                    title: const Text('Email'),
+                                    subtitle: Text(
+                                      user?.email ?? '-',
+                                      style: typography.body.md.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  if (user?.id != null) ...[
+                                    FTile(
+                                      title: const Text('ID Pengguna'),
+                                      subtitle: Text(
+                                        '${user!.id}',
+                                        style: typography.body.md.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  FTile(
+                                    title: const Text('Dibuat Pada'),
+                                    subtitle: Text(
+                                      user?.createdAt != null
+                                          ? DateFormat(
+                                              'dd MMMM yyyy, HH:mm',
+                                              'id_ID',
+                                            ).format(user!.createdAt!.toLocal())
+                                          : '-',
+                                      style: typography.body.md.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  FTile(
+                                    title: const Text('Terakhir Diperbarui'),
+                                    subtitle: Text(
+                                      user?.updatedAt != null
+                                          ? DateFormat(
+                                              'dd MMMM yyyy, HH:mm',
+                                              'id_ID',
+                                            ).format(user!.updatedAt!.toLocal())
+                                          : '-',
+                                      style: typography.body.md.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          if (isUpdating)
+                            Positioned.fill(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Container(
+                                  color: Colors.black.withValues(alpha: 0.35),
+                                  child: Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 14,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: context.theme.colors.background
+                                            .withValues(alpha: 0.95),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: context.theme.colors.border,
+                                        ),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 8,
+                                            offset: Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const FCircularProgress(),
+                                          const SizedBox(width: 12),
+                                          Text(
+                                            'Memperbarui data...',
+                                            style: typography.body.md.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       );
                     },
                     loading: () => const Center(
