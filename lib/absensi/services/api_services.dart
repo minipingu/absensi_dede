@@ -3,6 +3,7 @@ import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
 import 'package:absensi_dede/absensi/models/absen/check_out_request_model.dart';
 import 'package:absensi_dede/absensi/models/absen/delete_absen_request_model.dart';
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
+import 'package:absensi_dede/absensi/models/absen/izin_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
 import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
 import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
@@ -33,6 +34,12 @@ abstract class ApiServices {
   Future<AbsenResponseModel> checkInUser(
     @Header('Authorization') String? token,
     @Body() CheckInRequestModel checkIn,
+  );
+
+  @POST('/api/absen/check-in')
+  Future<AbsenResponseModel> submitIzin(
+    @Header('Authorization') String? token,
+    @Body() IzinRequestModel izin,
   );
 
   @POST('/api/absen/check-out')

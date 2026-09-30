@@ -11,7 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_user.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ProfileUser extends _$ProfileUser {
   late ApiServices _apiServices;
 

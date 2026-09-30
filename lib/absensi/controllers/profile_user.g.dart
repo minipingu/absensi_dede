@@ -20,7 +20,7 @@ final class ProfileUserProvider
         argument: null,
         retry: null,
         name: r'profileUserProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -33,7 +33,7 @@ final class ProfileUserProvider
   ProfileUser create() => ProfileUser();
 }
 
-String _$profileUserHash() => r'340bdf33771501184cb4fe4f81a0b94a62915c8e';
+String _$profileUserHash() => r'59b6b2a846dbd2c6de74b83b1aba92bd4f2068f5';
 
 abstract class _$ProfileUser extends $AsyncNotifier<ProfilUserResponseModel?> {
   FutureOr<ProfilUserResponseModel?> build();

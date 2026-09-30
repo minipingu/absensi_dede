@@ -6,6 +6,7 @@ import 'package:absensi_dede/absensi/services/maps_service.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_out_button.dart';
 import 'package:absensi_dede/absensi/widgets/delete_presensi_button.dart';
+import 'package:absensi_dede/extension.dart';
 import 'package:absensi_dede/helper/date_formatter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -215,6 +216,68 @@ class AttendanceListScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildIzinSection({
+    required BuildContext context,
+    required Data activeItem,
+  }) {
+    final typography = context.theme.typography;
+    final colors = context.theme.colors;
+    final hasIzin =
+        activeItem.alasanIzin != null &&
+        activeItem.alasanIzin.toString().trim().isNotEmpty;
+
+    if (hasIzin) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                FLucideIcons.fileText,
+                size: 16,
+                color: colors.mutedForeground,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Keterangan Izin:',
+                style: typography.body.sm.copyWith(
+                  color: colors.mutedForeground,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: colors.muted.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: colors.border),
+            ),
+            child: Text(
+              activeItem.alasanIzin.toString(),
+              style: typography.body.md.copyWith(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Tidak ada keterangan izin',
+          style: typography.body.sm.copyWith(
+            color: colors.mutedForeground,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final typography = context.theme.typography;
@@ -250,30 +313,33 @@ class AttendanceListScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              FLucideIcons.calendarX,
-                              size: 48,
-                              color: Colors.grey,
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              'Belum Ada Riwayat Presensi',
-                              style: typography.body.lg.copyWith(
-                                fontWeight: FontWeight.w600,
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                FLucideIcons.calendarX,
+                                size: 48,
+                                color: Colors.grey,
                               ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Silakan lakukan check-in terlebih dahulu di halaman beranda.',
-                              textAlign: TextAlign.center,
-                              style: typography.body.sm.copyWith(
-                                color: context.theme.colors.mutedForeground,
+                              const SizedBox(height: 12),
+                              Text(
+                                'Belum Ada Riwayat Presensi',
+                                style: typography.body.lg.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 6),
+                              Text(
+                                'Silakan lakukan check-in terlebih dahulu di halaman beranda.',
+                                textAlign: TextAlign.center,
+                                style: typography.body.sm.copyWith(
+                                  color: context.theme.colors.mutedForeground,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -395,7 +461,7 @@ class AttendanceListScreen extends ConsumerWidget {
                                       Row(
                                         children: [
                                           Text(
-                                            '${activeItem.status == 'masuk' ? "Presensi" : ''} jam ',
+                                            '${activeItem.status == 'masuk' ? "Presensi" : (activeItem.status == 'izin' ? "Izin" : activeItem.status?.capitalize() ?? "")} jam ',
                                             style: typography.body.lg,
                                           ),
                                           Text(
@@ -418,7 +484,7 @@ class AttendanceListScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 12),
 
-                            // Accordion Lokasi Check In & Check Out
+                            // Accordion Lokasi Check In, Check Out, & Izin
                             FAccordion(
                               children: [
                                 FAccordionItem(
@@ -467,6 +533,14 @@ class AttendanceListScreen extends ConsumerWidget {
                                             const CheckOutButton(),
                                           ],
                                         ),
+                                ),
+                                FAccordionItem(
+                                  initiallyExpanded: true,
+                                  title: const Text('Izin'),
+                                  child: _buildIzinSection(
+                                    context: context,
+                                    activeItem: activeItem,
+                                  ),
                                 ),
                               ],
                             ),

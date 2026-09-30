@@ -1,5 +1,4 @@
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
-import 'package:absensi_dede/absensi/controllers/profile_user.dart';
 import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
@@ -35,7 +34,6 @@ class BottomNavBar extends ConsumerWidget {
         } else if (index == 2) {
           AttendanceListRoute().go(context);
         } else {
-          ref.invalidate(profileUserProvider);
           ProfileRoute().go(context);
         }
       },

@@ -1,5 +1,6 @@
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/absensi/controllers/login_user.dart';
+import 'package:absensi_dede/absensi/controllers/profile_user.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
@@ -22,6 +23,7 @@ class LogoutButton extends ConsumerWidget {
         ref.invalidate(userNameRiverpod);
         ref.invalidate(historyAbsenProvider);
         ref.invalidate(loginUserProvider);
+        ref.invalidate(profileUserProvider);
 
         if (!context.mounted) return;
 

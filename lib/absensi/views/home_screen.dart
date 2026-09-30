@@ -1,9 +1,11 @@
 import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
+import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
 import 'package:absensi_dede/absensi/widgets/home_map_widget.dart';
+import 'package:absensi_dede/absensi/widgets/izin_button.dart';
 import 'package:absensi_dede/absensi/riverpod/selected_attendance.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
@@ -50,6 +52,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final salam = DateTime.now().greetingMessage;
 
     final historyState = ref.watch(historyAbsenProvider);
+
+    final now = DateTime.now();
+    Data? todayAttendance;
+    final historyItems = historyState.value?.data;
+    if (historyItems != null) {
+      for (final item in historyItems) {
+        final itemDate = item.checkIn != null
+            ? parseUtcToLocal(item.checkIn)
+            : item.createdAt?.toLocal();
+        if (itemDate != null &&
+            itemDate.year == now.year &&
+            itemDate.month == now.month &&
+            itemDate.day == now.day) {
+          todayAttendance = item;
+          break;
+        }
+      }
+    }
+
+    final hasIzinToday =
+        todayAttendance != null &&
+        (todayAttendance.status == 'izin' ||
+            (todayAttendance.alasanIzin != null &&
+                todayAttendance.alasanIzin.toString().trim().isNotEmpty));
+
+    final hasCheckInToday =
+        todayAttendance != null &&
+        todayAttendance.checkIn != null &&
+        todayAttendance.checkIn!.isNotEmpty &&
+        !hasIzinToday;
 
     return Scaffold(
       extendBody: true,
@@ -269,7 +301,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                         ),
-                        CheckInButton(),
+                        CheckInButton(
+                          isReadOnly: hasIzinToday,
+                          readOnlyText: 'Check In (Sudah Izin)',
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: FDivider(
+                                style: .delta(padding: .value(.zero)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: Text(
+                                'atau',
+                                style: typography.body.sm.copyWith(
+                                  color: context.theme.colors.mutedForeground,
+                                ),
+                              ),
+                            ),
+                            const Expanded(
+                              child: FDivider(
+                                style: .delta(padding: .value(.zero)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        IzinButton(
+                          isReadOnly: hasCheckInToday || hasIzinToday,
+                          readOnlyText: hasIzinToday
+                              ? 'Sudah Mengajukan Izin'
+                              : (hasCheckInToday
+                                    ? 'Buat Ijin (Sudah Check In)'
+                                    : null),
+                        ),
                       ],
                     ),
                   ),

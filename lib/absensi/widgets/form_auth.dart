@@ -31,12 +31,19 @@ class _FormAuthState extends ConsumerState<FormAuth> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
+  late final FocusNode _nameFocusNode;
+  late final FocusNode _emailFocusNode;
+  late final FocusNode _passwordFocusNode;
+
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _nameFocusNode = FocusNode();
+    _emailFocusNode = FocusNode();
+    _passwordFocusNode = FocusNode();
   }
 
   @override
@@ -44,6 +51,9 @@ class _FormAuthState extends ConsumerState<FormAuth> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -57,6 +67,12 @@ class _FormAuthState extends ConsumerState<FormAuth> {
           'email': _emailController.text,
           'password': _passwordController.text,
         });
+
+        if (widget.isRegister) {
+          _nameFocusNode.requestFocus();
+        } else {
+          _emailFocusNode.requestFocus();
+        }
       });
     }
   }
@@ -162,8 +178,11 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   builder: (FormFieldState<String> field) {
                     return FTextFormField(
+                      focusNode: _nameFocusNode,
                       label: const Text('Nama'),
                       hint: 'misal : Gibrun',
+                      textInputAction: TextInputAction.next,
+                      onSubmit: (_) => _emailFocusNode.requestFocus(),
                       control: FTextFieldControl.managed(
                         controller: _nameController,
                         onChange: (value) => field.didChange(value.text),
@@ -189,8 +208,11 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 builder: (FormFieldState<String> field) {
                   return FTextFormField.email(
+                    focusNode: _emailFocusNode,
                     label: const Text('Email'),
                     hint: 'misal : manager@kopdes.go.id',
+                    textInputAction: TextInputAction.next,
+                    onSubmit: (_) => _passwordFocusNode.requestFocus(),
                     control: FTextFieldControl.managed(
                       controller: _emailController,
                       onChange: (value) => field.didChange(value.text),
@@ -231,8 +253,10 @@ class _FormAuthState extends ConsumerState<FormAuth> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 builder: (FormFieldState<String> field) {
                   return FTextFormField.password(
+                    focusNode: _passwordFocusNode,
                     label: const Text('Password'),
                     hint: 'isi password',
+                    textInputAction: TextInputAction.done,
                     control: FTextFieldControl.managed(
                       controller: _passwordController,
                       onChange: (value) => field.didChange(value.text),
@@ -247,6 +271,7 @@ class _FormAuthState extends ConsumerState<FormAuth> {
           SizedBox(
             width: double.infinity,
             child: FButton(
+              prefix: isLoading ? FCircularProgress() : null,
               size: .sm,
               mainAxisSize: .min,
               onPress: isLoading

@@ -8,7 +8,10 @@ import 'package:forui/forui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CheckInButton extends HookConsumerWidget {
-  const CheckInButton({super.key});
+  final bool isReadOnly;
+  final String? readOnlyText;
+
+  const CheckInButton({super.key, this.isReadOnly = false, this.readOnlyText});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,8 +83,12 @@ class CheckInButton extends HookConsumerWidget {
       child: FButton(
         prefix: loading.value ? const FCircularProgress() : null,
         variant: .primary,
-        onPress: loading.value ? null : checkIn,
-        child: const Text('Check In Sekarang'),
+        onPress: (loading.value || isReadOnly) ? null : checkIn,
+        child: Text(
+          isReadOnly
+              ? (readOnlyText ?? 'Check In (Sudah Izin)')
+              : 'Check In Sekarang',
+        ),
       ),
     );
   }
