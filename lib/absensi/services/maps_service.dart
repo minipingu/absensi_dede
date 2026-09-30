@@ -1,5 +1,6 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 export 'package:geolocator/geolocator.dart' show Position;
 
@@ -114,6 +115,25 @@ class MapsService {
     return Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
     );
+  }
+
+  /// Membuka tautan Google Maps langsung menggunakan [url_launcher].
+  Future<bool> openGoogleMaps(double latitude, double longitude) async {
+    final uri = getGoogleMapsUrl(latitude, longitude);
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (launched) return true;
+      return await launchUrl(uri);
+    } catch (_) {
+      try {
+        return await launchUrl(uri);
+      } catch (_) {
+        return false;
+      }
+    }
   }
 }
 

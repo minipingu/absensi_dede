@@ -102,20 +102,22 @@ class _MapsScreenState extends State<MapsScreen> {
     );
   }
 
-  void _openInGoogleMaps() {
+  Future<void> _openInGoogleMaps() async {
     if (_currentPosition == null) return;
 
-    final url = _mapsService.getGoogleMapsUrl(
+    final success = await _mapsService.openGoogleMaps(
       _currentPosition!.latitude,
       _currentPosition!.longitude,
     );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Tautan Maps: $url"),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    if (!success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Gagal membuka Google Maps"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override

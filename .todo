@@ -123,16 +123,23 @@
     {
       "id": "179076564656283ppvc",
       "title": "Move ijin button to home_screen.dart below check-in with FDivider and mutual readonly logic",
-      "category": "Active",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
     },
     {
       "id": "1790766954041yl865",
       "title": "Prevent fetching/refreshing profile data on navigating to profile_screen; only refresh when name is saved from edit dialog",
-      "category": "Active",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
+    },
+    {
+      "id": "1790772495360zzcxu",
+      "title": "Replace all Google Maps toast links with url_launcher to open directly",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

@@ -149,17 +149,21 @@ class SheetAttend extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  final url = MapsService().getGoogleMapsUrl(
+                onTap: () async {
+                  final success = await MapsService().openGoogleMaps(
                     latLng.latitude,
                     latLng.longitude,
                   );
-                  showFToast(
-                    context: context,
-                    title: const Text('Tautan Google Maps'),
-                    description: Text(url.toString()),
-                    icon: const Icon(Icons.map_outlined),
-                  );
+                  if (!success && context.mounted) {
+                    showFToast(
+                      context: context,
+                      title: const Text('Gagal Membuka Peta'),
+                      description: const Text(
+                        'Tidak dapat membuka tautan Google Maps',
+                      ),
+                      icon: const Icon(Icons.error_outline),
+                    );
+                  }
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

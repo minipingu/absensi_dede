@@ -115,20 +115,22 @@ class _HomeMapWidgetState extends State<HomeMapWidget> {
     );
   }
 
-  void _openInGoogleMaps() {
+  Future<void> _openInGoogleMaps() async {
     if (_currentPosition == null) return;
 
-    final url = _mapsService.getGoogleMapsUrl(
+    final success = await _mapsService.openGoogleMaps(
       _currentPosition!.latitude,
       _currentPosition!.longitude,
     );
 
-    showFToast(
-      context: context,
-      title: const Text('Tautan Google Maps'),
-      description: Text(url.toString()),
-      icon: const Icon(Icons.map_outlined),
-    );
+    if (!success && mounted) {
+      showFToast(
+        context: context,
+        title: const Text('Gagal Membuka Peta'),
+        description: const Text('Tidak dapat membuka Google Maps'),
+        icon: const Icon(Icons.error_outline),
+      );
+    }
   }
 
   @override
