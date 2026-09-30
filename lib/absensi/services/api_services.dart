@@ -49,7 +49,7 @@ abstract class ApiServices {
     @Body() DeleteAbsenRequestModel delete,
   );
 
-  @POST('/api/profile')
+  @GET('/api/profile')
   Future<ProfilUserResponseModel> getProfile({
     @Header('Authorization') String? token,
   });

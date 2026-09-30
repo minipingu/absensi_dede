@@ -189,7 +189,7 @@ class ProfileScreen extends HookConsumerWidget {
                                     ? DateFormat(
                                         'dd MMMM yyyy, HH:mm',
                                         'id_ID',
-                                      ).format(user!.createdAt!)
+                                      ).format(user!.createdAt!.toLocal())
                                     : '-',
                               ),
                             ),
@@ -201,7 +201,7 @@ class ProfileScreen extends HookConsumerWidget {
                                     ? DateFormat(
                                         'dd MMMM yyyy, HH:mm',
                                         'id_ID',
-                                      ).format(user!.updatedAt!)
+                                      ).format(user!.updatedAt!.toLocal())
                                     : '-',
                               ),
                             ),

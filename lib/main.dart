@@ -2,6 +2,7 @@ import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'absensi/riverpod/theme.dart';
@@ -11,6 +12,7 @@ final _router = GoRouter(routes: $appRoutes);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   runApp(ProviderScope(child: Application()));
 }
 
