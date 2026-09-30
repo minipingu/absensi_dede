@@ -1,10 +1,9 @@
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
-import 'package:absensi_dede/absensi/services/maps_service.dart';
 import 'package:absensi_dede/absensi/widgets/check_out_button.dart';
 import 'package:absensi_dede/absensi/widgets/delete_presensi_button.dart';
+import 'package:absensi_dede/helper/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:intl/intl.dart';
 
 class SheetAttend extends StatelessWidget {
   final FLayout side;
@@ -15,13 +14,8 @@ class SheetAttend extends StatelessWidget {
   Widget build(BuildContext context) {
     final typography = context.theme.typography;
 
-    final latitude = double.parse(history.checkInLocation?.split(',')[0] ?? '');
-    final longitude = double.parse(
-      history.checkInLocation?.split(',')[1] ?? '',
-    );
-
-    final date = DateTime.parse(history.checkIn?.split(' ')[0] ?? "");
-    final formattedDate = DateFormat('dd MMMM yyyy', 'id_ID').format(date);
+    final formattedDate = formatLocalDate(history.checkIn);
+    final formattedTime = formatLocalTime(history.checkIn);
 
     return Container(
       decoration: BoxDecoration(color: context.theme.colors.background),
@@ -43,7 +37,7 @@ class SheetAttend extends StatelessWidget {
                             style: typography.body.lg,
                           ),
                           Text(
-                            history.checkIn?.split(' ')[1] ?? '-',
+                            formattedTime,
                             style: typography.body.lg.copyWith(
                               fontWeight: .w700,
                             ),

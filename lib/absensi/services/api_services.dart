@@ -42,8 +42,9 @@ abstract class ApiServices {
   );
 
   //Delete Absen
-  @DELETE('/api/absen/9')
+  @DELETE('/api/absen/{id}')
   Future<AbsenResponseModel> deletePresensi(
+    @Path('id') int id,
     @Header('Authorization') String? token,
     @Body() DeleteAbsenRequestModel delete,
   );

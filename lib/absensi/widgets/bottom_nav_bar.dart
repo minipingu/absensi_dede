@@ -1,4 +1,6 @@
+import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
+import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,13 +25,17 @@ class BottomNavBar extends ConsumerWidget {
       onItemSelected: (index) {
         ref.read(bottomNavProvider.notifier).setIndex(index);
 
-        index == 0
-            ? HomeRoute().go(context)
-            : index == 1
-            ? MapsRoute().go(context)
-            : index == 2
-            ? AttendanceListRoute().go(context)
-            : ProfileRoute().go(context);
+        if (index == 0) {
+          ref.invalidate(userNameRiverpod);
+          ref.invalidate(historyAbsenProvider);
+          HomeRoute().go(context);
+        } else if (index == 1) {
+          MapsRoute().go(context);
+        } else if (index == 2) {
+          AttendanceListRoute().go(context);
+        } else {
+          ProfileRoute().go(context);
+        }
       },
       style: NavBarStyle.synapse,
       theme: FuturisticTheme.molten(),

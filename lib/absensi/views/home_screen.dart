@@ -1,4 +1,4 @@
-import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
+import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
@@ -7,6 +7,7 @@ import 'package:absensi_dede/absensi/widgets/sheet_attend.dart';
 import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
 import 'package:absensi_dede/absensi/controllers/history_absen.dart';
 import 'package:absensi_dede/extension.dart';
+import 'package:absensi_dede/helper/date_formatter.dart';
 import 'package:absensi_dede/helper/greetings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +15,32 @@ import 'package:forui/forui.dart';
 import 'package:intl/intl.dart';
 import 'package:one_clock/one_clock.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const new({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(userNameRiverpod);
+      ref.invalidate(historyAbsenProvider);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen<int>(bottomNavProvider, (previous, next) {
+      if (next == 0) {
+        ref.invalidate(userNameRiverpod);
+        ref.invalidate(historyAbsenProvider);
+      }
+    });
+
     final typography = context.theme.typography;
     final themeState = ref.watch(themeProvider).value ?? false;
     final userName = ref.watch(userNameRiverpod);
@@ -192,13 +214,12 @@ class HomeScreen extends ConsumerWidget {
                               itemBuilder: (context, index) {
                                 final item = items[index];
 
-                                final date = DateTime.parse(
-                                  item.checkIn?.split(' ')[0] ?? "",
+                                final formattedDate = formatLocalDate(
+                                  item.checkIn,
                                 );
-                                final formatted = DateFormat(
-                                  'dd MMMM yyyy',
-                                  'id_ID',
-                                ).format(date);
+                                final formattedTime = formatLocalTime(
+                                  item.checkIn,
+                                );
 
                                 return FTile(
                                   onPress: () {
@@ -211,9 +232,9 @@ class HomeScreen extends ConsumerWidget {
                                       ),
                                     );
                                   },
-                                  title: Text(formatted),
+                                  title: Text(formattedDate),
                                   subtitle: Text(
-                                    '${item.status?.capitalize()} Jam: ${item.checkIn?.split(' ')[1] ?? '-'}',
+                                    '${item.status?.capitalize()} Jam: $formattedTime',
                                     style: typography.body.lg.copyWith(
                                       fontWeight: .w500,
                                       fontSize: 16,

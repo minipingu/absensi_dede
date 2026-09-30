@@ -33,7 +33,7 @@ final class DeletePresensiProvider
   DeletePresensi create() => DeletePresensi();
 }
 
-String _$deletePresensiHash() => r'a61c2734dbbb53c7519d790690a5f223a7e0d5d3';
+String _$deletePresensiHash() => r'e402da6601bd4308f685790d4aeffa02f8291528';
 
 abstract class _$DeletePresensi extends $AsyncNotifier<AbsenResponseModel?> {
   FutureOr<AbsenResponseModel?> build();

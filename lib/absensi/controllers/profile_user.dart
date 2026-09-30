@@ -11,7 +11,7 @@ part 'profile_user.g.dart';
 
 @riverpod
 class ProfileUser extends _$ProfileUser {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<ProfilUserResponseModel?> build() async {

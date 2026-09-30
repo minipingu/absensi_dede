@@ -175,6 +175,7 @@ class _ApiServices implements ApiServices {
 
   @override
   Future<AbsenResponseModel> deletePresensi(
+    int id,
     String? token,
     DeleteAbsenRequestModel delete,
   ) async {
@@ -189,7 +190,7 @@ class _ApiServices implements ApiServices {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/absen/9',
+            '/api/absen/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

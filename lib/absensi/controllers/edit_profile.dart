@@ -16,7 +16,7 @@ part 'edit_profile.g.dart';
 
 @riverpod
 class EditProfile extends _$EditProfile {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<ProfilUserResponseModel?> build() {

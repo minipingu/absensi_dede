@@ -11,7 +11,7 @@ part 'register_user.g.dart';
 
 @riverpod
 class RegisterUser extends _$RegisterUser {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<RegisterResponseModel?> build() {

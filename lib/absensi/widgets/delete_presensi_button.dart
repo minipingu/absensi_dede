@@ -87,7 +87,7 @@ class DeletePresensiButton extends HookConsumerWidget {
 
       if (confirmed == true) {
         loading.value = true;
-        await ref.read(deletePresensiProvider.notifier).deletePresensi();
+        await ref.read(deletePresensiProvider.notifier).deletePresensi(id: id);
       }
     }
 

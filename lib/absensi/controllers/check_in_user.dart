@@ -12,7 +12,7 @@ part 'check_in_user.g.dart';
 
 @riverpod
 class CheckInUser extends _$CheckInUser {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<AbsenResponseModel?> build() {
@@ -39,10 +39,7 @@ class CheckInUser extends _$CheckInUser {
           ? activeToken
           : 'Bearer $activeToken';
 
-      final response = await _apiServices.checkInUser(
-        authHeader,
-        requestBody,
-      );
+      final response = await _apiServices.checkInUser(authHeader, requestBody);
       developer.log('Check in response: ${response.toJson()}');
 
       if (response.data != null) {

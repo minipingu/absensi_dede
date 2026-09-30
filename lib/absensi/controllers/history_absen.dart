@@ -11,7 +11,7 @@ part 'history_absen.g.dart';
 
 @riverpod
 class HistoryAbsen extends _$HistoryAbsen {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<HistoryAbsenResponseModel?> build() async {

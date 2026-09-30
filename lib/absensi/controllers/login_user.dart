@@ -13,7 +13,7 @@ part 'login_user.g.dart';
 
 @riverpod
 class LoginUser extends _$LoginUser {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<LoginResponseModel?> build() {

@@ -12,7 +12,7 @@ part 'delete_presensi.g.dart';
 
 @riverpod
 class DeletePresensi extends _$DeletePresensi {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<AbsenResponseModel?> build() {
@@ -22,6 +22,7 @@ class DeletePresensi extends _$DeletePresensi {
   }
 
   Future<AbsenResponseModel?> delete({
+    int? id,
     DeleteAbsenRequestModel? requestBody,
     String? token,
   }) async {
@@ -35,6 +36,13 @@ class DeletePresensi extends _$DeletePresensi {
         return null;
       }
 
+      final activeUserId = id ?? await LoginPreferences.userId;
+      if (activeUserId == null) {
+        const errorMsg = 'User ID tidak ditemukan. Silakan login kembali.';
+        state = AsyncError(errorMsg, StackTrace.current);
+        return null;
+      }
+
       final authHeader = activeToken.startsWith('Bearer ')
           ? activeToken
           : 'Bearer $activeToken';
@@ -42,6 +50,7 @@ class DeletePresensi extends _$DeletePresensi {
       final body = requestBody ?? DeleteAbsenRequestModel();
 
       final response = await _apiServices.deletePresensi(
+        activeUserId,
         authHeader,
         body,
       );
@@ -84,10 +93,11 @@ class DeletePresensi extends _$DeletePresensi {
   }
 
   /// Alias method deletePresensi
-  Future<AbsenResponseModel?> deletePresensi([
+  Future<AbsenResponseModel?> deletePresensi({
+    int? id,
     DeleteAbsenRequestModel? requestBody,
     String? token,
-  ]) {
-    return delete(requestBody: requestBody, token: token);
+  }) {
+    return delete(id: id, requestBody: requestBody, token: token);
   }
 }

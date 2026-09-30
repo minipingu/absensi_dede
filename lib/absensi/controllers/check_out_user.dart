@@ -12,7 +12,7 @@ part 'check_out_user.g.dart';
 
 @riverpod
 class CheckOutUser extends _$CheckOutUser {
-  late final ApiServices _apiServices;
+  late ApiServices _apiServices;
 
   @override
   FutureOr<AbsenResponseModel?> build() {
@@ -39,10 +39,7 @@ class CheckOutUser extends _$CheckOutUser {
           ? activeToken
           : 'Bearer $activeToken';
 
-      final response = await _apiServices.checkOutUser(
-        authHeader,
-        requestBody,
-      );
+      final response = await _apiServices.checkOutUser(authHeader, requestBody);
       developer.log('Check out response: ${response.toJson()}');
 
       if (response.data != null) {

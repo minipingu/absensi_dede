@@ -13,7 +13,6 @@ class CheckInButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loading = useState(false);
-    print(loading.value);
 
     ref.listen(checkInUserProvider, (previous, next) {
       next.whenOrNull(
