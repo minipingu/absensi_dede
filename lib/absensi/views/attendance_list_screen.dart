@@ -441,7 +441,7 @@ class AttendanceListScreen extends ConsumerWidget {
                       style: .delta(
                         decoration: .boxDelta(
                           color: context.theme.colors.background.withValues(
-                            alpha: 0.85,
+                            alpha: 0.9,
                           ),
                         ),
                       ),

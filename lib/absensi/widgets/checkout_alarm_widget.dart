@@ -232,7 +232,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
 
     return FCard(
       style: .delta(
-        decoration: .boxDelta(color: colors.background.withValues(alpha: 0.6)),
+        decoration: .boxDelta(color: colors.background.withValues(alpha: 0.8)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -338,14 +338,11 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
             ] else ...[
               Text(
                 'Atur pengingat agar tidak lupa melakukan check out setelah jam kerja selesai.',
-                style: typography.body.sm.copyWith(
-                  color: colors.mutedForeground,
-                ),
+                style: typography.body.sm.copyWith(),
               ),
               const SizedBox(height: 14),
             ],
 
-            // Tombol Setting Waktu Alarm
             SizedBox(
               width: double.infinity,
               child: FButton(
@@ -358,8 +355,9 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                     const SizedBox(width: 8),
                     Text(
                       _isAlarmActive ? 'Ubah Waktu Alarm' : 'Atur Waktu Alarm',
-                      style: typography.body.md.copyWith(
+                      style: typography.body.xs.copyWith(
                         fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ],
