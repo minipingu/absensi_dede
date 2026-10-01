@@ -283,7 +283,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         .select(item.id);
                                     ref
                                         .read(bottomNavProvider.notifier)
-                                        .setIndex(2);
+                                        .setIndex(1);
                                     AttendanceListRoute().go(context);
                                   },
                                   title: Text(formattedDate),

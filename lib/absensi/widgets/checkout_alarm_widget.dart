@@ -311,7 +311,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Waktu Alarm (Format 24 Jam)',
+                          'Waktu Alarm',
                           style: typography.body.xs.copyWith(
                             color: colors.mutedForeground,
                           ),
@@ -354,7 +354,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                     const Icon(Icons.schedule, size: 18),
                     const SizedBox(width: 8),
                     Text(
-                      _isAlarmActive ? 'Ubah Waktu Alarm' : 'Atur Waktu Alarm',
+                      _isAlarmActive ? 'Ubah Waktu Alarm' : 'Test Waktu Alarm',
                       style: typography.body.xs.copyWith(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,

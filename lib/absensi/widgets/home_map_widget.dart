@@ -140,7 +140,7 @@ class _HomeMapWidgetState extends State<HomeMapWidget> {
 
     return FCard(
       style: .delta(
-        decoration: .boxDelta(color: colors.background.withValues(alpha: 0.9)),
+        decoration: .boxDelta(color: colors.background.withValues(alpha: 0.8)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
