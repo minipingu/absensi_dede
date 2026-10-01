@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "com.example.absensi_dede"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

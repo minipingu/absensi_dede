@@ -2,6 +2,7 @@ import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_dede/absensi/riverpod/theme.dart';
 import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
 import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
+import 'package:absensi_dede/absensi/services/app_permission_service.dart';
 import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
 import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
 import 'package:absensi_dede/absensi/widgets/checkout_alarm_widget.dart';
@@ -34,7 +35,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.invalidate(userNameRiverpod);
       ref.invalidate(historyAbsenProvider);
+      _checkPermissions();
     });
+  }
+
+  /// Request semua permission saat home screen pertama kali dibuka.
+  Future<void> _checkPermissions() async {
+    final report = await AppPermissionService.checkAndRequestAll();
+
+    if (!mounted) return;
+
+    // Jika permission utama ditolak permanen, tampilkan dialog
+    if (!report.allPermissionsGranted) {
+      await AppPermissionService.showPermissionDeniedDialog(context);
+    }
+    // Jika battery optimization masih aktif, tampilkan dialog penjelasan
+    else if (!report.batteryOptimizationDisabled) {
+      await AppPermissionService.showBatteryOptimizationDialog(context);
+    }
   }
 
   @override

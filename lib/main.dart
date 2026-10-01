@@ -13,19 +13,7 @@ import 'theme/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final _router = GoRouter(
-  navigatorKey: rootNavigatorKey,
-  routes: $appRoutes,
-  redirect: (context, state) {
-    final isAlarmRinging = Alarm.ringing.value.alarms.isNotEmpty;
-    final isAlarmPath = state.uri.path == '/alarm';
-
-    if (isAlarmRinging && !isAlarmPath) {
-      return '/alarm';
-    }
-    return null;
-  },
-);
+final _router = GoRouter(navigatorKey: rootNavigatorKey, routes: $appRoutes);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,17 +30,27 @@ class Application extends ConsumerStatefulWidget {
 }
 
 class _ApplicationState extends ConsumerState<Application> {
-  StreamSubscription? _ringSubscription;
+  StreamSubscription<dynamic>? _ringSubscription;
 
   @override
   void initState() {
     super.initState();
+
+    // Listen to ringing alarms stream (alarm v5 API: ValueStream<AlarmSet>)
     _ringSubscription = Alarm.ringing.listen((alarmSet) {
       if (alarmSet.alarms.isNotEmpty) {
-        _router.go('/alarm');
+        // Use post-frame to ensure router is mounted and ready
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final currentPath =
+              _router.routerDelegate.currentConfiguration.uri.path;
+          if (currentPath != '/alarm') {
+            _router.go('/alarm');
+          }
+        });
       }
     });
 
+    // Check if alarm is already ringing on startup (ValueStream has current value)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Alarm.ringing.value.alarms.isNotEmpty) {
         _router.go('/alarm');

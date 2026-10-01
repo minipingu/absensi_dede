@@ -189,7 +189,6 @@ class _AlarmScreenState extends State<AlarmScreen>
                     ),
                   ],
                 ),
-
                 // Jam Format 24 Jam
                 FCard(
                   style: .delta(
@@ -224,7 +223,6 @@ class _AlarmScreenState extends State<AlarmScreen>
                     ),
                   ),
                 ),
-
                 // Tombol Matikan Alarm
                 SizedBox(
                   width: double.infinity,

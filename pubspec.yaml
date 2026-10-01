@@ -41,6 +41,7 @@ dependencies:
   video_player: ^2.14.0
   url_launcher: ^6.3.2
   alarm: ^5.13.3
+  permission_handler: ^13.0.2
   
 
 dev_dependencies:

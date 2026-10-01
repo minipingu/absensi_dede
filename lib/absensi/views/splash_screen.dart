@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:absensi_dede/absensi/router/routes.dart';
 import 'package:absensi_dede/absensi/services/login_preferences.dart';
-import 'package:alarm/alarm.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,10 +15,6 @@ class SplashScreen extends HookWidget {
     useEffect(() {
       Timer(const Duration(seconds: 3), () async {
         if (!context.mounted) return;
-        if (Alarm.ringing.value.alarms.isNotEmpty) {
-          const AlarmRoute().go(context);
-          return;
-        }
 
         final isLogin = await LoginPreferences.isLogin;
         if (context.mounted) {

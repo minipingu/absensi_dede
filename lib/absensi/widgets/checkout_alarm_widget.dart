@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../services/alarm_preferences.dart';
+import '../services/app_permission_service.dart';
 
 class CheckoutAlarmWidget extends StatefulWidget {
   const CheckoutAlarmWidget({super.key});
@@ -117,6 +119,26 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
   }
 
   Future<void> _scheduleAlarm(FTime time) async {
+    // Pastikan izin notifikasi dan alarm tepat waktu aktif
+    final notifStatus = await Permission.notification.status;
+    if (!notifStatus.isGranted) {
+      await Permission.notification.request();
+    }
+
+    final exactAlarmStatus = await Permission.scheduleExactAlarm.status;
+    if (!exactAlarmStatus.isGranted) {
+      await Permission.scheduleExactAlarm.request();
+    }
+
+    // Pastikan optimasi baterai dinonaktifkan agar alarm tidak dimatikan di background
+    final isBatteryWhitelisted =
+        await AppPermissionService.isBatteryOptimizationDisabled();
+    if (!isBatteryWhitelisted) {
+      if (mounted) {
+        await AppPermissionService.showBatteryOptimizationDialog(context);
+      }
+    }
+
     final now = DateTime.now();
     var scheduledDateTime = DateTime(
       now.year,
@@ -137,7 +159,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
       assetAudioPath: 'assets/alarm/alarm_perang.mp3',
       loopAudio: true,
       vibrate: true,
-      warningNotificationOnKill: true,
+      warningNotificationOnKill: false,
       androidFullScreenIntent: true,
       volumeSettings: const VolumeSettings.fixed(volume: 0.8),
       notificationSettings: const NotificationSettings(
