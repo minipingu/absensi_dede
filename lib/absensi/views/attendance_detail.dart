@@ -15,8 +15,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class AttendanceListScreen extends ConsumerWidget {
-  const AttendanceListScreen({super.key});
+class AttendanceDetail extends ConsumerWidget {
+  const AttendanceDetail({super.key});
 
   double? _parseDouble(dynamic val) {
     if (val == null) return null;
@@ -357,7 +357,7 @@ class AttendanceListScreen extends ConsumerWidget {
                 );
 
                 final formattedDate = formatLocalDate(activeItem.checkIn);
-                final formattedTime = formatLocalTime(activeItem.checkIn);
+                // final formattedTime = formatLocalTime(activeItem.checkIn);
                 final checkInLatLng = _getCheckInLatLng(activeItem);
                 final checkOutLatLng = _getCheckOutLatLng(activeItem);
                 final hasCheckedOut = _hasCheckOut(activeItem);
@@ -469,7 +469,8 @@ class AttendanceListScreen extends ConsumerWidget {
                                             style: typography.body.lg,
                                           ),
                                           Text(
-                                            formattedTime,
+                                            // formattedTime,
+                                            '${activeItem.checkIn?.split(' ')[1]}',
                                             style: typography.body.lg.copyWith(
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -502,7 +503,8 @@ class AttendanceListScreen extends ConsumerWidget {
                                         activeItem.checkInAddress ??
                                         'Tidak ada alamat tercatat',
                                     timeText: activeItem.checkIn != null
-                                        ? 'Waktu Masuk: ${formatLocalTime(activeItem.checkIn)}'
+                                        // ? 'Waktu Masuk: ${formatLocalTime(activeItem.checkIn)}'
+                                        ? 'Waktu Masuk: ${activeItem.checkIn}'
                                         : null,
                                   ),
                                 ),
@@ -519,7 +521,8 @@ class AttendanceListScreen extends ConsumerWidget {
                                                   ?.toString() ??
                                               'Alamat Checkout tidak tercatat',
                                           timeText: activeItem.checkOut != null
-                                              ? 'Waktu Pulang: ${formatLocalTime(activeItem.checkOut.toString())}'
+                                              // ? 'Waktu Pulang: ${formatLocalTime(activeItem.checkOut.toString())}'
+                                              ? 'Waktu Pulang: ${activeItem.checkOut.toString()}'
                                               : null,
                                         )
                                       : Column(

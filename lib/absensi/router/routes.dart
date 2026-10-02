@@ -1,5 +1,5 @@
 import 'package:absensi_dede/absensi/views/alarm_screen.dart';
-import 'package:absensi_dede/absensi/views/attendance_list_screen.dart';
+import 'package:absensi_dede/absensi/views/attendance_detail.dart';
 import 'package:absensi_dede/absensi/views/home_screen.dart';
 import 'package:absensi_dede/absensi/views/login_register.dart';
 import 'package:absensi_dede/absensi/views/profile_screen.dart';
@@ -94,7 +94,7 @@ class AttendanceListRoute extends GoRouteData with $AttendanceListRoute {
   AttendanceListRoute();
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AttendanceListScreen();
+    return AttendanceDetail();
   }
 }
 

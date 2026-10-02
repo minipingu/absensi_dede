@@ -120,71 +120,99 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Column(
                   children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(20),
-                          child: Image.asset(
-                            themeState
-                                ? 'assets/images/banner_kopdes_malam.png'
-                                : 'assets/images/banner_kopdes.png',
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsGeometry.all(20),
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-                              Text(
-                                'Halo $salam,',
-                                style: typography.body.lg.copyWith(
-                                  fontWeight: .w600,
-                                  fontSize: 20,
-                                ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        width: double.infinity,
+                        constraints: const BoxConstraints(minHeight: 220),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Image.asset(
+                                themeState
+                                    ? 'assets/images/banner_kopdes_malam.png'
+                                    : 'assets/images/banner_kopdes.png',
+                                fit: BoxFit.cover,
                               ),
-                              Transform.translate(
-                                offset: const Offset(0, -10),
-                                child: userName.when(
-                                  loading: () => const SizedBox(
-                                    width: 14,
-                                    height: 14,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                  error: (err, stack) =>
-                                      Text('Guest', style: typography.body.lg),
-                                  data: (name) => Text(
-                                    name?.capitalize() ?? 'Guest',
-                                    textAlign: .start,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Halo $salam,',
                                     style: typography.body.lg.copyWith(
-                                      fontWeight: .w700,
-                                      fontSize: 30,
-                                      shadows: [
-                                        Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 4,
-                                          offset: (Offset(1, 1)),
-                                        ),
-                                      ],
-                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                      height: 1.2,
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 60),
-                              Container(
-                                decoration: BoxDecoration(),
-                                width: 120,
-                                height: 30,
-                                child: FittedBox(
-                                  fit: .contain,
-                                  child: DigitalClock(
-                                    textScaleFactor: 0.6,
-                                    format: "HH:mm:ss",
-                                    textStyle: const TextStyle(
+                                  const SizedBox(height: 4),
+                                  userName.when(
+                                    loading: () => const SizedBox(
+                                      width: 14,
+                                      height: 14,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    error: (err, stack) => Text(
+                                      'Guest',
+                                      style: typography.body.lg,
+                                    ),
+                                    data: (name) => Text(
+                                      name?.capitalize() ?? 'Guest',
+                                      textAlign: TextAlign.start,
+                                      style: typography.body.lg.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 30,
+                                        height: 1.15,
+                                        shadows: const [
+                                          Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 4,
+                                            offset: Offset(1, 1),
+                                          ),
+                                        ],
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Container(
+                                    decoration: const BoxDecoration(),
+                                    width: 120,
+                                    height: 30,
+                                    child: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: DigitalClock(
+                                        textScaleFactor: 0.6,
+                                        format: "HH:mm:ss",
+                                        textStyle: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black,
+                                              blurRadius: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        showSeconds: false,
+                                        isLive: true,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    DateFormat(
+                                      'dd MMMM yyyy',
+                                      'id_ID',
+                                    ).format(DateTime.now()),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
                                       shadows: [
                                         Shadow(
                                           color: Colors.black,
@@ -192,34 +220,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         ),
                                       ],
                                     ),
-                                    showSeconds: false,
-                                    isLive: true,
                                   ),
-                                ),
+                                ],
                               ),
-                              Text(
-                                DateFormat(
-                                  'dd MMMM yyyy',
-                                  'id_ID',
-                                ).format(DateTime.now()),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow(color: Colors.black, blurRadius: 10),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            const Positioned(
+                              top: 10,
+                              right: 10,
+                              child: ThemeToggleButton(),
+                            ),
+                          ],
                         ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: ThemeToggleButton(),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -270,9 +282,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 final formattedDate = formatLocalDate(
                                   item.checkIn,
                                 );
-                                final formattedTime = formatLocalTime(
-                                  item.checkIn,
-                                );
+                                // final formattedTime = formatLocalTime(
+                                //   item.checkIn,
+                                // );
 
                                 return FTile(
                                   onPress: () {
@@ -288,7 +300,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   },
                                   title: Text(formattedDate),
                                   subtitle: Text(
-                                    '${item.status?.capitalize()} Jam: $formattedTime',
+                                    // '${item.status?.capitalize()} Jam: $formattedTime',
+                                    '${item.status?.capitalize()} Jam: ${item.checkIn?.split(' ')[1]}',
                                     style: typography.body.lg.copyWith(
                                       fontWeight: .w500,
                                       fontSize: 16,

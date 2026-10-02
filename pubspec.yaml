@@ -42,6 +42,7 @@ dependencies:
   url_launcher: ^6.3.2
   alarm: ^5.13.3
   permission_handler: ^13.0.2
+  flutter_native_splash: ^2.4.8
   
 
 dev_dependencies:

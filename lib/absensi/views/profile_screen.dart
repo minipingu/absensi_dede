@@ -58,7 +58,7 @@ class ProfileScreen extends HookConsumerWidget {
           .then((_) {
             if (!isMounted) return;
             controller.setLooping(true);
-            controller.setVolume(0.0);
+            controller.setVolume(3.0);
             controller.play();
             isInitialized.value = true;
           })
@@ -164,6 +164,9 @@ class ProfileScreen extends HookConsumerWidget {
                                     title: const Text('Nama'),
                                     subtitle: Text(
                                       user?.name ?? '-',
+                                      softWrap: true,
+                                      maxLines: null,
+                                      overflow: TextOverflow.visible,
                                       style: typography.body.md.copyWith(
                                         fontWeight: FontWeight.w600,
                                       ),

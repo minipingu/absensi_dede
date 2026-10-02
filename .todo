@@ -182,6 +182,27 @@
       "category": "Blocked",
       "dueDate": null,
       "completed": false
+    },
+    {
+      "id": "1790941387259q6pvmp",
+      "title": "Allow name field in profile_screen to wrap into new lines instead of ellipsis",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1790942084550mwqz95",
+      "title": "Fix userName line height and dynamic banner height in home_screen.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "17909438752838q5k4n",
+      "title": "Enable audio in video player on profile_screen.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }
