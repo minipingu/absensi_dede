@@ -240,6 +240,17 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header: Judul & Status
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: .circular(20),
+              child: Image.asset(
+                'assets/images/jangan_lupa_checkout_bos.png',
+                width: .infinity,
+                height: 200,
+                fit: .cover,
+              ),
+            ),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -286,8 +297,6 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-
             // Tampilan waktu format 24 jam jika ada
             if (_alarmTime != null && _isAlarmActive) ...[
               Container(
@@ -354,7 +363,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                     const Icon(Icons.schedule, size: 18),
                     const SizedBox(width: 8),
                     Text(
-                      _isAlarmActive ? 'Ubah Waktu Alarm' : 'Test Waktu Alarm',
+                      _isAlarmActive ? 'Ubah Waktu Alarm' : 'Set Waktu Alarm',
                       style: typography.body.xs.copyWith(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
