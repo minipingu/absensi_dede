@@ -3,9 +3,9 @@
     "todo-mcp": {
       "command": "node",
       "args": [
-        "c:\\Users\\minipingu\\.cursor\\extensions\\hurtis.todo-2.0.0-universal\\bin\\todo-mcp.js",
+        "c:\\Users\\Admin\\.cursor\\extensions\\hurtis.todo-2.0.0-universal\\bin\\todo-mcp.js",
         "--workspace",
-        "c:\\Users\\minipingu\\Desktop\\absensi_dede"
+        "c:\\Users\\Admin\\Desktop\\absensi_dede"
       ]
     }
   }
