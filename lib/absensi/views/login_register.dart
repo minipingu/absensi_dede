@@ -1,6 +1,6 @@
-import 'package:absensi_dede/absensi/riverpod/theme.dart';
-import 'package:absensi_dede/absensi/widgets/form_auth.dart';
-import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
+import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
+import 'package:absensi_kopdes/absensi/widgets/form_auth.dart';
+import 'package:absensi_kopdes/absensi/widgets/theme_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';

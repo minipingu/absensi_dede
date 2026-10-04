@@ -1,9 +1,9 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
-import 'package:absensi_dede/absensi/models/register/register_response_model.dart';
-import 'package:absensi_dede/absensi/services/api_services.dart';
-import 'package:absensi_dede/absensi/services/dio_client.dart';
+import 'package:absensi_kopdes/absensi/models/register/register_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/register/register_response_model.dart';
+import 'package:absensi_kopdes/absensi/services/api_services.dart';
+import 'package:absensi_kopdes/absensi/services/dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

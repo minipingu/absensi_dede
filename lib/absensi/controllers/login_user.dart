@@ -1,12 +1,12 @@
 import 'dart:developer' as developer;
 
-import 'package:absensi_dede/absensi/controllers/profile_user.dart';
-import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
-import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
-import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
-import 'package:absensi_dede/absensi/services/api_services.dart';
-import 'package:absensi_dede/absensi/services/dio_client.dart';
-import 'package:absensi_dede/absensi/services/login_preferences.dart';
+import 'package:absensi_kopdes/absensi/controllers/profile_user.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_response_model.dart';
+import 'package:absensi_kopdes/absensi/riverpod/user_riverpod.dart';
+import 'package:absensi_kopdes/absensi/services/api_services.dart';
+import 'package:absensi_kopdes/absensi/services/dio_client.dart';
+import 'package:absensi_kopdes/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -2,9 +2,9 @@
 
 import 'dart:convert';
 
-import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
-import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
-import 'package:absensi_dede/absensi/services/login_preferences.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_response_model.dart';
+import 'package:absensi_kopdes/absensi/services/login_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';

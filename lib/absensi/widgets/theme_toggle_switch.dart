@@ -1,4 +1,4 @@
-import 'package:absensi_dede/absensi/riverpod/theme.dart';
+import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';

@@ -1,9 +1,9 @@
-import 'package:absensi_dede/absensi/controllers/history_absen.dart';
-import 'package:absensi_dede/absensi/controllers/login_user.dart';
-import 'package:absensi_dede/absensi/controllers/profile_user.dart';
-import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
-import 'package:absensi_dede/absensi/router/routes.dart';
-import 'package:absensi_dede/absensi/services/login_preferences.dart';
+import 'package:absensi_kopdes/absensi/controllers/history_absen.dart';
+import 'package:absensi_kopdes/absensi/controllers/login_user.dart';
+import 'package:absensi_kopdes/absensi/controllers/profile_user.dart';
+import 'package:absensi_kopdes/absensi/riverpod/user_riverpod.dart';
+import 'package:absensi_kopdes/absensi/router/routes.dart';
+import 'package:absensi_kopdes/absensi/services/login_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';

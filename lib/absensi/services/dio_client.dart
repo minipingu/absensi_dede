@@ -1,4 +1,4 @@
-import 'package:absensi_dede/absensi/services/login_preferences.dart';
+import 'package:absensi_kopdes/absensi/services/login_preferences.dart';
 import 'package:dio/dio.dart';
 
 Dio createDioClient({String? token}) {

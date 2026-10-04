@@ -1,20 +1,23 @@
-import 'package:absensi_dede/absensi/services/maps_service.dart';
+import 'package:absensi_kopdes/absensi/riverpod/map_refresh.dart';
+import 'package:absensi_kopdes/absensi/services/maps_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class HomeMapWidget extends StatefulWidget {
+class HomeMapWidget extends ConsumerStatefulWidget {
   final MapsService? mapsService;
+  final double? mapHeight;
 
-  const HomeMapWidget({super.key, this.mapsService});
+  const HomeMapWidget({super.key, this.mapsService, this.mapHeight});
 
   @override
-  State<HomeMapWidget> createState() => _HomeMapWidgetState();
+  ConsumerState<HomeMapWidget> createState() => _HomeMapWidgetState();
 }
 
-class _HomeMapWidgetState extends State<HomeMapWidget> {
+class _HomeMapWidgetState extends ConsumerState<HomeMapWidget> {
   late final MapsService _mapsService;
 
   GoogleMapController? _mapController;
@@ -133,8 +136,18 @@ class _HomeMapWidgetState extends State<HomeMapWidget> {
     }
   }
 
+  void refreshLocation() {
+    _fetchLocationAndAddress();
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen<int>(mapRefreshTriggerProvider, (previous, next) {
+      if (previous != null && next > previous) {
+        _fetchLocationAndAddress();
+      }
+    });
+
     final typography = context.theme.typography;
     final colors = context.theme.colors;
 
@@ -188,7 +201,7 @@ class _HomeMapWidgetState extends State<HomeMapWidget> {
             ),
             const SizedBox(height: 12),
             Container(
-              height: 200,
+              height: widget.mapHeight ?? 200,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),

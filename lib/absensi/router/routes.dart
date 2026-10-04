@@ -1,9 +1,11 @@
-import 'package:absensi_dede/absensi/views/alarm_screen.dart';
-import 'package:absensi_dede/absensi/views/attendance_detail.dart';
-import 'package:absensi_dede/absensi/views/home_screen.dart';
-import 'package:absensi_dede/absensi/views/login_register.dart';
-import 'package:absensi_dede/absensi/views/profile_screen.dart';
-import 'package:absensi_dede/absensi/views/splash_screen.dart';
+import 'package:absensi_kopdes/absensi/views/alarm_ringing_screen.dart';
+import 'package:absensi_kopdes/absensi/views/alarm_screen.dart';
+import 'package:absensi_kopdes/absensi/views/attendance_detail.dart';
+import 'package:absensi_kopdes/absensi/views/home_screen.dart';
+import 'package:absensi_kopdes/absensi/views/login_register.dart';
+import 'package:absensi_kopdes/absensi/views/maps_screen.dart';
+import 'package:absensi_kopdes/absensi/views/profile_screen.dart';
+import 'package:absensi_kopdes/absensi/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,6 +15,12 @@ part 'routes.g.dart';
   branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
     TypedStatefulShellBranch<HomeBranchData>(
       routes: <TypedRoute<RouteData>>[TypedGoRoute<HomeRoute>(path: '/home')],
+    ),
+    TypedStatefulShellBranch<MapsBranchData>(
+      routes: <TypedRoute<RouteData>>[TypedGoRoute<MapsRoute>(path: '/maps')],
+    ),
+    TypedStatefulShellBranch<AlarmBranchData>(
+      routes: <TypedRoute<RouteData>>[TypedGoRoute<AlarmRoute>(path: '/alarm')],
     ),
     TypedStatefulShellBranch<AttendanceListBranchData>(
       routes: <TypedRoute<RouteData>>[
@@ -42,6 +50,14 @@ class MainShellRouteData extends StatefulShellRouteData {
 //Branch
 class HomeBranchData extends StatefulShellBranchData {
   const HomeBranchData();
+}
+
+class MapsBranchData extends StatefulShellBranchData {
+  const MapsBranchData();
+}
+
+class AlarmBranchData extends StatefulShellBranchData {
+  const AlarmBranchData();
 }
 
 class AttendanceListBranchData extends StatefulShellBranchData {
@@ -80,6 +96,15 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   }
 }
 
+@TypedGoRoute<MapsRoute>(path: '/maps')
+class MapsRoute extends GoRouteData with $MapsRoute {
+  MapsRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MapsScreen();
+  }
+}
+
 @TypedGoRoute<ProfileRoute>(path: '/profile')
 class ProfileRoute extends GoRouteData with $ProfileRoute {
   ProfileRoute();
@@ -104,5 +129,14 @@ class AlarmRoute extends GoRouteData with $AlarmRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AlarmScreen();
+  }
+}
+
+@TypedGoRoute<AlarmRingingRoute>(path: '/alarm-ringing')
+class AlarmRingingRoute extends GoRouteData with $AlarmRingingRoute {
+  const AlarmRingingRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AlarmRingingScreen();
   }
 }

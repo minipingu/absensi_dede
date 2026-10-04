@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:absensi_dede/absensi/router/routes.dart';
+import 'package:absensi_kopdes/absensi/router/routes.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -43,8 +43,8 @@ class _ApplicationState extends ConsumerState<Application> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final currentPath =
               _router.routerDelegate.currentConfiguration.uri.path;
-          if (currentPath != '/alarm') {
-            _router.go('/alarm');
+          if (currentPath != '/alarm-ringing') {
+            _router.go('/alarm-ringing');
           }
         });
       }
@@ -53,7 +53,7 @@ class _ApplicationState extends ConsumerState<Application> {
     // Check if alarm is already ringing on startup (ValueStream has current value)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Alarm.ringing.value.alarms.isNotEmpty) {
-        _router.go('/alarm');
+        _router.go('/alarm-ringing');
       }
     });
   }

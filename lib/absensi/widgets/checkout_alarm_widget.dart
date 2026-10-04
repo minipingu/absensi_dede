@@ -58,57 +58,112 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
   }
 
   Future<void> _openTimePickerDialog() async {
-    FTime selectedTime = FTime.now();
+    final now = DateTime.now();
+    FTime selectedTime = FTime(now.hour, now.minute);
+    bool isInvalid = false;
 
     final result = await showFDialog<bool>(
       context: context,
       builder: (dialogContext, style, animation) => FDialog(
         animation: animation,
-        builder: (dialogContext, style) => Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Atur Waktu Pengingat', style: style.titleTextStyle),
-              const SizedBox(height: 6),
-              Text(
-                'Pilih jam check out (format 24 jam) untuk menyetel alarm.',
-                style: style.bodyTextStyle,
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: SizedBox(
-                  height: 180,
-                  child: FTimePicker(
-                    control: .managed(
-                      initial: .now(),
-                      onChange: (time) {
-                        selectedTime = time;
-                      },
-                    ),
-                    hour24: true,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+        builder: (dialogContext, style) => StatefulBuilder(
+          builder: (dialogContext, setDialogState) {
+            final deviceNow = DateTime.now();
+            final isBeforeDeviceTime =
+                selectedTime.hour < deviceNow.hour ||
+                (selectedTime.hour == deviceNow.hour &&
+                    selectedTime.minute < deviceNow.minute);
+
+            final formattedNow =
+                '${deviceNow.hour.toString().padLeft(2, '0')}:${deviceNow.minute.toString().padLeft(2, '0')}';
+
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FButton(
-                    variant: .secondary,
-                    onPress: () => Navigator.of(dialogContext).pop(false),
-                    child: const Text('Batal'),
+                  Text('Atur Waktu Pengingat', style: style.titleTextStyle),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Pilih jam check out (format 24 jam) untuk menyetel alarm.',
+                    style: style.bodyTextStyle,
                   ),
-                  const SizedBox(width: 8),
-                  FButton(
-                    onPress: () => Navigator.of(dialogContext).pop(true),
-                    child: const Text('Simpan'),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: SizedBox(
+                      height: 180,
+                      child: FTimePicker(
+                        control: .lifted(
+                          time: selectedTime,
+                          onChange: (time) {
+                            final current = DateTime.now();
+                            final isPast =
+                                time.hour < current.hour ||
+                                (time.hour == current.hour &&
+                                    time.minute < current.minute);
+                            setDialogState(() {
+                              if (isPast) {
+                                selectedTime = FTime(
+                                  current.hour,
+                                  current.minute,
+                                );
+                                isInvalid = true;
+                              } else {
+                                selectedTime = time;
+                                isInvalid = false;
+                              }
+                            });
+                          },
+                        ),
+                        hour24: true,
+                      ),
+                    ),
+                  ),
+                  if (isBeforeDeviceTime || isInvalid) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.info_outline,
+                          color: Colors.red,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            'Tidak dapat memilih jam sebelum waktu saat ini ($formattedNow WIB).',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FButton(
+                        variant: .secondary,
+                        onPress: () => Navigator.of(dialogContext).pop(false),
+                        child: const Text('Batal'),
+                      ),
+                      const SizedBox(width: 8),
+                      FButton(
+                        onPress: (isBeforeDeviceTime || isInvalid)
+                            ? null
+                            : () => Navigator.of(dialogContext).pop(true),
+                        child: const Text('Simpan'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -140,7 +195,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
     }
 
     final now = DateTime.now();
-    var scheduledDateTime = DateTime(
+    final scheduledDateTime = DateTime(
       now.year,
       now.month,
       now.day,
@@ -148,9 +203,19 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
       time.minute,
     );
 
-    // Jika waktu yang dipilih hari ini sudah lewat, jadwalkan untuk besok
+    // Waktu tidak boleh lebih awal dari waktu saat ini
     if (scheduledDateTime.isBefore(now)) {
-      scheduledDateTime = scheduledDateTime.add(const Duration(days: 1));
+      if (mounted) {
+        showFToast(
+          context: context,
+          title: const Text('Waktu Tidak Valid'),
+          description: const Text(
+            'Waktu alarm tidak boleh sebelum jam saat ini.',
+          ),
+          icon: const Icon(Icons.error_outline),
+        );
+      }
+      return;
     }
 
     final alarmSettings = AlarmSettings(
@@ -297,7 +362,7 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                 ),
               ],
             ),
-            // Tampilan waktu format 24 jam jika ada
+            SizedBox(height: 4),
             if (_alarmTime != null && _isAlarmActive) ...[
               Container(
                 width: double.infinity,
@@ -366,7 +431,6 @@ class _CheckoutAlarmWidgetState extends State<CheckoutAlarmWidget> {
                       _isAlarmActive ? 'Ubah Waktu Alarm' : 'Set Waktu Alarm',
                       style: typography.body.xs.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
                       ),
                     ),
                   ],

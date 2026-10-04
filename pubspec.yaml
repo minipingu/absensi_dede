@@ -1,5 +1,5 @@
-name: absensi_dede
-description: "A new Flutter project."
+name: "absensi_kopdes"
+description: "Absensi digital untuk pegawai KopDes"
 
 publish_to: 'none' 
 
@@ -43,6 +43,7 @@ dependencies:
   alarm: ^5.13.3
   permission_handler: ^13.0.2
   flutter_native_splash: ^2.4.8
+  developer_mode: ^0.0.2
   
 
 dev_dependencies:

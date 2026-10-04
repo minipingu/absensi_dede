@@ -203,6 +203,48 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "1791072114039zr7b9",
+      "title": "Fix errors in lib/absensi/views/dev_mode_check_screen.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791075864545u39pj",
+      "title": "Add Maps screen in views, update navbar with maps icon after home, and refresh location on tap",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "179107758792688qwt3",
+      "title": "Make profile_screen video play only when profile screen is visible/focused",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791077822209qper9",
+      "title": "Remove unused home_map_widget import from home_screen.dart",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791079496545jpj2eg",
+      "title": "Add Alarm to navbar after maps, move CheckoutAlarmWidget to Alarm screen, and disable past times in time picker",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791080254491miy8xe",
+      "title": "Remove slide animation when navigating to maps and alarm screens",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

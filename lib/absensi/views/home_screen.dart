@@ -1,20 +1,18 @@
-import 'package:absensi_dede/absensi/riverpod/bottom_nav.dart';
-import 'package:absensi_dede/absensi/riverpod/theme.dart';
-import 'package:absensi_dede/absensi/riverpod/user_riverpod.dart';
-import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
-import 'package:absensi_dede/absensi/services/app_permission_service.dart';
-import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
-import 'package:absensi_dede/absensi/widgets/check_in_button.dart';
-import 'package:absensi_dede/absensi/widgets/checkout_alarm_widget.dart';
-import 'package:absensi_dede/absensi/widgets/home_map_widget.dart';
-import 'package:absensi_dede/absensi/widgets/izin_button.dart';
-import 'package:absensi_dede/absensi/riverpod/selected_attendance.dart';
-import 'package:absensi_dede/absensi/router/routes.dart';
-import 'package:absensi_dede/absensi/widgets/theme_toggle_switch.dart';
-import 'package:absensi_dede/absensi/controllers/history_absen.dart';
-import 'package:absensi_dede/extension.dart';
-import 'package:absensi_dede/helper/date_formatter.dart';
-import 'package:absensi_dede/helper/greetings.dart';
+import 'package:absensi_kopdes/absensi/riverpod/bottom_nav.dart';
+import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
+import 'package:absensi_kopdes/absensi/riverpod/user_riverpod.dart';
+import 'package:absensi_kopdes/absensi/models/absen/history_absen_response_model.dart';
+import 'package:absensi_kopdes/absensi/services/app_permission_service.dart';
+import 'package:absensi_kopdes/absensi/widgets/bottom_nav_bar.dart';
+import 'package:absensi_kopdes/absensi/widgets/check_in_button.dart';
+import 'package:absensi_kopdes/absensi/widgets/izin_button.dart';
+import 'package:absensi_kopdes/absensi/riverpod/selected_attendance.dart';
+import 'package:absensi_kopdes/absensi/router/routes.dart';
+import 'package:absensi_kopdes/absensi/widgets/theme_toggle_switch.dart';
+import 'package:absensi_kopdes/absensi/controllers/history_absen.dart';
+import 'package:absensi_kopdes/extension.dart';
+import 'package:absensi_kopdes/helper/date_formatter.dart';
+import 'package:absensi_kopdes/helper/greetings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -295,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         .select(item.id);
                                     ref
                                         .read(bottomNavProvider.notifier)
-                                        .setIndex(1);
+                                        .setIndex(3);
                                     AttendanceListRoute().go(context);
                                   },
                                   title: Text(formattedDate),
@@ -374,10 +372,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const CheckoutAlarmWidget(),
-                const SizedBox(height: 20),
-                const HomeMapWidget(),
                 const SizedBox(height: 100),
               ],
             ),

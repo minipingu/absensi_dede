@@ -1,15 +1,15 @@
-import 'package:absensi_dede/absensi/models/absen/absen_response_model.dart';
-import 'package:absensi_dede/absensi/models/absen/check_in_request_model.dart';
-import 'package:absensi_dede/absensi/models/absen/check_out_request_model.dart';
-import 'package:absensi_dede/absensi/models/absen/delete_absen_request_model.dart';
-import 'package:absensi_dede/absensi/models/absen/history_absen_response_model.dart';
-import 'package:absensi_dede/absensi/models/absen/izin_request_model.dart';
-import 'package:absensi_dede/absensi/models/login/login_request_model.dart';
-import 'package:absensi_dede/absensi/models/login/login_response_model.dart';
-import 'package:absensi_dede/absensi/models/register/register_request_model.dart';
-import 'package:absensi_dede/absensi/models/register/register_response_model.dart';
-import 'package:absensi_dede/absensi/models/user/name_user_edit_request_model.dart';
-import 'package:absensi_dede/absensi/models/user/profil_user_response_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/absen_response_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/check_in_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/check_out_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/delete_absen_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/history_absen_response_model.dart';
+import 'package:absensi_kopdes/absensi/models/absen/izin_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/login/login_response_model.dart';
+import 'package:absensi_kopdes/absensi/models/register/register_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/register/register_response_model.dart';
+import 'package:absensi_kopdes/absensi/models/user/name_user_edit_request_model.dart';
+import 'package:absensi_kopdes/absensi/models/user/profil_user_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 

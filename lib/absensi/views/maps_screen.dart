@@ -1,12 +1,12 @@
 import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
 import 'package:absensi_kopdes/absensi/widgets/bottom_nav_bar.dart';
-import 'package:absensi_kopdes/absensi/widgets/checkout_alarm_widget.dart';
+import 'package:absensi_kopdes/absensi/widgets/home_map_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 
-class AlarmScreen extends ConsumerWidget {
-  const AlarmScreen({super.key});
+class MapsScreen extends ConsumerWidget {
+  const MapsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +35,7 @@ class AlarmScreen extends ConsumerWidget {
                   Row(
                     children: [
                       Text(
-                        'Pengingat Alarm',
+                        'Peta Lokasi',
                         style: typography.body.lg.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 22,
@@ -44,7 +44,7 @@ class AlarmScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const CheckoutAlarmWidget(),
+                  const HomeMapWidget(mapHeight: 420),
                   const SizedBox(height: 100),
                 ],
               ),

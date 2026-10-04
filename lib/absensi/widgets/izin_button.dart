@@ -1,7 +1,7 @@
-import 'package:absensi_dede/absensi/controllers/history_absen.dart';
-import 'package:absensi_dede/absensi/controllers/izin_user.dart';
-import 'package:absensi_dede/absensi/models/absen/izin_request_model.dart';
-import 'package:absensi_dede/absensi/services/maps_service.dart';
+import 'package:absensi_kopdes/absensi/controllers/history_absen.dart';
+import 'package:absensi_kopdes/absensi/controllers/izin_user.dart';
+import 'package:absensi_kopdes/absensi/models/absen/izin_request_model.dart';
+import 'package:absensi_kopdes/absensi/services/maps_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';

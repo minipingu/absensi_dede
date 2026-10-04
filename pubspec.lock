@@ -233,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.15"
+  developer_mode:
+    dependency: "direct main"
+    description:
+      name: developer_mode
+      sha256: "112f3d1cc92cbb4f80a32e5b1ade662ce307782c0b52aa489ab71f5da6fd90e5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   dio:
     dependency: "direct main"
     description:

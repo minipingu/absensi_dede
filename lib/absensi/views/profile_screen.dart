@@ -1,14 +1,16 @@
-import 'package:absensi_dede/absensi/controllers/edit_profile.dart';
-import 'package:absensi_dede/absensi/controllers/profile_user.dart';
-import 'package:absensi_dede/absensi/models/user/name_user_edit_request_model.dart';
-import 'package:absensi_dede/absensi/riverpod/theme.dart';
-import 'package:absensi_dede/absensi/widgets/bottom_nav_bar.dart';
-import 'package:absensi_dede/absensi/widgets/logout_button.dart';
+import 'package:absensi_kopdes/absensi/controllers/edit_profile.dart';
+import 'package:absensi_kopdes/absensi/controllers/profile_user.dart';
+import 'package:absensi_kopdes/absensi/models/user/name_user_edit_request_model.dart';
+import 'package:absensi_kopdes/absensi/riverpod/bottom_nav.dart';
+import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
+import 'package:absensi_kopdes/absensi/widgets/bottom_nav_bar.dart';
+import 'package:absensi_kopdes/absensi/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -40,6 +42,25 @@ class ProfileScreen extends HookConsumerWidget {
     final isUpdating =
         isEditing || (profileAsync.isLoading && profileAsync.hasValue);
 
+    final router = GoRouter.maybeOf(context);
+    if (router != null) {
+      useListenable(router.routerDelegate);
+    }
+    final currentPath = router?.routerDelegate.currentConfiguration.uri.path;
+    final navIndex = ref.watch(bottomNavProvider);
+    final appLifecycle = useAppLifecycleState();
+
+    final isAppActive =
+        appLifecycle == null || appLifecycle == AppLifecycleState.resumed;
+    final isRouteActive = currentPath == null || currentPath == '/profile';
+    final isNavActive = navIndex == 4;
+
+    // Video hanya boleh play jika:
+    // 1. Aplikasi sedang di foreground (resumed)
+    // 2. Route aktif di GoRouter adalah '/profile'
+    // 3. Tab aktif di navigation bar adalah Profile (index 4)
+    final isScreenOpen = isAppActive && isRouteActive && isNavActive;
+
     // 1. Inisialisasi controller video menggunakan useMemoized agar tidak terbuat ulang terus
     final controller = useMemoized(
       () => VideoPlayerController.asset('assets/video/avatar_video.mp4'),
@@ -50,7 +71,7 @@ class ProfileScreen extends HookConsumerWidget {
     final isInitialized = useState(false);
     final hasError = useState(false);
 
-    // 2. useEffect untuk setup play, loop, dan dispose otomatis
+    // 2. useEffect untuk setup inisialisasi, loop, dan dispose otomatis
     useEffect(() {
       var isMounted = true;
       controller
@@ -58,8 +79,10 @@ class ProfileScreen extends HookConsumerWidget {
           .then((_) {
             if (!isMounted) return;
             controller.setLooping(true);
-            controller.setVolume(3.0);
-            controller.play();
+            controller.setVolume(1.0);
+            if (isScreenOpen) {
+              controller.play();
+            }
             isInitialized.value = true;
           })
           .catchError((error) {
@@ -75,6 +98,22 @@ class ProfileScreen extends HookConsumerWidget {
         controller.dispose();
       };
     }, [controller]);
+
+    // 3. Kontrol play / pause otomatis berdasarkan visibilitas screen profile
+    useEffect(() {
+      if (!isInitialized.value) return null;
+
+      if (isScreenOpen) {
+        if (!controller.value.isPlaying) {
+          controller.play();
+        }
+      } else {
+        if (controller.value.isPlaying) {
+          controller.pause();
+        }
+      }
+      return null;
+    }, [isScreenOpen, isInitialized.value]);
 
     return Scaffold(
       extendBody: true,

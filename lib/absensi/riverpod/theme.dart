@@ -1,4 +1,4 @@
-import 'package:absensi_dede/absensi/services/preferences_theme.dart';
+import 'package:absensi_kopdes/absensi/services/preferences_theme.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'theme.g.dart';
