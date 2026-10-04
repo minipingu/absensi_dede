@@ -18,7 +18,7 @@
     <!-- Izin overlay untuk menampilkan UI di atas app lain (alarm) -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <application
-        android:label="absensi_kopdes"
+        android:label="Absensi Kopdes"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
