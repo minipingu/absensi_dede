@@ -35,7 +35,7 @@ class AlarmScreen extends ConsumerWidget {
                   Row(
                     children: [
                       Text(
-                        'Pengingat Alarm',
+                        'Alarm Pengingat Checkout',
                         style: typography.body.lg.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 22,

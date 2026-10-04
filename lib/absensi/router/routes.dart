@@ -1,6 +1,7 @@
 import 'package:absensi_kopdes/absensi/views/alarm_ringing_screen.dart';
 import 'package:absensi_kopdes/absensi/views/alarm_screen.dart';
 import 'package:absensi_kopdes/absensi/views/attendance_detail.dart';
+import 'package:absensi_kopdes/absensi/views/dev_mode_check_screen.dart';
 import 'package:absensi_kopdes/absensi/views/home_screen.dart';
 import 'package:absensi_kopdes/absensi/views/login_register.dart';
 import 'package:absensi_kopdes/absensi/views/maps_screen.dart';
@@ -69,12 +70,24 @@ class ProfileBranchData extends StatefulShellBranchData {
 }
 
 // Path
-@TypedGoRoute<SplashRoute>(path: '/')
-class SplashRoute extends GoRouteData with $SplashRoute {
-  SplashRoute();
+@TypedGoRoute<DevModeCheckRoute>(path: '/')
+class DevModeCheckRoute extends GoRouteData with $DevModeCheckRoute {
+  const DevModeCheckRoute();
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return SplashScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(
+      key: state.pageKey,
+      child: const DevModeCheckScreen(),
+    );
+  }
+}
+
+@TypedGoRoute<SplashRoute>(path: '/splash-screen')
+class SplashRoute extends GoRouteData with $SplashRoute {
+  const SplashRoute();
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: const SplashScreen());
   }
 }
 
@@ -87,48 +100,43 @@ class LoginRegisterRoute extends GoRouteData with $LoginRegisterRoute {
   }
 }
 
-@TypedGoRoute<HomeRoute>(path: '/home')
 class HomeRoute extends GoRouteData with $HomeRoute {
   HomeRoute();
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return HomeScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: HomeScreen());
   }
 }
 
-@TypedGoRoute<MapsRoute>(path: '/maps')
 class MapsRoute extends GoRouteData with $MapsRoute {
   MapsRoute();
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const MapsScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: const MapsScreen());
   }
 }
 
-@TypedGoRoute<ProfileRoute>(path: '/profile')
-class ProfileRoute extends GoRouteData with $ProfileRoute {
-  ProfileRoute();
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return ProfileScreen();
-  }
-}
-
-@TypedGoRoute<AttendanceListRoute>(path: '/attendance-list')
-class AttendanceListRoute extends GoRouteData with $AttendanceListRoute {
-  AttendanceListRoute();
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return AttendanceDetail();
-  }
-}
-
-@TypedGoRoute<AlarmRoute>(path: '/alarm')
 class AlarmRoute extends GoRouteData with $AlarmRoute {
   const AlarmRoute();
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const AlarmScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: const AlarmScreen());
+  }
+}
+
+class AttendanceListRoute extends GoRouteData with $AttendanceListRoute {
+  AttendanceListRoute();
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: AttendanceDetail());
+  }
+}
+
+class ProfileRoute extends GoRouteData with $ProfileRoute {
+  ProfileRoute();
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(key: state.pageKey, child: ProfileScreen());
   }
 }
 

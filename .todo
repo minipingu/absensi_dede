@@ -245,6 +245,20 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "1791088397288m5qgoa",
+      "title": "Set route '/' to DevModeCheckScreen, check jailbreak & devmode, navigate to '/splash-screen' if safe, and update SplashRoute to '/splash-screen'",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791114810372fb91yk",
+      "title": "Set assets/images/logo.png as the application app icon",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }

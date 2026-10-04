@@ -8,6 +8,7 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
   $mainShellRouteData,
+  $devModeCheckRoute,
   $splashRoute,
   $loginRegisterRoute,
   $alarmRingingRoute,
@@ -170,17 +171,44 @@ mixin $ProfileRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $splashRoute => GoRouteData.$route(
+RouteBase get $devModeCheckRoute => GoRouteData.$route(
   path: '/',
+  hasOverriddenOnExit: false,
+  factory: $DevModeCheckRoute._fromState,
+);
+
+mixin $DevModeCheckRoute on GoRouteData {
+  static DevModeCheckRoute _fromState(GoRouterState state) =>
+      const DevModeCheckRoute();
+
+  @override
+  String get location => GoRouteData.$location('/');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $splashRoute => GoRouteData.$route(
+  path: '/splash-screen',
   hasOverriddenOnExit: false,
   factory: $SplashRoute._fromState,
 );
 
 mixin $SplashRoute on GoRouteData {
-  static SplashRoute _fromState(GoRouterState state) => SplashRoute();
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
 
   @override
-  String get location => GoRouteData.$location('/');
+  String get location => GoRouteData.$location('/splash-screen');
 
   @override
   void go(BuildContext context) => context.go(location);
