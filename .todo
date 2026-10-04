@@ -172,16 +172,16 @@
     {
       "id": "1790819627529y5ylcl",
       "title": "Review blocked/reverted work in lib/absensi/views/alarm_screen.dart",
-      "category": "Blocked",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
     },
     {
       "id": "17908386621138tbrf",
       "title": "Review blocked/reverted work in lib/absensi/views/profile_screen.dart",
-      "category": "Blocked",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
     },
     {
       "id": "1790941387259q6pvmp",
@@ -256,6 +256,13 @@
     {
       "id": "1791114810372fb91yk",
       "title": "Set assets/images/logo.png as the application app icon",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "17911189692163zjzi",
+      "title": "Review blocked/reverted work in lib/absensi/widgets/button_about_us.dart",
       "category": "Completed",
       "dueDate": null,
       "completed": true

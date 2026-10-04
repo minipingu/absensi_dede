@@ -4,6 +4,7 @@ import 'package:absensi_kopdes/absensi/models/user/name_user_edit_request_model.
 import 'package:absensi_kopdes/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_kopdes/absensi/riverpod/theme.dart';
 import 'package:absensi_kopdes/absensi/widgets/bottom_nav_bar.dart';
+import 'package:absensi_kopdes/absensi/widgets/button_about_us.dart';
 import 'package:absensi_kopdes/absensi/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -358,6 +359,8 @@ class ProfileScreen extends HookConsumerWidget {
                   ),
 
                   const SizedBox(height: 20),
+                  const ButtonAboutUs(),
+                  const SizedBox(height: 12),
                   const LogoutButton(),
                   const SizedBox(height: 20),
                 ],
