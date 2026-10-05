@@ -78,10 +78,25 @@ class _ApplicationState extends ConsumerState<Application> {
       ],
       theme: lightTheme.toApproximateMaterialTheme(),
       darkTheme: darkTheme.toApproximateMaterialTheme(),
-      builder: (context, child) => FTheme(
-        data: themeState ? darkTheme : lightTheme,
-        child: FToaster(child: FTooltipGroup(child: child!)),
-      ),
+      builder: (context, child) {
+        final features =
+            WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
+        return FTheme(
+          data: themeState ? darkTheme : lightTheme,
+          accessibility: FAccessibility(
+            accessibleNavigation: false,
+            motion: features.disableAnimations
+                ? FAccessibilityMotion.disabled
+                : features.reduceMotion
+                ? FAccessibilityMotion.reduced
+                : FAccessibilityMotion.all,
+            focusHighlight:
+                FocusManager.instance.highlightMode ==
+                FocusHighlightMode.traditional,
+          ),
+          child: FToaster(child: FTooltipGroup(child: child!)),
+        );
+      },
     );
   }
 }
