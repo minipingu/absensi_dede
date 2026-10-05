@@ -37,6 +37,38 @@ class ButtonAboutUs extends StatelessWidget {
     }
   }
 
+  Future<void> _launchEmail(BuildContext context) async {
+    final Uri emailUri = Uri(scheme: 'mailto', path: 'ranmaniax@gmail.com');
+    try {
+      final launched = await launchUrl(
+        emailUri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched) {
+        final fallback = await launchUrl(emailUri);
+        if (!fallback && context.mounted) {
+          showFToast(
+            context: context,
+            title: const Text('Gagal Membuka Email'),
+            description: const Text(
+              'Tidak dapat membuka aplikasi email di perangkat ini.',
+            ),
+            icon: const Icon(Icons.error_outline, color: Colors.red),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showFToast(
+          context: context,
+          title: const Text('Gagal Membuka Email'),
+          description: Text(e.toString()),
+          icon: const Icon(Icons.error_outline, color: Colors.red),
+        );
+      }
+    }
+  }
+
   void _showAboutUsSheet(BuildContext context) {
     final typography = context.theme.typography;
     final colors = context.theme.colors;
@@ -46,98 +78,106 @@ class ButtonAboutUs extends StatelessWidget {
       side: FLayout.btt,
       mainAxisMaxRatio: null,
       builder: (sheetContext) {
-        return Container(
-          decoration: BoxDecoration(
-            color: colors.background,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            border: Border(top: BorderSide(color: colors.border, width: 1)),
-          ),
-          child: SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: colors.mutedForeground.withValues(alpha: 0.4),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Icon(
-                          FLucideIcons.info,
-                          size: 22,
-                          color: colors.primary,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Tentang Aplikasi',
-                          style: typography.display.xs.copyWith(
-                            fontWeight: FontWeight.bold,
+        return Material(
+          color: colors.background,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+              border: Border(top: BorderSide(color: colors.border, width: 1)),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: colors.mutedForeground.withValues(
+                              alpha: 0.4,
+                            ),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const FDivider(),
-                    const SizedBox(height: 16),
-
-                    // 1. Dibuat oleh
-                    _buildInfoItem(
-                      label: 'Aplikasi ini dibuat oleh :',
-                      value: 'Dede Nurhidayat',
-                      typography: typography,
-                      colors: colors,
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // 2. Kolaborasi
-                    _buildInfoItem(
-                      label: 'Kolaborasi dengan :',
-                      value: 'PPKD Jakarta Utara',
-                      typography: typography,
-                      colors: colors,
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // 3. Mentor
-                    _buildInfoItem(
-                      label: 'Mentor :',
-                      value: 'Hardi, Ferry Hernando, Andrea Surya Habibie',
-                      typography: typography,
-                      colors: colors,
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // 4. Tombol WhatsApp
-                    SizedBox(
-                      width: double.infinity,
-                      child: FButton(
-                        variant: .primary,
-                        prefix: const Icon(
-                          FLucideIcons.messageCircle,
-                          size: 18,
-                        ),
-                        onPress: () => _launchWhatsApp(sheetContext),
-                        child: const Text(
-                          'Hubungi via WhatsApp (+62851-6944-4143)',
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: Text(
+                          'Tentang Developer',
+                          style: typography.display.xs.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+
+                      // 1. Dibuat oleh
+                      _buildInfoItem(
+                        label: 'Aplikasi ini dibuat oleh :',
+                        value: 'Dede Nurhidayat',
+                        typography: typography,
+                        colors: colors,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // 2. Email
+                      _buildInfoItem(
+                        label: 'Email :',
+                        value: 'ranmaniax@gmail.com',
+                        typography: typography,
+                        colors: colors,
+                        onTap: () => _launchEmail(sheetContext),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // 3. Kolaborasi
+                      _buildInfoItem(
+                        label: 'Kolaborasi dengan :',
+                        value: 'PPKD Jakarta Utara',
+                        typography: typography,
+                        colors: colors,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // 4. Mentor
+                      _buildInfoItem(
+                        label: 'Mentor :',
+                        value: 'Hardi, Ferry Hernando, Andrea Surya Habibie',
+                        typography: typography,
+                        colors: colors,
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // 5. Tombol WhatsApp
+                      SizedBox(
+                        width: double.infinity,
+                        child: FButton(
+                          variant: .primary,
+                          prefix: Image.asset(
+                            'assets/images/whatsapp.png',
+                            width: 20,
+                            height: 20,
+                          ),
+                          onPress: () => _launchWhatsApp(sheetContext),
+                          child: const Text('Hubungi via WhatsApp'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -152,8 +192,9 @@ class ButtonAboutUs extends StatelessWidget {
     required String value,
     required FTypography typography,
     required FColors colors,
+    VoidCallback? onTap,
   }) {
-    return Column(
+    final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -173,6 +214,16 @@ class ButtonAboutUs extends StatelessWidget {
         ),
       ],
     );
+
+    if (onTap != null) {
+      return GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: content,
+      );
+    }
+
+    return content;
   }
 
   @override
@@ -183,7 +234,7 @@ class ButtonAboutUs extends StatelessWidget {
         variant: .outline,
         prefix: const Icon(FLucideIcons.info, size: 18),
         onPress: () => _showAboutUsSheet(context),
-        child: const Text('About Us'),
+        child: const Text('Tentang Developer'),
       ),
     );
   }
