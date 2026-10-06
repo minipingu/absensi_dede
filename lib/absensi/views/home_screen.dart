@@ -185,7 +185,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     child: FittedBox(
                                       fit: BoxFit.contain,
                                       child: DigitalClock(
-                                        textScaleFactor: 0.6,
+                                        textScaleFactor: 0.65,
                                         format: "HH:mm:ss",
                                         textStyle: const TextStyle(
                                           color: Colors.white,
