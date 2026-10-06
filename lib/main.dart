@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:absensi_kopdes/absensi/router/routes.dart';
 import 'package:alarm/alarm.dart';
+import 'package:developer_mode/developer_mode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
@@ -31,12 +32,19 @@ class Application extends ConsumerStatefulWidget {
 
 class _ApplicationState extends ConsumerState<Application> {
   StreamSubscription<dynamic>? _ringSubscription;
+  late final AppLifecycleListener _lifecycleListener;
+  bool _isCheckingSecurity = false;
 
   @override
   void initState() {
     super.initState();
 
-    // Listen to ringing alarms stream (alarm v5 API: ValueStream<AlarmSet>)
+    // 1. Pengawasan lifecycle secara global saat aplikasi kembali ke status resumed
+    _lifecycleListener = AppLifecycleListener(
+      onResume: _checkDeviceSecurityOnResume,
+    );
+
+    // 2. Listen to ringing alarms stream (alarm v5 API: ValueStream<AlarmSet>)
     _ringSubscription = Alarm.ringing.listen((alarmSet) {
       if (alarmSet.alarms.isNotEmpty) {
         // Use post-frame to ensure router is mounted and ready
@@ -58,8 +66,36 @@ class _ApplicationState extends ConsumerState<Application> {
     });
   }
 
+  /// Verifikasi keamanan perangkat saat aplikasi di-resume dari background
+  Future<void> _checkDeviceSecurityOnResume() async {
+    if (_isCheckingSecurity) return;
+    _isCheckingSecurity = true;
+
+    try {
+      final isDeveloperMode = await DeveloperMode.isDeveloperMode;
+      final isJailbroken = await DeveloperMode.isJailbroken;
+
+      if (isDeveloperMode || isJailbroken) {
+        final currentPath =
+            _router.routerDelegate.currentConfiguration.uri.path;
+
+        // Cegah loop: hanya redirect jika belum berada di /dev-mode-check atau /
+        if (currentPath != '/dev-mode-check' && currentPath != '/') {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _router.go('/dev-mode-check');
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Security check error on resume: $e');
+    } finally {
+      _isCheckingSecurity = false;
+    }
+  }
+
   @override
   void dispose() {
+    _lifecycleListener.dispose();
     _ringSubscription?.cancel();
     super.dispose();
   }

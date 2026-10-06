@@ -6,6 +6,7 @@ import 'package:absensi_kopdes/absensi/views/home_screen.dart';
 import 'package:absensi_kopdes/absensi/views/login_register.dart';
 import 'package:absensi_kopdes/absensi/views/maps_screen.dart';
 import 'package:absensi_kopdes/absensi/views/profile_screen.dart';
+import 'package:absensi_kopdes/absensi/views/security_check_screen.dart';
 import 'package:absensi_kopdes/absensi/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -70,7 +71,19 @@ class ProfileBranchData extends StatefulShellBranchData {
 }
 
 // Path
-@TypedGoRoute<DevModeCheckRoute>(path: '/')
+@TypedGoRoute<SecurityCheckRoute>(path: '/')
+class SecurityCheckRoute extends GoRouteData with $SecurityCheckRoute {
+  const SecurityCheckRoute();
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return NoTransitionPage(
+      key: state.pageKey,
+      child: const SecurityCheckScreen(),
+    );
+  }
+}
+
+@TypedGoRoute<DevModeCheckRoute>(path: '/dev-mode-check')
 class DevModeCheckRoute extends GoRouteData with $DevModeCheckRoute {
   const DevModeCheckRoute();
   @override

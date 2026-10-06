@@ -8,6 +8,7 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
   $mainShellRouteData,
+  $securityCheckRoute,
   $devModeCheckRoute,
   $splashRoute,
   $loginRegisterRoute,
@@ -171,8 +172,35 @@ mixin $ProfileRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $devModeCheckRoute => GoRouteData.$route(
+RouteBase get $securityCheckRoute => GoRouteData.$route(
   path: '/',
+  hasOverriddenOnExit: false,
+  factory: $SecurityCheckRoute._fromState,
+);
+
+mixin $SecurityCheckRoute on GoRouteData {
+  static SecurityCheckRoute _fromState(GoRouterState state) =>
+      const SecurityCheckRoute();
+
+  @override
+  String get location => GoRouteData.$location('/');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $devModeCheckRoute => GoRouteData.$route(
+  path: '/dev-mode-check',
   hasOverriddenOnExit: false,
   factory: $DevModeCheckRoute._fromState,
 );
@@ -182,7 +210,7 @@ mixin $DevModeCheckRoute on GoRouteData {
       const DevModeCheckRoute();
 
   @override
-  String get location => GoRouteData.$location('/');
+  String get location => GoRouteData.$location('/dev-mode-check');
 
   @override
   void go(BuildContext context) => context.go(location);

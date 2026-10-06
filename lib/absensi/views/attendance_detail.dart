@@ -504,7 +504,7 @@ class AttendanceDetail extends ConsumerWidget {
                                         'Tidak ada alamat tercatat',
                                     timeText: activeItem.checkIn != null
                                         // ? 'Waktu Masuk: ${formatLocalTime(activeItem.checkIn)}'
-                                        ? 'Waktu Masuk: ${activeItem.checkIn}'
+                                        ? 'Waktu Masuk: ${activeItem.checkIn?.split(' ')[1]}'
                                         : null,
                                   ),
                                 ),
@@ -522,7 +522,7 @@ class AttendanceDetail extends ConsumerWidget {
                                               'Alamat Checkout tidak tercatat',
                                           timeText: activeItem.checkOut != null
                                               // ? 'Waktu Pulang: ${formatLocalTime(activeItem.checkOut.toString())}'
-                                              ? 'Waktu Pulang: ${activeItem.checkOut.toString()}'
+                                              ? 'Waktu Pulang: ${activeItem.checkOut.toString().split(' ')[1]}'
                                               : null,
                                         )
                                       : Column(
