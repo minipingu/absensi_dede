@@ -86,7 +86,23 @@ class _AlarmRingingScreenState extends State<AlarmRingingScreen>
           widget.alarmSettings?.id ?? await AlarmPreferences.alarmId;
       await Alarm.stop(alarmId);
       await Alarm.stopAll();
-      await AlarmPreferences.clearAlarm();
+
+      // Jika alarm berulang masih aktif, jadwalkan untuk hari terpilih berikutnya
+      final isEnabled = await AlarmPreferences.isAlarmEnabled;
+      final hour = await AlarmPreferences.alarmHour;
+      final minute = await AlarmPreferences.alarmMinute;
+      final days = await AlarmPreferences.alarmDays;
+
+      if (isEnabled && hour != null && minute != null && days.isNotEmpty) {
+        await AlarmPreferences.scheduleNextAlarm(
+          hour: hour,
+          minute: minute,
+          days: days,
+          id: alarmId,
+        );
+      } else {
+        await AlarmPreferences.clearAlarm();
+      }
     } catch (_) {
       try {
         await Alarm.stopAll();

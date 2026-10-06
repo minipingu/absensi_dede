@@ -291,9 +291,16 @@
     {
       "id": "1791290121866uuia4",
       "title": "Fix stuck on splash screen when app is minimized, devmode is activated, and reopened",
-      "category": "TODO",
+      "category": "Completed",
       "dueDate": null,
-      "completed": false
+      "completed": true
+    },
+    {
+      "id": "17912949465116x7pe",
+      "title": "Add day selection (Senin-Minggu) for alarm scheduling and persist to SharedPreferences",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
     }
   ]
 }
