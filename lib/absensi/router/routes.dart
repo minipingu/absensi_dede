@@ -8,6 +8,7 @@ import 'package:absensi_kopdes/absensi/views/maps_screen.dart';
 import 'package:absensi_kopdes/absensi/views/profile_screen.dart';
 import 'package:absensi_kopdes/absensi/views/security_check_screen.dart';
 import 'package:absensi_kopdes/absensi/views/splash_screen.dart';
+import 'package:absensi_kopdes/absensi/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,7 +46,11 @@ class MainShellRouteData extends StatefulShellRouteData {
     GoRouterState state,
     StatefulNavigationShell navigationShell,
   ) {
-    return navigationShell;
+    return Scaffold(
+      extendBody: true,
+      body: navigationShell,
+      bottomNavigationBar: BottomNavBar(navigationShell: navigationShell),
+    );
   }
 }
 

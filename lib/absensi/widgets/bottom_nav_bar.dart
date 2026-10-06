@@ -2,7 +2,6 @@ import 'package:absensi_kopdes/absensi/controllers/history_absen.dart';
 import 'package:absensi_kopdes/absensi/riverpod/bottom_nav.dart';
 import 'package:absensi_kopdes/absensi/riverpod/map_refresh.dart';
 import 'package:absensi_kopdes/absensi/riverpod/user_riverpod.dart';
-import 'package:absensi_kopdes/absensi/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -10,7 +9,9 @@ import 'package:go_router/go_router.dart';
 import 'package:nav_bar/nav_bar.dart';
 
 class BottomNavBar extends ConsumerWidget {
-  const BottomNavBar({super.key});
+  final StatefulNavigationShell? navigationShell;
+
+  const BottomNavBar({super.key, this.navigationShell});
 
   int _calculateSelectedIndex(BuildContext context, int fallbackIndex) {
     try {
@@ -27,7 +28,15 @@ class BottomNavBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final providerIndex = ref.watch(bottomNavProvider);
-    final currentIndex = _calculateSelectedIndex(context, providerIndex);
+    final currentIndex =
+        navigationShell?.currentIndex ??
+        _calculateSelectedIndex(context, providerIndex);
+
+    if (navigationShell != null && providerIndex != currentIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(bottomNavProvider.notifier).setIndex(currentIndex);
+      });
+    }
 
     return FuturisticNavBar(
       items: [
@@ -44,16 +53,27 @@ class BottomNavBar extends ConsumerWidget {
         if (index == 0) {
           ref.invalidate(userNameRiverpod);
           ref.invalidate(historyAbsenProvider);
-          HomeRoute().go(context);
         } else if (index == 1) {
           ref.read(mapRefreshTriggerProvider.notifier).trigger();
-          MapsRoute().go(context);
-        } else if (index == 2) {
-          const AlarmRoute().go(context);
-        } else if (index == 3) {
-          AttendanceListRoute().go(context);
+        }
+
+        if (navigationShell != null) {
+          navigationShell!.goBranch(
+            index,
+            initialLocation: index == navigationShell!.currentIndex,
+          );
         } else {
-          ProfileRoute().go(context);
+          if (index == 0) {
+            context.go('/home');
+          } else if (index == 1) {
+            context.go('/maps');
+          } else if (index == 2) {
+            context.go('/alarm');
+          } else if (index == 3) {
+            context.go('/attendance-list');
+          } else {
+            context.go('/profile');
+          }
         }
       },
       style: NavBarStyle.synapse,
