@@ -280,6 +280,20 @@
       "category": "Completed",
       "dueDate": null,
       "completed": true
+    },
+    {
+      "id": "1791288479457c7uiw8",
+      "title": "Prevent flashing of security check screen on app startup when devmode and jailbreak are not active",
+      "category": "Completed",
+      "dueDate": null,
+      "completed": true
+    },
+    {
+      "id": "1791290121866uuia4",
+      "title": "Fix stuck on splash screen when app is minimized, devmode is activated, and reopened",
+      "category": "TODO",
+      "dueDate": null,
+      "completed": false
     }
   ]
 }

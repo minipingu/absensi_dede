@@ -10,16 +10,42 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'absensi/riverpod/theme.dart';
+import 'absensi/services/login_preferences.dart';
+import 'absensi/views/dev_mode_check_screen.dart';
 import 'theme/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final _router = GoRouter(navigatorKey: rootNavigatorKey, routes: $appRoutes);
+final _router = GoRouter(
+  navigatorKey: rootNavigatorKey,
+  routes: $appRoutes,
+  redirect: (context, state) {
+    final path = state.uri.path;
+    if (path == '/') {
+      // Jika devmode tidak aktif dan tidak jailbroken, langsung arahkan ke /splash-screen
+      // Jika tidak aman, langsung arahkan ke /dev-mode-check
+      if (DevModeCheckScreen.isDeviceSafe) {
+        return '/splash-screen';
+      } else {
+        return '/dev-mode-check';
+      }
+    }
+    // Jika perangkat terdeteksi tidak aman dan mencoba ke layar lain, paksa ke /dev-mode-check
+    if (!DevModeCheckScreen.isDeviceSafe && path != '/dev-mode-check') {
+      return '/dev-mode-check';
+    }
+    return null;
+  },
+);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Alarm.init();
   await initializeDateFormatting('id_ID', null);
+
+  // Pre-check status keamanan sebelum runApp agar tidak terjadi flashing saat aplikasi mulai
+  await DevModeCheckScreen.precheckSecurity();
+
   runApp(const ProviderScope(child: Application()));
 }
 
@@ -75,14 +101,30 @@ class _ApplicationState extends ConsumerState<Application> {
       final isDeveloperMode = await DeveloperMode.isDeveloperMode;
       final isJailbroken = await DeveloperMode.isJailbroken;
 
-      if (isDeveloperMode || isJailbroken) {
-        final currentPath =
-            _router.routerDelegate.currentConfiguration.uri.path;
+      DevModeCheckScreen.cachedIsDeveloperMode = isDeveloperMode;
+      DevModeCheckScreen.cachedIsJailbroken = isJailbroken;
+      DevModeCheckScreen.isDeviceSafe = !isDeveloperMode && !isJailbroken;
+      DevModeCheckScreen.hasPrechecked = true;
 
-        // Cegah loop: hanya redirect jika belum berada di /dev-mode-check atau /
-        if (currentPath != '/dev-mode-check' && currentPath != '/') {
+      final currentPath = _router.routerDelegate.currentConfiguration.uri.path;
+
+      if (isDeveloperMode || isJailbroken) {
+        if (currentPath != '/dev-mode-check') {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _router.go('/dev-mode-check');
+          });
+        }
+      } else {
+        // Jika sebelumnya berada di layar peringatan dan sekarang sudah aman,
+        // kembalikan ke home (jika sudah login) atau splash
+        if (currentPath == '/dev-mode-check') {
+          final isLogin = await LoginPreferences.isLogin;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (isLogin) {
+              _router.go('/home');
+            } else {
+              _router.go('/splash-screen');
+            }
           });
         }
       }

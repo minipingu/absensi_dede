@@ -8,25 +8,71 @@ import '../services/login_preferences.dart';
 class DevModeCheckScreen extends StatefulWidget {
   const DevModeCheckScreen({super.key});
 
+  /// Cached status keamanan perangkat agar tidak terjadi flashing saat aplikasi mulai
+  static bool isDeviceSafe = false;
+  static bool hasPrechecked = false;
+  static bool cachedIsJailbroken = false;
+  static bool cachedIsDeveloperMode = false;
+
+  /// Memeriksa keamanan perangkat sebelum runApp dipanggil
+  static Future<bool> precheckSecurity() async {
+    try {
+      final isJailbroken = await DeveloperMode.isJailbroken;
+      final isDeveloperMode = await DeveloperMode.isDeveloperMode;
+      cachedIsJailbroken = isJailbroken;
+      cachedIsDeveloperMode = isDeveloperMode;
+      isDeviceSafe = !isJailbroken && !isDeveloperMode;
+    } catch (e) {
+      debugPrint('Security precheck error: $e');
+      isDeviceSafe = false;
+    }
+    hasPrechecked = true;
+    return isDeviceSafe;
+  }
+
   @override
   State<DevModeCheckScreen> createState() => _DevModeCheckScreenState();
 }
 
 class _DevModeCheckScreenState extends State<DevModeCheckScreen> {
-  bool? _isJailbroken;
-  bool? _isDeveloperMode;
-  bool _isLoading = true;
+  late bool? _isJailbroken;
+  late bool? _isDeveloperMode;
+  late bool _isLoading;
   late final AppLifecycleListener _lifecycleListener;
 
   @override
   void initState() {
     super.initState();
+
+    if (DevModeCheckScreen.hasPrechecked) {
+      _isJailbroken = DevModeCheckScreen.cachedIsJailbroken;
+      _isDeveloperMode = DevModeCheckScreen.cachedIsDeveloperMode;
+      _isLoading = false;
+
+      // Jika perangkat aman, alihkan langsung tanpa menampilkan UI peringatan
+      if (DevModeCheckScreen.isDeviceSafe) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (!mounted) return;
+          final isLogin = await LoginPreferences.isLogin;
+          if (!mounted) return;
+          if (isLogin) {
+            HomeRoute().go(context);
+          } else {
+            const SplashRoute().go(context);
+          }
+        });
+      }
+    } else {
+      _isJailbroken = null;
+      _isDeveloperMode = null;
+      _isLoading = true;
+    }
+
+    // Selalu jalankan periksa keamanan agar mendapatkan kondisi aktual terbaru
     _checkSecurity();
 
     // Otomatis periksa ulang saat pengguna kembali dari pengaturan (resumed)
-    _lifecycleListener = AppLifecycleListener(
-      onResume: _checkSecurity,
-    );
+    _lifecycleListener = AppLifecycleListener(onResume: _checkSecurity);
   }
 
   @override
@@ -36,10 +82,6 @@ class _DevModeCheckScreenState extends State<DevModeCheckScreen> {
   }
 
   Future<void> _checkSecurity() async {
-    setState(() {
-      _isLoading = true;
-    });
-
     bool isJailbroken = false;
     bool isDeveloperMode = false;
 
@@ -49,6 +91,11 @@ class _DevModeCheckScreenState extends State<DevModeCheckScreen> {
     } catch (e) {
       debugPrint('Error checking security: $e');
     }
+
+    DevModeCheckScreen.cachedIsJailbroken = isJailbroken;
+    DevModeCheckScreen.cachedIsDeveloperMode = isDeveloperMode;
+    DevModeCheckScreen.isDeviceSafe = !isJailbroken && !isDeveloperMode;
+    DevModeCheckScreen.hasPrechecked = true;
 
     if (!mounted) return;
 
@@ -75,30 +122,22 @@ class _DevModeCheckScreenState extends State<DevModeCheckScreen> {
     final colors = context.theme.colors;
     final typography = context.theme.typography;
 
-    if (_isLoading) {
+    // Saat masih memeriksa atau jika perangkat aman (sedang proses redirect),
+    // tampilkan tampilan splash agar tidak terjadi flashing screen keamanan
+    if (_isLoading ||
+        ((_isJailbroken == false) && (_isDeveloperMode == false))) {
       return PopScope(
         canPop: false,
         child: Scaffold(
-          backgroundColor: colors.background,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 20),
-                Text(
-                  'Memeriksa keamanan perangkat...',
-                  style: typography.body.md.copyWith(fontWeight: FontWeight.w600),
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/splash_screen.jpg',
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Mohon tunggu sebentar',
-                  style: typography.body.sm.copyWith(
-                    color: colors.mutedForeground,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
