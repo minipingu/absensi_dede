@@ -72,6 +72,7 @@ class AttendanceDetail extends ConsumerWidget {
 
   Widget _buildMapSection({
     required BuildContext context,
+    required dynamic attendanceId,
     required String markerTitle,
     required LatLng? latLng,
     required String address,
@@ -113,32 +114,12 @@ class AttendanceDetail extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         if (latLng != null) ...[
-          Container(
-            height: 190,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: colors.border),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: latLng, zoom: 15.0),
-              markers: {
-                Marker(
-                  markerId: MarkerId(markerTitle),
-                  position: latLng,
-                  infoWindow: InfoWindow(title: markerTitle, snippet: address),
-                ),
-              },
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                Factory<OneSequenceGestureRecognizer>(
-                  () => EagerGestureRecognizer(),
-                ),
-              },
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              mapToolbarEnabled: true,
-            ),
+          _AttendanceMapCard(
+            key: ValueKey('${attendanceId}_$markerTitle'),
+            latLng: latLng,
+            markerTitle: markerTitle,
+            address: address,
+            colors: colors,
           ),
           const SizedBox(height: 6),
           Row(
@@ -497,6 +478,7 @@ class AttendanceDetail extends ConsumerWidget {
                                   title: const Text('Lokasi Check In'),
                                   child: _buildMapSection(
                                     context: context,
+                                    attendanceId: activeItem.id,
                                     markerTitle: 'Lokasi Check In',
                                     latLng: checkInLatLng,
                                     address:
@@ -514,6 +496,7 @@ class AttendanceDetail extends ConsumerWidget {
                                   child: hasCheckedOut
                                       ? _buildMapSection(
                                           context: context,
+                                          attendanceId: activeItem.id,
                                           markerTitle: 'Lokasi Check Out',
                                           latLng: checkOutLatLng,
                                           address:
@@ -587,6 +570,127 @@ class AttendanceDetail extends ConsumerWidget {
         ],
       ),
       bottomNavigationBar: const BottomNavBar(),
+    );
+  }
+}
+
+class _AttendanceMapCard extends StatefulWidget {
+  final LatLng latLng;
+  final String markerTitle;
+  final String address;
+  final FColors colors;
+
+  const _AttendanceMapCard({
+    super.key,
+    required this.latLng,
+    required this.markerTitle,
+    required this.address,
+    required this.colors,
+  });
+
+  @override
+  State<_AttendanceMapCard> createState() => _AttendanceMapCardState();
+}
+
+class _AttendanceMapCardState extends State<_AttendanceMapCard> {
+  GoogleMapController? _controller;
+
+  @override
+  void didUpdateWidget(covariant _AttendanceMapCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.latLng != widget.latLng) {
+      _centerToPinnedLocation();
+    }
+  }
+
+  Future<void> _centerToPinnedLocation() async {
+    if (_controller != null) {
+      await _controller!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: widget.latLng, zoom: 15.0),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 190,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: widget.colors.border),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: widget.latLng,
+              zoom: 15.0,
+            ),
+            markers: {
+              Marker(
+                markerId: MarkerId(widget.markerTitle),
+                position: widget.latLng,
+                infoWindow: InfoWindow(
+                  title: widget.markerTitle,
+                  snippet: widget.address,
+                ),
+              ),
+            },
+            onMapCreated: (controller) {
+              _controller = controller;
+            },
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+              Factory<OneSequenceGestureRecognizer>(
+                () => EagerGestureRecognizer(),
+              ),
+            },
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: _centerToPinnedLocation,
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: widget.colors.background.withValues(alpha: 0.92),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: widget.colors.border),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Tooltip(
+                  message: 'Pusatkan ke lokasi',
+                  child: Icon(
+                    FLucideIcons.locateFixed,
+                    size: 18,
+                    color: widget.colors.foreground,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
