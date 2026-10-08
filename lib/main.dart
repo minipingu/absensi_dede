@@ -16,11 +16,31 @@ import 'theme/theme.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
+/// Notifier untuk sinkronisasi reaktif status alarm ringing ke GoRouter
+final ValueNotifier<bool> alarmRingingNotifier = ValueNotifier<bool>(false);
+
 final _router = GoRouter(
   navigatorKey: rootNavigatorKey,
   routes: $appRoutes,
+  refreshListenable: alarmRingingNotifier,
   redirect: (context, state) {
     final path = state.uri.path;
+
+    // Prioritas 1: Jika alarm sedang berdering, SELALU paksa langsung ke /alarm-ringing
+    // Ini menangani cold start saat aplikasi dibuka dari kondisi mati total (terminated)
+    final isRinging = Alarm.ringing.value.alarms.isNotEmpty;
+    if (isRinging) {
+      if (path != '/alarm-ringing') {
+        return '/alarm-ringing';
+      }
+      return null;
+    }
+
+    // Jika saat ini di /alarm-ringing tapi alarm sudah dimatikan, izinkan navigasi keluar
+    if (path == '/alarm-ringing') {
+      return null;
+    }
+
     if (path == '/') {
       // Jika devmode tidak aktif dan tidak jailbroken, langsung arahkan ke /splash-screen
       // Jika tidak aman, langsung arahkan ke /dev-mode-check
@@ -41,6 +61,13 @@ final _router = GoRouter(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Alarm.init();
+
+  // Sinkronisasi status alarm awal agar GoRouter langsung tahu saat cold start
+  alarmRingingNotifier.value = Alarm.ringing.value.alarms.isNotEmpty;
+  Alarm.ringing.listen((alarmSet) {
+    alarmRingingNotifier.value = alarmSet.alarms.isNotEmpty;
+  });
+
   await initializeDateFormatting('id_ID', null);
 
   // Pre-check status keamanan sebelum runApp agar tidak terjadi flashing saat aplikasi mulai

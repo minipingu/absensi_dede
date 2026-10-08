@@ -44,7 +44,14 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Intent-filter wajib untuk package alarm versi 5 agar Full-Screen Intent mengenali MainActivity -->
+            <intent-filter>
+                <action android:name="com.gdelataillade.alarm.action.RING"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
+        <!-- Service untuk menangani peringatan notifikasi jika app dimatikan -->
+        <service android:name="com.gdelataillade.alarm.services.NotificationOnKillService" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

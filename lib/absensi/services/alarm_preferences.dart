@@ -157,6 +157,7 @@ class AlarmPreferences {
       vibrate: true,
       warningNotificationOnKill: false,
       androidFullScreenIntent: true,
+      androidStopAlarmOnTermination: false,
       volumeSettings: const VolumeSettings.fixed(volume: 0.8),
       notificationSettings: const NotificationSettings(
         title: 'Pengingat Check Out',
