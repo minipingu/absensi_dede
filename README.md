@@ -70,78 +70,80 @@
 
 ## 🔄 Alur Kerja Aplikasi (Flowchart)
 
+Seluruh diagram alir di bawah ini disusun mengikuti **Konvensi Simbol Flowchart Standar (ISO 5807 / ANSI)**:
+- **Terminator (`([Teks])` - Oval / Kapsul)**: Titik awal (*Start*) dan akhir (*End*) alur program.
+- **Input / Output (`[/Teks/]` - Jajargenjang)**: Operasi masukan pengguna, pengiriman/penerimaan data jaringan (`POST` API, ambil GPS), serta keluaran tampilan layar/notifikasi.
+- **Process (`[Teks]` - Persegi Panjang)**: Proses komputasi internal, validasi, penyimpanan, atau manipulasi state.
+- **Decision (`{Teks}` - Belah Ketupat)**: Titik percabangan logika atau evaluasi kondisi (*Ya / Tidak*).
+
+---
+
 ### 1. Flowchart Utama: Startup, Keamanan Perangkat, & Navigasi (`GoRouter`)
 Diagram berikut menjelaskan bagaimana aplikasi menangani inisialisasi awal, intersepsi alarm saat *cold start* (*terminated state*), pemeriksaan keamanan perangkat (*Root / Developer Mode*), hingga autentikasi pengguna:
 
 ```mermaid
-%%{init: {'flowchart': {'useMaxWidth': false, 'nodeSpacing': 25, 'rankSpacing': 35}, 'themeVariables': {'fontSize': '14px'}}}%%
 flowchart TD
-    classDef default font-size:14px;
+    Start([Mulai Aplikasi - main]) --> Init[Proses: Inisialisasi Alarm.init dan Locale id_ID]
+    Init --> Precheck[Proses: Pre-check Keamanan precheckSecurity]
+    Precheck --> RunApp[Proses: Jalankan ProviderScope dan GoRouter]
+    RunApp --> CheckAlarm{Alarm Sedang Berdering?}
 
-    Start(["Mulai Aplikasi - main()"]) --> Init["Inisialisasi Alarm.init() & Locale id_ID"]
-    Init --> Precheck["Pre-check Keamanan: precheckSecurity()"]
-    Precheck --> RunApp["Jalankan ProviderScope & GoRouter"]
-    RunApp --> CheckAlarm{"Alarm Sedang Berdering?"}
-
-    %% Jalur Alarm
-    CheckAlarm -- "Ya (Prioritas 1)" --> AlarmScreen["Tampilkan AlarmRingingScreen (/alarm-ringing)"]
-    AlarmScreen --> StopAction["Pengguna Menekan 'Matikan Alarm'"]
-    StopAction --> Reschedule["Stop Alarm & Jadwalkan Hari Berikutnya"]
+    CheckAlarm -->|Ya - Prioritas 1| AlarmScreen[/Output: Tampilkan AlarmRingingScreen/]
+    AlarmScreen --> StopAction[/Input: Pengguna Menekan Matikan Alarm/]
+    StopAction --> Reschedule[Proses: Stop Alarm dan Jadwalkan Hari Berikutnya]
     Reschedule --> CheckSession
 
-    %% Jalur Normal & Keamanan
-    CheckAlarm -- "Tidak" --> CheckSecurity{"Perangkat Aman? (Non-Root & DevMode Off)"}
-    CheckSecurity -- "Tidak Aman" --> DevLock["Kunci di DevModeCheckScreen (/dev-mode-check)"]
-    DevLock --> OnResume["Pantau onResume / Cek Ulang"]
+    CheckAlarm -->|Tidak| CheckSecurity{Perangkat Aman Non-Root dan DevMode Off?}
+    CheckSecurity -->|Tidak Aman| DevLock[/Output: Kunci di DevModeCheckScreen/]
+    DevLock --> OnResume[/Input: Pantau onResume dan Klik Cek Ulang/]
     OnResume --> CheckSecurity
 
-    CheckSecurity -- "Aman" --> Splash["Tampilkan SplashScreen (3 Detik)"]
-    Splash --> CheckSession{"Sudah Login? (LoginPreferences)"}
-    CheckSession -- "Belum" --> AuthScreen["Halaman Login & Register (/login-register)"]
-    AuthScreen --> SubmitAuth["Validasi Form & Kirim ke API"]
-    SubmitAuth --> SaveToken["Simpan Bearer Token ke SharedPreferences"]
+    CheckSecurity -->|Aman| Splash[/Output: Tampilkan SplashScreen 3 Detik/]
+    Splash --> CheckSession{Sudah Login di LoginPreferences?}
+    CheckSession -->|Belum| AuthScreen[/Input: Form Login dan Register/]
+    AuthScreen --> SubmitAuth[/Input Data: POST API Login atau Register/]
+    SubmitAuth --> SaveToken[Proses: Simpan Bearer Token ke SharedPreferences]
     SaveToken --> HomeShell
 
-    CheckSession -- "Sudah" --> HomeShell["MainShellRoute (Bottom Navigation Bar)"]
-    HomeShell --> Tabs["Navigasi Utama: Home | Maps | Alarm | Riwayat | Profil"]
+    CheckSession -->|Sudah| HomeShell[Proses: Masuk ke MainShellRoute Bottom Navigation]
+    HomeShell --> Tabs([Selesai: Navigasi Utama Home, Maps, Alarm, Riwayat, Profil])
 ```
 
 ---
 
 ### 2. Flowchart Proses Presensi (*Check-In*, *Check-Out*, & *Pengajuan Izin*)
-Diagram berikut menggambarkan alur pengambilan lokasi GPS presisi tinggi, *reverse geocoding*, hingga pengiriman data kehadiran ke server REST API:
+Diagram berikut menggambarkan alur pengambilan lokasi GPS presisi tinggi, *reverse geocoding*, hingga pengiriman input data kehadiran (`POST`) ke server REST API:
 
 ```mermaid
-%%{init: {'flowchart': {'useMaxWidth': false, 'nodeSpacing': 25, 'rankSpacing': 35}, 'themeVariables': {'fontSize': '14px'}}}%%
 flowchart TD
-    classDef default font-size:14px;
+    UserAction([Mulai: Pegawai di HomeScreen]) --> ActionType{Pilih Jenis Presensi?}
 
-    UserAction(["Pegawai Memilih Aksi di HomeScreen"]) --> ActionType{"Jenis Aksi Presensi"}
-
-    ActionType -- "Check-In / Check-Out" --> CheckPerm["Cek & Minta Izin Lokasi (Geolocator)"]
-    ActionType -- "Ajukan Izin" --> InputAlasan["Input Alasan Izin pada Dialog Form"]
+    ActionType -->|Check-In atau Check-Out| CheckPerm[Proses: Cek dan Minta Izin Lokasi Geolocator]
+    ActionType -->|Ajukan Izin| InputAlasan[/Input: Alasan Izin pada Dialog Form/]
     InputAlasan --> CheckPerm
 
-    CheckPerm --> PermStatus{"Izin Lokasi & GPS Aktif?"}
-    PermStatus -- "Ditolak / Mati" --> ShowError["Tampilkan Peringatan Izin Lokasi"]
-    PermStatus -- "Diizinkan" --> GetCoord["Ambil Koordinat GPS Real-Time (Lat & Lng)"]
+    CheckPerm --> PermStatus{Izin Lokasi dan GPS Aktif?}
+    PermStatus -->|Ditolak atau Mati| ShowError[/Output: Tampilkan Peringatan Izin Lokasi/]
+    ShowError --> EndFail([Selesai])
+    PermStatus -->|Diizinkan| GetCoord[/Input: Ambil Koordinat GPS Real-Time Lat dan Lng/]
 
-    GetCoord --> ReverseGeo["Konversi Koordinat ke Alamat Teks (Geocoding)"]
-    ReverseGeo --> GetToken["Ambil Bearer Token dari LoginPreferences"]
-    GetToken --> SendAPI{"Kirim Request ke REST API (Dio & Retrofit)"}
+    GetCoord --> ReverseGeo[Proses: Konversi Koordinat ke Alamat Teks Geocoding]
+    ReverseGeo --> GetToken[Proses: Ambil Bearer Token dari LoginPreferences]
+    GetToken --> SendAPI{Jenis Request API?}
 
-    SendAPI -- "Check-In" --> PostCheckIn["POST /api/absen/check-in (status: masuk)"]
-    SendAPI -- "Izin" --> PostIzin["POST /api/absen/check-in (status: izin)"]
-    SendAPI -- "Check-Out" --> PostCheckOut["POST /api/absen/check-out"]
+    SendAPI -->|Check-In| PostCheckIn[/Input POST: API Absen Check-In Status Masuk/]
+    SendAPI -->|Izin| PostIzin[/Input POST: API Absen Check-In Status Izin/]
+    SendAPI -->|Check-Out| PostCheckOut[/Input POST: API Absen Check-Out/]
 
-    PostCheckIn --> ApiResult{"Respons API Sukses?"}
+    PostCheckIn --> ApiResult{Respons API Sukses?}
     PostIzin --> ApiResult
     PostCheckOut --> ApiResult
 
-    ApiResult -- "Gagal" --> ToastFail["Tampilkan FToast Pesan Error"]
-    ApiResult -- "Sukses" --> RefreshState["Refresh historyAbsenProvider & mapRefreshProvider"]
-    RefreshState --> UpdateUI["Perbarui Marker Google Maps & Riwayat"]
-    UpdateUI --> ToastSuccess(["Tampilkan FToast Presensi Berhasil"])
+    ApiResult -->|Gagal| ToastFail[/Output: Tampilkan FToast Pesan Error/]
+    ToastFail --> EndFail
+    ApiResult -->|Sukses| RefreshState[Proses: Refresh historyAbsenProvider dan mapRefreshProvider]
+    RefreshState --> UpdateUI[/Output: Perbarui Marker Google Maps dan Toast Sukses/]
+    UpdateUI --> ToastSuccess([Selesai])
 ```
 
 ---
@@ -150,30 +152,27 @@ flowchart TD
 Diagram berikut menjelaskan mekanisme penjadwalan alarm hingga bagaimana sistem membangunkan layar di atas *lockscreen* saat aplikasi tertutup rapat (*terminated*):
 
 ```mermaid
-%%{init: {'flowchart': {'useMaxWidth': false, 'nodeSpacing': 25, 'rankSpacing': 35}, 'themeVariables': {'fontSize': '14px'}}}%%
 flowchart TD
-    classDef default font-size:14px;
+    StartAlarm([Mulai: Menu Pengaturan Alarm]) --> SetAlarm[/Input: Atur Jam dan Hari Aktif di CheckoutAlarmWidget/]
+    SetAlarm --> CheckAlarmPerm[Proses: Cek Izin Notifikasi, Exact Alarm, dan Baterai]
+    CheckAlarmPerm --> CalcNext[Proses: Hitung Waktu Dering calculateNextAlarmDateTime]
+    CalcNext --> SavePref[Proses: Simpan Konfigurasi ke SharedPreferences]
+    SavePref --> ScheduleNative[Proses: Jadwalkan Alarm.set FullScreenIntent]
 
-    SetAlarm(["Atur Jam & Hari Aktif di CheckoutAlarmWidget"]) --> CheckAlarmPerm["Cek Izin Notifikasi, Exact Alarm, & Baterai"]
-    CheckAlarmPerm --> CalcNext["Hitung Waktu Dering Terdekat (calculateNextAlarmDateTime)"]
-    CalcNext --> SavePref["Simpan Konfigurasi ke SharedPreferences"]
-    SavePref --> ScheduleNative["Jadwalkan Alarm.set() (androidFullScreenIntent: true)"]
+    ScheduleNative --> WaitTime[Proses: Menunggu Waktu Alarm Foreground, Background, Terminated]
+    WaitTime --> AlarmTriggered[Proses: Android AlarmManager Memicu AlarmService]
 
-    ScheduleNative --> WaitTime["Menunggu Waktu Alarm (Foreground / Background / Terminated)"]
-    WaitTime --> AlarmTriggered["Waktu Tiba: Android AlarmManager Memicu AlarmService"]
+    AlarmTriggered --> StartFgService[/Output: Putar Audio alarm_perang.mp3 dan Getar/]
+    StartFgService --> WakeScreen[Proses: Kirim ACTION_RING dan Wake Lockscreen MainActivity]
+    WakeScreen --> NotifyRouter[Proses: Stream Alarm.ringing Memicu alarmRingingNotifier]
+    NotifyRouter --> OpenRingScreen[/Output: Tampilkan AlarmRingingScreen/]
 
-    AlarmTriggered --> StartFgService["Start Foreground Service (Putar Audio & Getar)"]
-    StartFgService --> SendIntent["Kirim Full-Screen Intent (ACTION_RING)"]
-    SendIntent --> WakeScreen["MainActivity: setShowWhenLocked(true) & setTurnScreenOn(true)"]
-    WakeScreen --> NotifyRouter["Stream Alarm.ringing Memicu alarmRingingNotifier"]
-    NotifyRouter --> OpenRingScreen["GoRouter Redirect Otomatis ke AlarmRingingScreen"]
-
-    OpenRingScreen --> UserStop["Pegawai Menekan Tombol 'Matikan Alarm'"]
-    UserStop --> StopService["Panggil Alarm.stop(id) & Alarm.stopAll()"]
-    StopService --> CheckRepeat{"Alarm Berulang Masih Aktif?"}
-    CheckRepeat -- "Ya" --> AutoReschedule["Jadwalkan Otomatis Hari Aktif Berikutnya"]
-    CheckRepeat -- "Tidak" --> ClearAlarm["Nonaktifkan Status Alarm (clearAlarm)"]
-    AutoReschedule --> Finish(["Kembali ke HomeScreen / LoginRegister"])
+    OpenRingScreen --> UserStop[/Input: Pegawai Menekan Tombol Matikan Alarm/]
+    UserStop --> StopService[Proses: Panggil Alarm.stop dan Alarm.stopAll]
+    StopService --> CheckRepeat{Alarm Berulang Masih Aktif?}
+    CheckRepeat -->|Ya| AutoReschedule[Proses: Jadwalkan Otomatis Hari Aktif Berikutnya]
+    CheckRepeat -->|Tidak| ClearAlarm[Proses: Nonaktifkan Status Alarm di SharedPreferences]
+    AutoReschedule --> Finish([Selesai: Kembali ke HomeScreen atau LoginRegister])
     ClearAlarm --> Finish
 ```
 
