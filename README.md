@@ -325,7 +325,7 @@ Ikuti langkah-langkah berikut untuk menyiapkan dan menjalankan proyek di lingkun
 
 ### 1. Kloning Repository
 ```bash
-git clone <URL_REPOSITORY_ANDA>
+git clone https://github.com/minipingu/absensi_dede
 cd absensi_dede
 ```
 
